@@ -1,0 +1,12 @@
+services:
+  dev:
+    container_name: valettecomputing
+    build:
+      context: .
+      dockerfile: .Dockerfile
+    #command: tail -f /dev/null
+    volumes:
+      - ../app:/usr/src/app
+    ports:
+      - 80:80
+      - 225:22
