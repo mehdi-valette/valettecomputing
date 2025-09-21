@@ -4,14 +4,23 @@
 
 <head>
   <style>
-    body {
+    html {
       width: 100vw;
       height: 100vh;
+      overflow: hidden;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
       background-color: #101010;
       margin: 0;
 
       color: #00ff00;
       font-family: monospace;
+
+      font-size: 1.1rem;
     }
 
     h1,
@@ -20,41 +29,140 @@
     }
 
     .content {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: center;
+    }
+
+    hr {
+      border-color: #0f0;
+      margin: 0 3rem;
+    }
+
+    a {
+      color: #0f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      font-weight: normal;
+      text-shadow:
+        0 0 10px #0f0,
+        0 0 10px #0f0;
+    }
+
+    button {
+      background: none;
+      border-color: #0f0;
+      color: #0f0;
+      font-size: 1.1rem;
+      cursor: pointer;
     }
 
     section {
       padding: 2rem;
+      text-align: center;
+    }
+
+    section p {
       text-align: justify;
+      max-width: 30rem;
+      margin: auto;
+    }
+
+    section img {
+      width: 20rem;
+      height: 15rem;
+      object-fit: contain;
+    }
+
+    section input {
+      display: block;
+      margin: 1rem auto;
+      width: 20rem;
+      padding: .3rem;
+    }
+
+    section textarea {
+      display: block;
+      margin: 1rem auto;
+      width: 20rem;
+      height: 10rem;
+      border-radius: 5px;
     }
   </style>
 </head>
 
 <body>
   <h1>Valette Computing</h1>
-  <hr style="border-color: #0f0;" />
+  <hr />
+
+  <section>
+    <h2>Contact</h2>
+    <p>
+      Expliquez votre demande en quelques lignes et je reviendrai vers vous au plus vite. Nous explorerons vos
+      difficultés et les solutions que je peux apporter.
+    </p>
+    <p style="margin-top: 1rem;">
+      Le premier contact est bien sûr gratuit et sans engagement.
+    </p>
+    <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem .5rem;">
+      <div style="justify-self: end;">
+        <p>Email :</p>
+      </div>
+      <div style="justify-self: start;"><a href=" mailto:mehdi.valette@gmail.com">mehdi.valette@gmail.com</a></div>
+      <div style="justify-self: end;">
+        <p style="text-align: right;">SMS/Whatsapp :</p>
+      </div>
+      <div style="justify-self: start;"><a href="tel:0041798237201">+41 79 823 72 01</a></div>
+    </div>
+  </section>
+
+  <hr />
+
   <div class="content">
     <section>
+      <img src="/image/matrix-code" />
       <h2>Développements sur-mesure</h2>
-      <p>Automatiser des tâches, numériser des processus,
+      <p>
+        Automatiser des tâches, numériser des processus,
         offrir des services supplémentaires à votre clientèle ou en interne,
-        les logiciels sur-mesure offrent de nombreuses opportunités.</p>
+        les logiciels sur-mesure offrent de nombreuses opportunités.
+      </p>
     </section>
+
     <section>
+      <img src="/image/linux-laptop" />
       <h2>Administration Linux</h2>
-      <p>Installer, sécuriser et réparer les serveurs et les postes de travail.
-        Utilisez vos ordinateurs sereinement, sans prise de tête.</p>
+      <p>
+        Installer, sécuriser et réparer les serveurs et les postes de travail.
+        Utilisez vos ordinateurs sereinement, sans prise de tête.
+      </p>
     </section>
+
     <section>
+      <img src="/image/deployment" />
       <h2>Déploiements</h2>
-      <p>Hello</p>
+      <p>
+        Installer l'application, la rendre accessible à qui de droit et la contrôler en temps réel.
+        Qu'il s'agisse d'une application isolée ou d'un déploiement à grande échelle sur Kubernetes.
+      </p>
     </section>
+
     <section>
+      <img src="/image/shield" />
       <h2>Sécurité informatique</h2>
-      <p>Sécurité</p>
+      <p>
+        La sécurité comprend beaucoup d'éléments, des pare-feux aux logiciels,
+        en passant par les droits utilisateur.
+        La sécurité absolue ne peut jamais être garantie,
+        mais il est toujours possible de la renforcer.
+      </p>
     </section>
   </div>
+
 </body>
 
 </html>
