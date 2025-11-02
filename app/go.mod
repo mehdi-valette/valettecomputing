@@ -1,3 +1,3 @@
-module valettecomputing.ch
+module valette.software
 
 go 1.26

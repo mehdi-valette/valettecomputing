@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="87.999992mm"
+   height="57.999996mm"
+   viewBox="0 0 87.999988 57.999996"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1"><linearGradient
+       id="linearGradient2273"><stop
+         style="stop-color:#595b5a;stop-opacity:1"
+         offset="0"
+         id="stop2273" /><stop
+         style="stop-color:#212322;stop-opacity:1"
+         offset="1"
+         id="stop2274" /></linearGradient><radialGradient
+       xlink:href="#linearGradient2273"
+       id="radialGradient2274-2"
+       cx="-0.93661928"
+       cy="-16.175934"
+       fx="-0.93661928"
+       fy="-16.175934"
+       r="45.020084"
+       gradientTransform="matrix(-0.0011549,1.2716004,-3.2031053,-0.00289946,-52.241488,0.90040791)"
+       gradientUnits="userSpaceOnUse" /></defs><g
+     id="layer1"
+     transform="translate(-98.459903,-0.39877001)">
+
+
+
+
+
+
+
+<g
+   id="g2277-4"
+   transform="translate(98.459908,0.39876999)"><rect
+     style="fill:url(#radialGradient2274-2);stroke:none;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect2273-4"
+     width="88"
+     height="58"
+     x="5.4253357e-17"
+     y="0" /></g><text
+   xml:space="preserve"
+   style="font-size:5.64444px;line-height:1.25;font-family:mono;-inkscape-font-specification:mono;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+   x="102.63519"
+   y="9.3015366"
+   id="text1-4"><tspan
+     id="tspan1-8"
+     style="font-size:5.64444px;text-align:start;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+     x="102.63519"
+     y="9.3015366">Services</tspan></text><text
+   xml:space="preserve"
+   style="font-size:3.175px;line-height:2.8;font-family:mono;-inkscape-font-specification:mono;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+   x="102.58972"
+   y="18.042751"
+   id="text1-7-7"><tspan
+     style="font-size:3.175px;line-height:2.8;text-align:start;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+     x="102.58972"
+     y="18.042751"
+     id="tspan2-2">Développement de logiciels sur mesure</tspan><tspan
+     style="font-size:3.175px;line-height:2.8;text-align:start;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+     x="102.58972"
+     y="26.932751"
+     id="tspan2278">Déploiement et maintenance de logiciels</tspan><tspan
+     style="font-size:3.175px;line-height:2.8;text-align:start;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+     x="102.58972"
+     y="35.82275"
+     id="tspan2279">Gestion de serveurs Linux</tspan><tspan
+     style="font-size:3.175px;line-height:2.8;text-align:start;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+     x="102.58972"
+     y="44.712749"
+     id="tspan2280">Sécurité informatique</tspan><tspan
+     style="font-size:3.175px;line-height:2.8;text-align:start;text-anchor:start;fill:#92c893;fill-opacity:1;stroke-width:0.264583"
+     x="102.58972"
+     y="53.602749"
+     id="tspan2281">Autres besoins ? Discutons-en !</tspan></text>
+</g></svg>

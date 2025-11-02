@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="44.287849mm"
+   height="38.751862mm"
+   viewBox="0 0 44.287849 38.751862"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1">
+  <style
+     id="style1">.cls-1{fill:#fff}.cls-2{fill:#326ce5}</style>
+  <mask
+     id="holes-2">
+    <rect
+       x="-60"
+       y="-60"
+       width="120"
+       height="120"
+       fill="#ffffff"
+       id="rect35-1" />
+    <circle
+       id="hole-5"
+       cy="-40"
+       r="3"
+       cx="0" />
+    <use
+       xlink:href="#hole-5"
+       transform="rotate(72)"
+       id="use36-9" />
+    <use
+       xlink:href="#hole-5"
+       transform="rotate(144)"
+       id="use37-9" />
+    <use
+       xlink:href="#hole-5"
+       transform="rotate(-144)"
+       id="use38-1" />
+    <use
+       xlink:href="#hole-5"
+       transform="rotate(-72)"
+       id="use39-4" />
+  </mask>
+</defs>
+
+<style
+   type="text/css"
+   id="style1-7">
+	.st0{fill:#000000;}
+</style>
+
+
+
+<style
+   type="text/css"
+   id="style1-9">
+<![CDATA[
+	.st0{fill:#000000;}
+]]>
+</style>
+
+
+<rect
+   style="fill:#00ffff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect10"
+   width="41.693569"
+   height="35.979221"
+   x="1.1651915"
+   y="1.2794421"
+   rx="1.4650112"
+   ry="1.4650112" />
+<path
+   class="st0"
+   d="M 40.135868,-3.4260828e-6 H 4.151998 C 1.859058,-3.4260828e-6 7.9569001e-6,1.8591346 7.9569001e-6,4.1519826 V 34.599872 c 0,2.29294 1.8590500430999,4.15199 4.1519900430999,4.15199 h 35.98387 c 2.29293,0 4.15199,-1.85905 4.15199,-4.15199 V 4.1519826 c 0,-2.292848 -1.85906,-4.1519860260828 -4.15199,-4.1519860260828 z M 38.463308,3.0274866 c 0.90756,0 1.6435,0.735939 1.6435,1.643494 0,0.907642 -0.73594,1.643495 -1.6435,1.643495 -0.90755,0 -1.64349,-0.735853 -1.64349,-1.643495 0,-0.907555 0.73594,-1.643494 1.64349,-1.643494 z m -6.09823,0 c 0.90756,0 1.6435,0.735939 1.6435,1.643494 0,0.907642 -0.73594,1.643495 -1.6435,1.643495 -0.90755,0 -1.64349,-0.735853 -1.64349,-1.643495 0,-0.907555 0.73594,-1.643494 1.64349,-1.643494 z m -6.09823,0 c 0.90756,0 1.6435,0.735939 1.6435,1.643494 0,0.907642 -0.73594,1.643495 -1.6435,1.643495 -0.90755,0 -1.64349,-0.735853 -1.64349,-1.643495 0,-0.907555 0.73594,-1.643494 1.64349,-1.643494 z m 14.56102,31.5723854 c 0,0.38112 -0.31019,0.692 -0.692,0.692 H 4.151998 c -0.38181,0 -0.692,-0.31088 -0.692,-0.692 V 8.9959656 h 37.36787 z"
+   id="path1"
+   style="fill:#000080;stroke-width:0.264584" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6-5"
+   width="26.838171"
+   height="2.8250706"
+   x="11.873902"
+   y="18.04409"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6-5-9"
+   width="8.3665562"
+   height="2.8250706"
+   x="12.187912"
+   y="23.538116"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6-5-9-2"
+   width="11.082971"
+   height="2.8250706"
+   x="22.7276"
+   y="23.538116"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5"
+   width="5.7587981"
+   height="2.8250706"
+   x="6.3195872"
+   y="12.550072"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6"
+   width="13.147445"
+   height="2.8250706"
+   x="13.841675"
+   y="12.550072"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6-2"
+   width="3.2596977"
+   height="2.8250706"
+   x="29.017731"
+   y="12.550072"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6-2-4"
+   width="7.2856808"
+   height="2.8250706"
+   x="6.3195796"
+   y="29.032135"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6-2-4-6"
+   width="3.2596977"
+   height="2.8250706"
+   x="30.154602"
+   y="29.032135"
+   rx="1.4650112"
+   ry="1.4650112" />
+<rect
+   style="fill:#0000ff;stroke-width:12.361;stroke-linecap:round;stroke-linejoin:round"
+   id="rect5-6-2-4-0"
+   width="12.91831"
+   height="2.8250706"
+   x="15.645294"
+   y="29.032135"
+   rx="1.4650112"
+   ry="1.4650112" />
+</svg>
