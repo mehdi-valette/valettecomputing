@@ -1,7 +1,7 @@
 FROM golang:tip-trixie
 
 RUN apt-get update \
-  && apt-get install -y openssh-server sudo \
+  && apt-get install -y openssh-server sudo inotify-tools \
   && echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config
 
 RUN adduser vscode \

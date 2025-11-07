@@ -85,11 +85,11 @@
       color: darkblue;
       font-family: monospace;
       font-size: 1.1rem;
-      height: 100%;
       margin: 0;
       overflow: auto;
       width: 100%;
       font-size: 1.5rem;
+      padding-bottom: 3rem;
     }
 
     button {
@@ -172,12 +172,6 @@
       margin: 5rem 3rem;
     }
 
-    html {
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
-
     section h2 {
       text-align: left;
     }
@@ -234,15 +228,16 @@
 <body>
   <div class="banner">
     <h1 class="banner-title">Valette Software</h1>
-    <h2 class="banner-subtitle"><span class=" small">un</span><br>
-      logiciel efficace<br>
-      <span class="small">dans un</span><br>
+    <h2 class="banner-subtitle">
+      <div class=" small">un</div>
+      logiciel efficace
+      <div class="small" style="margin-top: 3rem;">dans un</div>
       environnement sécurisé
     </h2>
-    <img class="banner-code" src="/image/icon/banner/code.svg">
-    <img class="banner-json" src="/image/icon/banner/json.svg">
-    <img class="banner-cli" src="/image/icon/banner/cli.svg">
-    <img class="banner-developer" src="/image/icon/banner/developer.svg">
+    <img class="banner-code" src="/static/icon/banner/code.svg">
+    <img class="banner-json" src="/static/icon/banner/json.svg">
+    <img class="banner-cli" src="/static/icon/banner/cli.svg">
+    <img class="banner-developer" src="/static/icon/banner/developer.svg">
   </div>
 
   <hr>
@@ -306,13 +301,13 @@
 
       <h3>Logiciels petits et grands</h3>
       <p>
-        Beaucoup pensent que le développement logiciel nécessite des mois de travail et coûtent des dizaines de
+        Beaucoup pensent que le développement logiciel nécessite des mois de travail et coûte des dizaines de
         milliers de francs. La faute aux logiciels les plus connus qui sont souvent des béhémoths.
         C'est parfois vrai, bien sûr. J'ai déjà travaillé en équipe sur de gros projets qui ont duré plus d'une année.
       </p>
       <p>
         Mais il existe aussi beaucoup de petits logiciels réalisés en quelques semaines, voir en quelques jours.
-        Leur prix est plutôt modeste, particulièrement en comparaison des avantages qu'ils apportent !
+        Leur prix est plutôt modeste, surtout au vu des avantages qu'ils apportent !
       </p>
 
       <h3>Automatiser les tâches simples et répétitives</h3>
@@ -336,7 +331,7 @@
         permet aux clients (entreprises) de suivre le traitement de leurs commandes.
       </p>
     </div>
-    <img src=" /image/matrix-code" />
+    <img src=" /static/image/matrix-code.webp" />
   </section>
 
   <hr>
@@ -358,7 +353,8 @@
 
       <h3>Sécurisation</h3>
       <p>
-        L'importance de la sécurité informatique augmente autant que notre dépence à ces systèmes. C'est d'autant plus
+        L'importance de la sécurité informatique augmente autant que notre dépendance à ces systèmes. C'est d'autant
+        plus
         vrai pour les serveurs. Non-seulement ils contiennent plus de données critiques, ils doivent aussi
         rester accessible à qui de droit.
       </p>
@@ -370,7 +366,7 @@
 
       <h3>Administration</h3>
       <p>
-        Un serveur tourne en permanence et généralement tout seul. Pour autant l'administration reste nécessaires :
+        Un serveur tourne en permanence et généralement tout seul. Pour autant l'administration reste nécessaire :
         gérer des comptes, vérifier les sauvegardes, inspecter la machine suite à un problème, ou déployer un nouveau
         service, sont des tâches courantes.
       </p>
@@ -381,7 +377,7 @@
         depuis des mois, tout simplement parce que les alertes étaient envoyées vers une boîte mail obsolète !
       </p>
     </div>
-    <img src="/image/linux-laptop" />
+    <img src="/static/image/linux-laptop.svg" />
   </section>
 
   <hr>
@@ -400,7 +396,7 @@
 
       <h3>Conteneurs</h3>
       <p>
-        Très utils pour déployer une application avec l'ensemble de ses dépendances, la popularité des conteneurs a
+        Très util pour déployer une application avec l'ensemble de ses dépendances, la popularité des conteneurs a
         beaucoup grandit.
         Et avec leur popularité sont arrivées de nombreuses solutions pour les gérer.
       <p>
@@ -425,7 +421,7 @@
       </p>
     </div>
 
-    <img src="/image/deployment" />
+    <img src="/static/image/deployment.svg" />
   </section>
 
   <hr>
@@ -472,7 +468,7 @@
       </p>
     </div>
 
-    <img src="/image/shield" />
+    <img src="/static/image/shield.svg" />
   </section>
 
 </body>
