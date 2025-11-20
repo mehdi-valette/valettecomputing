@@ -4,21 +4,41 @@
 
 <head>
   <style>
+    :root {
+      --color-primary: hsl(120 100 20);
+
+      --color-button-background: var(--color-primary);
+      --color-button-text: hsl(from var(--color-primary) h s calc(l + 100));
+
+      --color-primary-background-gradient: linear-gradient(to bottom right,
+          hsl(from var(--color-primary) h s calc(l + 40)),
+          hsl(from var(--color-primary) h s calc(l + 60)));
+
+      --color-border: hsl(from var(--color-primary) h s calc(l - 30));
+
+      --color-input-background: hsl(from var(--color-primary) h s calc(l + 50));
+
+      --color-text: var(--color-primary);
+      --color-title: var(--color-text);
+      --color-subtitle: var(--color-text);
+      --color-subtitle-small: hsl(from var(--color-primary) h s calc(l - 10));
+      --color-link: var(--color-subtitle-small);
+    }
+
     a {
-      color: darkblue;
+      color: var(--color-link);
       text-decoration: none;
       font-weight: bold;
     }
 
     a:hover {
-      text-shadow: 2px 2px 1px rgba(0, 0, 255, 0.3);
+      text-shadow: 2px 2px 1px hsla(from var(--color-link) h s l / 0.3);
     }
 
     .banner {
       display: grid;
       min-height: 100vh;
-      grid-template-areas:
-        "title    .     json"
+      grid-template-areas: "title    .     json"
         "subtitle code  ."
         "subtitle .     cli"
         "developer developer developer";
@@ -80,9 +100,10 @@
     }
 
     body {
-      background-color: white;
-      background: linear-gradient(to bottom right, lightblue, rgb(149, 149, 255));
-      color: darkblue;
+      /* background-color: white; */
+      background: var(--color-primary-background-gradient);
+      /* background: linear-gradient(to bottom right, lightblue, rgb(149, 149, 255)); */
+      color: var(--color-text);
       font-family: monospace;
       font-size: 1.1rem;
       margin: 0;
@@ -95,9 +116,9 @@
     button {
       cursor: pointer;
       margin-top: 1rem;
-      background: darkblue;
-      border: darkblue;
-      color: white;
+      background: var(--color-button-background);
+      border: none;
+      color: var(--color-button-text);
       padding: 1rem;
       font-size: 1.2rem;
       font-family: monospace;
@@ -110,7 +131,7 @@
 
     .contact {
       border-radius: .5rem;
-      border: 1px solid darkblue;
+      border: 1px solid var(--color-border);
       padding: 2rem;
     }
 
@@ -122,14 +143,14 @@
     .contact input,
     .contact select,
     .contact textarea {
-      border: 1px solid blue;
+      border: 1px solid var(--color-border);
       display: block;
       min-width: 50%;
       font-size: 1.2rem;
-      color: blue;
+      color: var(--color-text);
       font-family: monospace;
       padding: .3rem;
-      background-color: lightblue;
+      background-color: var(--color-input-background);
     }
 
     .contact textarea {
@@ -152,23 +173,27 @@
 
     h1 {
       font-size: 5rem;
-      color: blue;
+      color: var(--color-title);
       margin: 0;
     }
 
     h2 {
       font-size: 3rem;
-      color: blue;
+      color: var(--color-subtitle);
       margin: 0;
     }
 
     h2>.small {
       font-size: 2.5rem;
-      color: darkblue;
+      color: var(--color-subtitle-small);
+    }
+
+    h3 {
+      color: var(--color-text);
     }
 
     hr {
-      border-color: blue;
+      border-color: var(--color-border);
       margin: 5rem 3rem;
     }
 
@@ -396,7 +421,7 @@
 
       <h3>Conteneurs</h3>
       <p>
-        Très util pour déployer une application avec l'ensemble de ses dépendances, la popularité des conteneurs a
+        Très utils pour déployer une application avec l'ensemble de ses dépendances, la popularité des conteneurs a
         beaucoup grandit.
         Et avec leur popularité sont arrivées de nombreuses solutions pour les gérer.
       <p>
