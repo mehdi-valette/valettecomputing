@@ -157,20 +157,6 @@
       width: 100%;
     }
 
-    section {
-      padding: 0 2rem;
-      display: grid;
-      gap: 3rem;
-      grid-template-rows: 1fr auto;
-    }
-
-    @media screen and (width >=1200px) {
-      section {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
-      }
-    }
-
     h1 {
       font-size: 5rem;
       color: var(--color-title);
@@ -197,17 +183,55 @@
       margin: 5rem 3rem;
     }
 
-    section h2 {
+    .services {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 40rem);
+      gap: 5rem;
+      text-align: justify;
+      justify-content: center;
+    }
+
+    .services>div {
+      display: grid;
+      grid-template-rows: 10rem auto;
+      justify-items: center;
+      gap: 1rem;
+    }
+
+    .services h2 {
+      text-align: center;
+    }
+
+    .services img {
+      height: 100%;
+    }
+
+    .two-columns {
+      padding: 0 2rem;
+      display: grid;
+      gap: 3rem;
+      justify-content: center;
+      grid-template-rows: 1fr auto;
+    }
+
+    @media screen and (width >=1200px) {
+      .two-columns {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+      }
+    }
+
+    .two-columns h2 {
       text-align: left;
     }
 
-    section p {
+    .two-columns p {
       text-align: justify;
       margin: auto;
       margin-top: 1rem;
     }
 
-    section img {
+    .two-columns img {
       height: 20rem;
       object-fit: contain;
       margin: auto;
@@ -267,7 +291,49 @@
 
   <hr>
 
-  <section>
+  <section class="services">
+    <div class="service">
+      <div><img src="/static/image/matrix-code.webp"></div>
+      <div>
+        <h2>Développement</h2>
+        <p>Développement de logiciels personnalisés pour automatiser des tâches, offrir des services supplémentaires et
+          bien plus !</p>
+      </div>
+    </div>
+
+    <div class="service">
+      <div><img src="/static/image/linux-laptop.svg"></div>
+      <div>
+        <h2>Administration</h2>
+        <p>Administration de serveurs Linux : installation, sécurisation et maintenance.</p>
+      </div>
+    </div>
+
+    <div class="service">
+      <div><img src="/static/image/deployment.svg"></div>
+      <div>
+        <h2>Déploiement</h2>
+        <p>Déploiement des logiciels sur l'ordinateur, dans un conteneur (Docker ou Podman) ou sur un cluster
+          Kubernetes.
+        </p>
+      </div>
+    </div>
+
+    <div class="service">
+      <div><img src="/static/image/shield.svg"></div>
+      <div>
+        <h2>Sécurité</h2>
+        <p>Sécuriser le système informatique, qu'il s'agisse de limiter les droits des comptes, de vérouiller le
+          pare-feu
+          ou de
+          contenir les processus.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <section class="two-columns">
     <div>
       <h2>Contact</h2>
       <p>Une mission à me confier ?</p>
@@ -320,7 +386,7 @@
 
   <hr>
 
-  <section>
+  <section class="two-columns">
     <div>
       <h2>Développements sur-mesure</h2>
 
@@ -361,7 +427,7 @@
 
   <hr>
 
-  <section>
+  <section class="two-columns">
     <div>
       <h2>Administration de serveurs Linux</h2>
 
@@ -407,7 +473,7 @@
 
   <hr>
 
-  <section>
+  <section class="two-columns">
     <div>
       <h2>Déploiements</h2>
 
@@ -451,7 +517,7 @@
 
   <hr>
 
-  <section>
+  <section class="two-columns">
     <div>
       <h2>Sécurité informatique</h2>
 
