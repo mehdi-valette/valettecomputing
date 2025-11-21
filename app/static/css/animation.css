@@ -10,3 +10,12 @@
   opacity: 1;
   transform: scale(100%);
 }
+
+.fadable {
+  opacity: 0;
+  transition: opacity .5s linear;
+}
+
+.fadable.intersecting {
+  opacity: 1;
+}

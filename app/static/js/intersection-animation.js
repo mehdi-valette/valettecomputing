@@ -1,16 +1,13 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        console.log(entry);
-        if (entry.isIntersecting) {
-          entry.target.classList.add("intersecting");
-        }
-      })
-    }
-  );
+const animationObserver = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("intersecting")
+      }
+    })
+  }
+);
 
-  const test = document.querySelectorAll(".animatable");
-  console.log(test);
-  test.forEach(el => observer.observe(el));
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".animatable").forEach(el => animationObserver.observe(el))
 }, { once: true })
