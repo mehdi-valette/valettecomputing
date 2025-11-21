@@ -20,7 +20,7 @@
 .two-columns p {
   text-align: justify;
   margin: auto;
-  margin-top: 1rem;
+  margin: 2rem 0;
 }
 
 .two-columns img {

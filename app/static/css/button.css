@@ -17,5 +17,5 @@
 
 .button:disabled {
   cursor: default;
-  background: lightblue;
+  background: var(--color-button-background-disabled);
 }
