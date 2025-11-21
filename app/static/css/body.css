@@ -1,0 +1,9 @@
+body {
+  background: var(--color-primary-background-gradient);
+  color: var(--color-text);
+  font-family: monospace;
+  font-size: 1.5rem;
+  margin: 0;
+  padding-bottom: 3rem;
+  width: 100%;
+}
