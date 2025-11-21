@@ -8,6 +8,7 @@
       --color-primary: hsl(120 100 20);
 
       --color-button-background: var(--color-primary);
+      --color-button-background-hover: hsl(from var(--color-button-background) h s calc(l + 10));
       --color-button-text: hsl(from var(--color-primary) h s calc(l + 100));
 
       --color-primary-background-gradient: linear-gradient(to bottom right,
@@ -25,23 +26,24 @@
       --color-link: var(--color-subtitle-small);
     }
 
-    a {
+    .link {
       color: var(--color-link);
       text-decoration: none;
       font-weight: bold;
     }
 
-    a:hover {
+    .link:hover {
       text-shadow: 2px 2px 1px hsla(from var(--color-link) h s l / 0.3);
     }
 
     .banner {
       display: grid;
       min-height: 100vh;
-      grid-template-areas: "title    .     json"
-        "subtitle code  ."
-        "subtitle .     cli"
-        "developer developer developer";
+      grid-template-areas:
+        'title    .     json'
+        'subtitle code  .'
+        'subtitle .     cli'
+        'developer developer developer';
 
       grid-template-columns: 2fr 1fr 1fr;
       grid-template-rows: auto auto auto auto 1fr;
@@ -100,9 +102,7 @@
     }
 
     body {
-      /* background-color: white; */
       background: var(--color-primary-background-gradient);
-      /* background: linear-gradient(to bottom right, lightblue, rgb(149, 149, 255)); */
       color: var(--color-text);
       font-family: monospace;
       font-size: 1.1rem;
@@ -113,10 +113,12 @@
       padding-bottom: 3rem;
     }
 
-    button {
+    .button {
       cursor: pointer;
+      text-decoration: none;
       margin-top: 1rem;
       background: var(--color-button-background);
+      border-radius: 0.2rem;
       border: none;
       color: var(--color-button-text);
       padding: 1rem;
@@ -124,7 +126,11 @@
       font-family: monospace;
     }
 
-    button:disabled {
+    .button:hover {
+      background-color: var(--color-button-background-hover);
+    }
+
+    .button:disabled {
       cursor: default;
       background: lightblue;
     }
@@ -185,8 +191,9 @@
 
     .services {
       display: grid;
-      grid-template-columns: repeat(auto-fill, 40rem);
-      gap: 5rem;
+      grid-template-columns: 40rem;
+      column-gap: 5rem;
+      row-gap: 10rem;
       text-align: justify;
       justify-content: center;
     }
@@ -204,6 +211,23 @@
 
     .services img {
       height: 100%;
+      max-width: 100%;
+    }
+
+    .services .img-container {
+      text-align: center;
+    }
+
+    @media screen and (width >=1500px) {
+      .services {
+        grid-template-columns: repeat(2, 40rem);
+      }
+    }
+
+    @media screen and (width >=2900px) {
+      .services {
+        grid-template-columns: repeat(4, 40rem);
+      }
     }
 
     .two-columns {
@@ -236,9 +260,51 @@
       object-fit: contain;
       margin: auto;
     }
+
+    .zoomable {
+      transform: scale(80%);
+      opacity: 0.7;
+      transition-property: transform opacity;
+      transition-duration: 1s;
+      transition-timing-function: linear;
+    }
+
+    .zoomable.intersecting {
+      opacity: 1;
+      transform: scale(100%);
+    }
   </style>
 
   <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            console.log(entry);
+            if (entry.isIntersecting) {
+              entry.target.classList.add("intersecting");
+            }
+          })
+        }
+      );
+
+      const test = document.querySelectorAll(".animatable");
+      console.log(test);
+      test.forEach(el => observer.observe(el));
+    }, { once: true })
+
+
+    function handleContactForm() {
+      const contactForm = document.getElementById("contact-form")
+      const form = new FormData(contactForm)
+
+      contactForm.getElementsByTagName("button")[0].disabled = true;
+
+      sendContactForm(form)
+
+      return false;
+    }
+
     async function sendContactForm(form) {
       const contactForm = document.getElementById("contact-form")
       const container = document.getElementById("contact-form-container")
@@ -259,17 +325,6 @@
         console.log(e)
         container.innerHTML = "oups"
       }
-    }
-
-    function handleContactForm() {
-      const contactForm = document.getElementById("contact-form")
-      const form = new FormData(contactForm)
-
-      contactForm.getElementsByTagName("button")[0].disabled = true;
-
-      sendContactForm(form)
-
-      return false;
     }
   </script>
 </head>
@@ -292,41 +347,41 @@
   <hr>
 
   <section class="services">
-    <div class="service">
-      <div><img src="/static/image/matrix-code.webp"></div>
+    <div class="animatable zoomable">
+      <div class="img-container"><img src="/static/image/matrix-code.webp"></div>
       <div>
         <h2>Développement</h2>
-        <p>Développement de logiciels personnalisés pour automatiser des tâches, offrir des services supplémentaires et
-          bien plus !</p>
+        <p>Développement de logiciels personnalisés, qu'ils soient petits ou grands</p>
+        <div style="text-align: center;"><a href="#" class="button">En savoir plus</a></div>
       </div>
     </div>
 
-    <div class="service">
-      <div><img src="/static/image/linux-laptop.svg"></div>
+    <div class=" animatable zoomable">
+      <div class="img-container"><img src="/static/image/linux-laptop.svg"></div>
       <div>
         <h2>Administration</h2>
         <p>Administration de serveurs Linux : installation, sécurisation et maintenance.</p>
+        <div style="text-align: center;"><a href="#" class="button">En savoir plus</a></div>
       </div>
     </div>
 
-    <div class="service">
-      <div><img src="/static/image/deployment.svg"></div>
+    <div class="animatable zoomable">
+      <div class="img-container"><img src="/static/image/deployment.svg"></div>
       <div>
         <h2>Déploiement</h2>
-        <p>Déploiement des logiciels sur l'ordinateur, dans un conteneur (Docker ou Podman) ou sur un cluster
-          Kubernetes.
+        <p>Déploiement de logiciels sur des serveurs individuels ou sur un cluster.
         </p>
+        <div style="text-align: center;"><a href="#" class="button">En savoir plus</a></div>
       </div>
     </div>
 
-    <div class="service">
-      <div><img src="/static/image/shield.svg"></div>
+    <div class="animatable zoomable">
+      <div class="img-container"><img src="/static/image/shield.svg"></div>
       <div>
         <h2>Sécurité</h2>
-        <p>Sécuriser le système informatique, qu'il s'agisse de limiter les droits des comptes, de vérouiller le
-          pare-feu
-          ou de
-          contenir les processus.</p>
+        <p> Sécurisation des environnements Linux : comptes utilisateur, réseaux et programmes.
+        </p>
+        <div style="text-align: center;"><a href="#" class="button">En savoir plus</a></div>
       </div>
     </div>
   </section>
@@ -334,7 +389,7 @@
   <hr>
 
   <section class="two-columns">
-    <div>
+    <div class="animatable zoomable">
       <h2>Contact</h2>
       <p>Une mission à me confier ?</p>
       <p>Une question à me poser ?</p>
@@ -342,15 +397,15 @@
       <p>Nous explorerons vos difficultés et les solutions que je peux apporter.</p>
 
       <p style="margin-top: 4rem">
-        <a href="mailto:mehdi.valette@gmail.com">mehdi.valette@gmail.com</a>
+        <a class="link" href="mailto:mehdi.valette@gmail.com">mehdi.valette@gmail.com</a>
       </p>
 
       <p style="margin-top: 4rem;">
-        <a href="tel:0041798237201">+41 79 823 72 01</a>
+        <a class="link" href="tel:0041798237201">+41 79 823 72 01</a>
       </p>
     </div>
 
-    <div class="contact" id="contact-form-container" style="position: relative;">
+    <div class="contact animatable zoomable" id="contact-form-container" style="position: relative;">
       <form id="contact-form" onsubmit="return handleContactForm()">
         <label>
           Nom complet
@@ -378,7 +433,7 @@
           <textarea name="message" rows="5" required></textarea>
         </label>
 
-        <button type="submit">Envoyer</button>
+        <button class="button" type="submit">Envoyer</button>
       </form>
     </div>
 
@@ -388,109 +443,109 @@
 
   <section class="two-columns">
     <div>
-      <h2>Développements sur-mesure</h2>
+      <h2 class="animatable zoomable">Développements sur-mesure</h2>
 
-      <h3>Logiciels petits et grands</h3>
-      <p>
+      <h3 class="animatable zoomable">Logiciels petits et grands</h3>
+      <p class="animatable zoomable">
         Beaucoup pensent que le développement logiciel nécessite des mois de travail et coûte des dizaines de
         milliers de francs. La faute aux logiciels les plus connus qui sont souvent des béhémoths.
         C'est parfois vrai, bien sûr. J'ai déjà travaillé en équipe sur de gros projets qui ont duré plus d'une année.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Mais il existe aussi beaucoup de petits logiciels réalisés en quelques semaines, voir en quelques jours.
         Leur prix est plutôt modeste, surtout au vu des avantages qu'ils apportent !
       </p>
 
-      <h3>Automatiser les tâches simples et répétitives</h3>
-      <p>
+      <h3 class="animatable zoomable">Automatiser les tâches simples et répétitives</h3>
+      <p class="animatable zoomable">
         Les ordinateurs sont remarquablement efficaces pour refaire constamment la même chose.
         J'ai été amené à automatiser un processus qui était réalisé manuellement à l'aide de feuilles imprimées.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Avant la numérisation le processus monopolisait une à deux personnes durant plusieurs jours.
         D'une fois numérisé, il était réalisé en quelques secondes avec un seul clique !
       </p>
 
-      <h3>Offrir des services supplémentaires à la clientèle</h3>
-      <p>
+      <h3 class="animatable zoomable">Offrir des services supplémentaires à la clientèle</h3>
+      <p class="animatable zoomable">
         Notre société est très numérisée, ainsi la plupart des gens peuvent tirer parti des services numériques.
         Personnellement j'adore pouvoir réserver des billets de train depuis mon natel ou demander mon extrait de
         poursuite en ligne.
       </p>
-      <p>
+      <p class="animatable zoomable">
         On retrouve la même chose dans les relations inter-entreprises. Par exemple, j'ai développé une plateforme qui
         permet aux clients (entreprises) de suivre le traitement de leurs commandes.
       </p>
     </div>
-    <img src=" /static/image/matrix-code.webp" />
+    <img class="animatable zoomable" src=" /static/image/matrix-code.webp" />
   </section>
 
   <hr>
 
   <section class="two-columns">
     <div>
-      <h2>Administration de serveurs Linux</h2>
+      <h2 class="animatable zoomable">Administration de serveurs Linux</h2>
 
-      <h3>Installation et mise en place</h3>
-      <p>
+      <h3 class="animatable zoomable">Installation et mise en place</h3>
+      <p class="animatable zoomable">
         Bien que l'installation de Linux soit devenue plutôt aisée, on peut rapidement perdre du temps ou faire des
         mauvais choix sur des options que l'on ne comprend pas, surtout lorsqu'il faut installer plusieurs machines.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Ayant installé de nombreuses machines Ubuntu et CentOS, je connais bien l'installation des familles Debian et
         RedHat. J'ai également de l'expérience sur Terraform et Ansible pour automatiser le processus lorsqu'il faut,
         soit installer de nombreuses machines, soit être capable de les réinstaller rapidement en cas de panne.
       </p>
 
-      <h3>Sécurisation</h3>
-      <p>
+      <h3 class="animatable zoomable">Sécurisation</h3>
+      <p class="animatable zoomable">
         L'importance de la sécurité informatique augmente autant que notre dépendance à ces systèmes. C'est d'autant
         plus
         vrai pour les serveurs. Non-seulement ils contiennent plus de données critiques, ils doivent aussi
         rester accessible à qui de droit.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Il n'existe pas de méthode miracle pour tout sécuriser ; c'est un combat permanent entre les pirates et les
         entreprises. Le meilleur moyen de se protéger est de faire évaluer son système par autant de spécialistes que
         possible.
       </p>
 
-      <h3>Administration</h3>
-      <p>
+      <h3 class="animatable zoomable">Administration</h3>
+      <p class="animatable zoomable">
         Un serveur tourne en permanence et généralement tout seul. Pour autant l'administration reste nécessaire :
         gérer des comptes, vérifier les sauvegardes, inspecter la machine suite à un problème, ou déployer un nouveau
         service, sont des tâches courantes.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Avec peu de valeur ajoutée et un grand potentiel d'erreurs graves, mieux vaut
         laisser l'administration des serveurs à celles et ceux pour qui c'est une tâche principale.
         J'ai déjà vu un serveur tomber en panne avec des sauvegardes ineffectives
         depuis des mois, tout simplement parce que les alertes étaient envoyées vers une boîte mail obsolète !
       </p>
     </div>
-    <img src="/static/image/linux-laptop.svg" />
+    <img class="animatable zoomable" src="/static/image/linux-laptop.svg" />
   </section>
 
   <hr>
 
   <section class="two-columns">
     <div>
-      <h2>Déploiements</h2>
+      <h2 class="animatable zoomable">Déploiements</h2>
 
-      <h3>Services</h3>
-      <p>
+      <h3 class="animatable zoomable">Services</h3>
+      <p class="animatable zoomable">
         Installer un logiciel en tant que service présente de nombreux avantage par rapport à simplement lancer une
         application.
         Un service peut se lancer automatiquement à chaque démarrage, centralise la journalisation des événements, et
         peut même redémarrer en cas de problème.
       </p>
 
-      <h3>Conteneurs</h3>
-      <p>
+      <h3 class="animatable zoomable">Conteneurs</h3>
+      <p class="animatable zoomable">
         Très utils pour déployer une application avec l'ensemble de ses dépendances, la popularité des conteneurs a
         beaucoup grandit.
         Et avec leur popularité sont arrivées de nombreuses solutions pour les gérer.
-      <p>
+      <p class="animatable zoomable">
         Lorsque j'ai étudié pour passer le CKA (Certified Kubernetes Administrator), je me suis rendu compte de la
         richesse du monde des conteneurs.
         Docker, Podman, Containerd, Cri-O, Docker Compose, Docker Swarm, Kubernetes et ses
@@ -498,60 +553,60 @@
         passer à côté de la solution idéale !
       </p>
 
-      <h3>Orchestration avec Kubernetes</h3>
-      <p>
+      <h3 class="animatable zoomable">Orchestration avec Kubernetes</h3>
+      <p class="animatable zoomable">
         Pour les petites applications, Kubernetes apporte plus de complexité qu'il n'en résoud. Mais dans les projets de
         grande envergure, la gestion des nombreuses applications et de leurs interactions atteint une telle complexité
         que Kubernetes est simple en comparaison. Il permet notamment de mettre à jour les applications et rétablir le
         système après les pannes sans interruptions !
       </p>
-      <p>
+      <p class="animatable zoomable">
         Pendant que j'étudiais Kubernetes pour passer le CKA (Certified Kubernetes Administrator) j'ai exploré en
         profondeur les composants principaux de Kubernetes et j'ai découvert le vaste univers qui l'entoure. Je me ferai
         un plaisir de le mettre en place, de le maintenir ou de vous conseiller sur votre architecture !
       </p>
     </div>
 
-    <img src="/static/image/deployment.svg" />
+    <img class="animatable zoomable" src="/static/image/deployment.svg" />
   </section>
 
   <hr>
 
   <section class="two-columns">
     <div>
-      <h2>Sécurité informatique</h2>
+      <h2 class="animatable zoomable">Sécurité informatique</h2>
 
-      <h3>Limiter les comptes</h3>
-      <p>
+      <h3 class="animatable zoomable">Limiter les comptes</h3>
+      <p class="animatable zoomable">
         J'ai souvent vu des comptes qui ont bien plus de droits que nécessaire, voir même s'authentifier en root,
         parce que "c'est plus facile". Malheureusement les pirates aussi trouvent que "c'est plus facile". Il leur
         suffit d'accéder à n'importe quel compte pour accéder à tout le système.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Pourtant Linux offre de nombreuses façons d'accorder uniquement les accès nécessaires. En définissant les droits
         par dossier avec les permissions du système de fichiers, les ACLs et les attributs. En limitant ce qui peut être
         exécuté en Sudo. En se connectant par SSH avec des certificats plutôt que des clés.
       </p>
 
-      <h3>Fermer le pare-feu</h3>
-      <p>
+      <h3 class="animatable zoomable">Fermer le pare-feu</h3>
+      <p class="animatable zoomable">
         De trop nombreux serveurs ouvrent tous les ports, comme ça plus de problème ! Mais c'est sous-estimer la
         complexité des systèmes actuels. Des logiciels qui écoutent par défaut sur des ports non sécurisés, des virus
         qui transmettent des données volées, ce sont des risques bien réels.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Pour vérifier que tout est bien paramétré, mieux vaut connaître les pare-feux bas-niveau comme nftables (ou son
         ancêtre iptables). C'est plus de travail, plus de maintenance, mais aussi plus de sécurité !
       </p>
 
-      <h3>Contraindre les processus</h3>
-      <p>
+      <h3 class="animatable zoomable">Contraindre les processus</h3>
+      <p class="animatable zoomable">
         Si vous lisez les revues d'informatique, vous avez sûrement vu des titres tels que "Nouvelle faille
         découverte dans X" ou encore "Une mise à jour de Y le rend vulnérable à telle attaque". Les pirates profitent
         souvent de failles dans des logiciels bien réputés. Que ces failles soient le fruit d'un bug dans le programme
         ou d'une mauvaise configuration, il faut toujours partir du principe qu'elles peuvent exister.
       </p>
-      <p>
+      <p class="animatable zoomable">
         Pour éviter qu'un logiciel ne mette en danger tout le système on fait souvent appel à SELinux ou AppArmor. Ces
         modules du kernel Linux permettent de limiter les droits des processus, même si ces derniers sont exécutés en
         root.
@@ -559,7 +614,7 @@
       </p>
     </div>
 
-    <img src="/static/image/shield.svg" />
+    <img class="animatable zoomable" src="/static/image/shield.svg" />
   </section>
 
 </body>
