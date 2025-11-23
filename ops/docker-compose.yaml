@@ -1,12 +1,18 @@
 services:
   dev:
-    container_name: valettecomputing
+    container_name: valettesoftware
     build:
       context: .
       dockerfile: .Dockerfile
-    #command: tail -f /dev/null
     volumes:
-      - ../app:/usr/src/app
+      - ../app:/home/vscode/app
+    userns_mode: keep-id:uid=1000,gid=1000
     ports:
-      - 8080:80
-      - 225:22
+      - "8080:8080"
+      - "2205:22"
+    networks:
+      - valettesoftwarenetwork
+
+networks:
+  valettesoftwarenetwork:
+    driver: bridge

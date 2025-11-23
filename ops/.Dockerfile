@@ -4,12 +4,14 @@ RUN apt-get update \
   && apt-get install -y openssh-server sudo inotify-tools \
   && echo "PermitEmptyPasswords yes" >> /etc/ssh/sshd_config
 
-RUN adduser vscode \
+RUN ssh-keygen -A
+
+RUN adduser vscode -uid 1000 \
   && passwd -d vscode \
   && usermod vscode -aG sudo
 
-WORKDIR /usr/src/app
+WORKDIR /home/vscode/app
 
-RUN ssh-keygen -A
+USER vscode
 
-CMD /usr/sbin/sshd && sleep infinity
+CMD sudo /usr/sbin/sshd && sleep infinity
