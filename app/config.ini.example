@@ -1,6 +1,0 @@
-smtp_host=smtp.gmail.com
-smtp_port=587
-smtp_user=my@email.com
-smtp_password=supersecret
-smtp_from=my@email.com
-smtp_to=my@email.com

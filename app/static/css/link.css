@@ -1,9 +1,0 @@
-    .link {
-      color: var(--color-link);
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .link:hover {
-      text-shadow: 2px 2px 1px hsla(from var(--color-link) h s l / 0.3);
-    }

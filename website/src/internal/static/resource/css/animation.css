@@ -1,0 +1,21 @@
+.zoomable {
+  transform: scale(80%);
+  opacity: 0.7;
+  transition-property: transform opacity;
+  transition-duration: 1s;
+  transition-timing-function: linear;
+}
+
+.zoomable.intersecting {
+  opacity: 1;
+  transform: scale(100%);
+}
+
+.fadable {
+  opacity: 0;
+  transition: opacity .5s linear;
+}
+
+.fadable.intersecting {
+  opacity: 1;
+}
