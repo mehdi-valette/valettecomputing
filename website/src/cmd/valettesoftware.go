@@ -38,7 +38,15 @@ func main() {
 		err := page.DisplayIndex(res)
 
 		if err != nil {
-			log.Print("couldn't send the index page")
+			log.Print("couldn't display the index page")
+		}
+	})
+
+	http.HandleFunc("GET /agenda", func(res http.ResponseWriter, req *http.Request) {
+		err := page.DisplayAgenda(res)
+
+		if err != nil {
+			log.Print("couldn't display the agenda page", err)
 		}
 	})
 
