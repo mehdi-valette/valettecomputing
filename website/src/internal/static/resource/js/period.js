@@ -1,3 +1,13 @@
+/**
+ * @typedef Positions
+ * @type {object}
+ * @property {number} documentTop
+ * @property {number} parentBottom
+ * @property {number} parentHeight
+ * @property {number} parentTop
+ * @property {number} selfHeight
+ */
+
 class VsPeriod extends HTMLElement {
   /** @type {number} the offset between the cursor and the top of this custom element */
   #dragOffset;
@@ -34,7 +44,6 @@ class VsPeriod extends HTMLElement {
     this.#container = document.createElement("div");
     this.#container.style.position = "absolute";
     this.#container.style.width = "100%";
-    this.#container.style.height = "90px";
     this.#container.style.cursor = "move";
     this.#container.style.userSelect = "none";
 
@@ -70,21 +79,37 @@ class VsPeriod extends HTMLElement {
     });
   }
 
+  /** @param {HTMLElement} parent */
+  setParent = (parent) => {
+    this.#parent = parent;
+
+    this.#container.style.height =
+      (this.#parent.clientHeight / this.#totalMinutes) * this.#duration + "px";
+  };
+
   /** @param {MouseEvent} evt */
   #mousemove = (evt) => {
     if (!this.#dragging || this.#parent == null) return;
 
-    const documentTop = document.documentElement.scrollTop;
-    const parentTop = this.#parent.getBoundingClientRect().top + documentTop;
-    const parentHeight = this.#parent.clientHeight;
-    const parentBottom = parentTop + parentHeight;
-    const selfHeight = this.#container.scrollHeight;
+    const positions = this.#getPositions();
 
     let newOffset =
-      evt.screenY + documentTop - selfHeight - parentTop - this.#dragOffset;
+      evt.screenY +
+      positions.documentTop -
+      positions.selfHeight -
+      positions.parentTop -
+      this.#dragOffset;
 
+    this.#updatePeriodBeginning(newOffset, positions);
+  };
+
+  /**
+   * @param {number} newOffset
+   * @param {Positions} pos
+   */
+  #updatePeriodBeginning = (newOffset, pos) => {
     // adjust the new offset by step of 15 minutes
-    const step = (parentHeight * 15) / this.#totalMinutes;
+    const step = (pos.parentHeight * 15) / this.#totalMinutes;
     newOffset = newOffset - (newOffset % step);
 
     // offset doesn't change, nothing changes
@@ -92,10 +117,12 @@ class VsPeriod extends HTMLElement {
 
     if (newOffset < 0) newOffset = 0;
 
-    if (parentTop + newOffset + selfHeight > parentBottom)
-      newOffset = parentHeight - selfHeight;
+    if (pos.parentTop + newOffset + pos.selfHeight > pos.parentBottom)
+      newOffset = pos.parentHeight - pos.selfHeight;
 
-    this.#start = Math.round((this.#totalMinutes * newOffset) / parentHeight);
+    this.#start = Math.round(
+      (this.#totalMinutes * newOffset) / pos.parentHeight
+    );
     this.#end = Math.round(this.#start + this.#duration);
     const containerStart = this.#container.querySelector("[data-start]");
 
@@ -105,12 +132,23 @@ class VsPeriod extends HTMLElement {
     this.#container.style.top = newOffset + "px";
   };
 
-  /** @param {HTMLElement} parent */
-  setParent = (parent) => {
-    this.#parent = parent;
+  /** @returns {Positions} */
+  #getPositions = () => {
+    if (this.#parent == null) throw new Error("the parent must be defined");
 
-    this.#container.style.height =
-      (this.#parent.clientHeight / this.#totalMinutes) * this.#duration + "px";
+    const documentTop = document.documentElement.scrollTop;
+    const parentTop = this.#parent.getBoundingClientRect().top + documentTop;
+    const parentHeight = this.#parent.clientHeight;
+    const parentBottom = parentTop + parentHeight;
+    const selfHeight = this.#container.scrollHeight;
+
+    return {
+      documentTop,
+      parentBottom,
+      parentHeight,
+      parentTop,
+      selfHeight,
+    };
   };
 }
 
