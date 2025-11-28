@@ -108,13 +108,13 @@ class VsPeriod extends HTMLElement {
   #scrollIntoView = () => {
     const selfBox = this.#container.getBoundingClientRect();
 
-    if (selfBox.bottom > window.innerHeight) {
-      const scroll = selfBox.bottom - window.innerHeight;
-      document.documentElement.scrollBy({ top: scroll });
-    }
-
     if (selfBox.top < 0) {
       document.documentElement.scrollBy({ top: selfBox.top });
+    }
+
+    if (selfBox.bottom > window.innerHeight) {
+      const scrollOffset = selfBox.bottom - window.innerHeight;
+      document.documentElement.scrollBy({ top: scrollOffset });
     }
   };
 
