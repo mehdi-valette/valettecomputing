@@ -101,6 +101,21 @@ class VsPeriod extends HTMLElement {
       this.#dragOffset;
 
     this.#updatePeriodBeginning(newOffset, positions);
+
+    this.#scrollIntoView();
+  };
+
+  #scrollIntoView = () => {
+    const selfBox = this.#container.getBoundingClientRect();
+
+    if (selfBox.bottom > window.innerHeight) {
+      const scroll = selfBox.bottom - window.innerHeight;
+      document.documentElement.scrollBy({ top: scroll });
+    }
+
+    if (selfBox.top < 0) {
+      document.documentElement.scrollBy({ top: selfBox.top });
+    }
   };
 
   /**
