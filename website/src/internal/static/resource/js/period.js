@@ -15,7 +15,7 @@ class VsPeriod extends HTMLElement {
   /** @type {boolean} is true when this custom element is being dragged */
   #dragging;
 
-  /** @type {HTMLElement | null} the parent element of this custom element */
+  /** @type {VsCalendarDay | null} the parent element of this custom element */
   #parent;
 
   /** @type {ShadowRoot} element's shadow root */
@@ -32,9 +32,6 @@ class VsPeriod extends HTMLElement {
 
   /** @type {number} the duration in minutes */
   #duration;
-
-  /** @type {number} total number of minutes in the parent container */
-  #totalMinutes;
 
   constructor() {
     super();
@@ -54,7 +51,6 @@ class VsPeriod extends HTMLElement {
     this.#start = 0;
     this.#end = 90;
     this.#duration = this.#end - this.#start;
-    this.#totalMinutes = 1440;
 
     this.#shadow.append(this.#container);
   }
@@ -79,12 +75,12 @@ class VsPeriod extends HTMLElement {
     });
   }
 
-  /** @param {HTMLElement} parent */
+  /** @param {VsCalendarDay} parent */
   setParent = (parent) => {
     this.#parent = parent;
 
     this.#container.style.height =
-      (this.#parent.clientHeight / this.#totalMinutes) * this.#duration + "px";
+      (this.#parent.height / this.#parent.totalMinutes) * this.#duration + "px";
   };
 
   /** @param {MouseEvent} evt */
@@ -123,8 +119,10 @@ class VsPeriod extends HTMLElement {
    * @param {Positions} pos
    */
   #updatePeriodBeginning = (newOffset, pos) => {
-    // adjust the new offset by step of 15 minutes
-    const step = (pos.parentHeight * 15) / this.#totalMinutes;
+    if (this.#parent == null) return;
+
+    // adjust the new offset by steps of 15 minutes
+    const step = this.#parent.pixelStep * 15;
     newOffset = newOffset - (newOffset % step);
 
     // offset doesn't change, nothing changes
@@ -136,7 +134,7 @@ class VsPeriod extends HTMLElement {
       newOffset = pos.parentHeight - pos.selfHeight;
 
     this.#start = Math.round(
-      (this.#totalMinutes * newOffset) / pos.parentHeight
+      (this.#parent.totalMinutes * newOffset) / pos.parentHeight
     );
     this.#end = Math.round(this.#start + this.#duration);
     const containerStart = this.#container.querySelector("[data-start]");
@@ -152,8 +150,8 @@ class VsPeriod extends HTMLElement {
     if (this.#parent == null) throw new Error("the parent must be defined");
 
     const documentTop = document.documentElement.scrollTop;
-    const parentTop = this.#parent.getBoundingClientRect().top + documentTop;
-    const parentHeight = this.#parent.clientHeight;
+    const parentTop = this.#parent.top;
+    const parentHeight = this.#parent.height;
     const parentBottom = parentTop + parentHeight;
     const selfHeight = this.#container.scrollHeight;
 
