@@ -8,7 +8,9 @@
  * @property {number} selfHeight
  */
 
-class VsPeriod extends HTMLElement {
+/** @typedef {import ("./calendar-day.js").VsCalendarDay} VsCalendarDay */
+
+export class VsPeriod extends HTMLElement {
   /** @type {number} the offset between the cursor and the top of this custom element */
   #dragOffset;
 
