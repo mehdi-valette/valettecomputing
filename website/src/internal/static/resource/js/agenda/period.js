@@ -10,6 +10,8 @@
 
 /** @typedef {import ("./calendar-day.js").VsCalendarDay} VsCalendarDay */
 
+import { minutesToHours } from "../minutes-to-hours.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
@@ -22,18 +24,36 @@ template.innerHTML = `
 
     .inner {
       display: flex;
+      flex-direction: column;
       align-items: center;
       color: white;
       justify-content: center;
       background-color: blue;
       width: 100%;
       height: 100%;
+
+      .title {
+        font-size: 1.2rem;
+      }
+
+      .time {
+        vertical-align: middle;
+      }
+
+      .duration {
+        color: lightblue;
+        font-size: 0.8rem;
+      }
     }
   </style>
 
   <div class="outer">
     <div class="inner">
-      <span data-start=""></span>
+      <div class="title"></div>
+      <div>
+        <span class="time"></span>
+        <span class="duration"></span>
+      </div>
     </div>
   </div>
 `;
@@ -51,8 +71,8 @@ export class VsPeriod extends HTMLElement {
   /** @type {HTMLElement} the main DIV for this custom element */
   #container;
 
-  /** @type {HTMLElement} the element that contains the start time */
-  #startElement;
+  /** @type {string} title of the period */
+  #title;
 
   /** @type {number} the minute at which this period begins */
   #start;
@@ -63,6 +83,15 @@ export class VsPeriod extends HTMLElement {
   /** @type {number} the duration in minutes */
   #duration;
 
+  /** @type {HTMLElement} the element that contains the title */
+  #titleElement;
+
+  /** @type {HTMLElement} the element that contains the start and end times */
+  #timeElement;
+
+  /** @type {HTMLElement} the element that contains the duration */
+  #durationElement;
+
   constructor() {
     super();
 
@@ -72,13 +101,16 @@ export class VsPeriod extends HTMLElement {
 
     this.#container = this.shadowRoot?.querySelector(".outer") ?? template;
 
-    this.#startElement =
-      this.#container.querySelector("[data-start]") ?? template;
+    this.#titleElement = this.#container.querySelector(".title") ?? template;
+    this.#timeElement = this.#container.querySelector(".time") ?? template;
+    this.#durationElement =
+      this.#container.querySelector(".duration") ?? template;
 
     this.#dragOffset = 0;
     this.#dragging = false;
     this.#parent = null;
 
+    this.#title = "Massage Classique";
     this.#start = 0;
     this.#end = 90;
     this.#duration = this.#end - this.#start;
@@ -90,7 +122,7 @@ export class VsPeriod extends HTMLElement {
       this.#dragging = true;
     });
 
-    this.#startElement.innerHTML = this.#start.toString();
+    this.#timeElement.innerHTML = this.#start.toString();
 
     document.addEventListener("mousemove", this.#mousemove);
 
@@ -98,6 +130,8 @@ export class VsPeriod extends HTMLElement {
       this.#dragOffset = 0;
       this.#dragging = false;
     });
+
+    this.#updateText();
   }
 
   /** @param {VsCalendarDay} parent */
@@ -167,10 +201,10 @@ export class VsPeriod extends HTMLElement {
 
     this.#end = Math.round(this.#start + this.#duration);
 
-    this.#startElement.innerHTML = this.#start.toString();
-
     // move the element
     this.#container.style.top = newOffset + "px";
+
+    this.#updateText();
   };
 
   /** @returns {Positions} */
@@ -190,6 +224,15 @@ export class VsPeriod extends HTMLElement {
       parentTop,
       selfHeight,
     };
+  };
+
+  #updateText = () => {
+    this.#titleElement.innerHTML = this.#title;
+    this.#timeElement.innerHTML = `${minutesToHours(
+      this.#start
+    )} - ${minutesToHours(this.#end)}`;
+
+    this.#durationElement.innerHTML = `(${this.#duration}mn)`;
   };
 }
 
