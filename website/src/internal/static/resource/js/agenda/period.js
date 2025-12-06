@@ -10,6 +10,34 @@
 
 /** @typedef {import ("./calendar-day.js").VsCalendarDay} VsCalendarDay */
 
+const template = document.createElement("template");
+template.innerHTML = `
+  <style>
+    .outer {
+      position: absolute;
+      width: 100%;
+      cursor: move;
+      user-select: none;
+    }
+
+    .inner {
+      display: flex;
+      align-items: center;
+      color: white;
+      justify-content: center;
+      background-color: blue;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <div class="outer">
+    <div class="inner">
+      <span data-start=""></span>
+    </div>
+  </div>
+`;
+
 export class VsPeriod extends HTMLElement {
   /** @type {number} the offset between the cursor and the top of this custom element */
   #dragOffset;
@@ -20,11 +48,11 @@ export class VsPeriod extends HTMLElement {
   /** @type {VsCalendarDay | null} the parent element of this custom element */
   #parent;
 
-  /** @type {ShadowRoot} element's shadow root */
-  #shadow;
-
   /** @type {HTMLElement} the main DIV for this custom element */
   #container;
+
+  /** @type {HTMLElement} the element that contains the start time */
+  #startElement;
 
   /** @type {number} the minute at which this period begins */
   #start;
@@ -38,13 +66,14 @@ export class VsPeriod extends HTMLElement {
   constructor() {
     super();
 
-    this.#shadow = this.attachShadow({ mode: "open" });
+    this.attachShadow({ mode: "open" }).append(
+      document.importNode(template.content, true)
+    );
 
-    this.#container = document.createElement("div");
-    this.#container.style.position = "absolute";
-    this.#container.style.width = "100%";
-    this.#container.style.cursor = "move";
-    this.#container.style.userSelect = "none";
+    this.#container = this.shadowRoot?.querySelector(".outer") ?? template;
+
+    this.#startElement =
+      this.#container.querySelector("[data-start]") ?? template;
 
     this.#dragOffset = 0;
     this.#dragging = false;
@@ -53,21 +82,15 @@ export class VsPeriod extends HTMLElement {
     this.#start = 0;
     this.#end = 90;
     this.#duration = this.#end - this.#start;
-
-    this.#shadow.append(this.#container);
   }
 
   connectedCallback() {
-    this.#container.innerHTML = `
-      <div style="display: flex; align-items: center; color: white; justify-content: center; background-color: blue; width: 100%; height: 100%;">
-        <span data-start="">${this.#start}</span>
-      </div>
-    `;
-
     this.#container.addEventListener("mousedown", (evt) => {
       this.#dragOffset = evt.offsetY;
       this.#dragging = true;
     });
+
+    this.#startElement.innerHTML = this.#start.toString();
 
     document.addEventListener("mousemove", this.#mousemove);
 
@@ -117,6 +140,7 @@ export class VsPeriod extends HTMLElement {
   };
 
   /**
+   * map the new position to a new start time
    * @param {number} newOffset
    * @param {Positions} pos
    */
@@ -127,23 +151,25 @@ export class VsPeriod extends HTMLElement {
     const step = this.#parent.pixelStep * 15;
     newOffset = newOffset - (newOffset % step);
 
-    // offset doesn't change, nothing changes
+    // if the offset doesn't change, nothing changes
     if (newOffset === this.#container.offsetTop) return;
 
+    // bound the box to the parent box
     if (newOffset < 0) newOffset = 0;
 
     if (pos.parentTop + newOffset + pos.selfHeight > pos.parentBottom)
       newOffset = pos.parentHeight - pos.selfHeight;
 
+    // calculate and show the start and end times
     this.#start = Math.round(
       (this.#parent.totalMinutes * newOffset) / pos.parentHeight
     );
+
     this.#end = Math.round(this.#start + this.#duration);
-    const containerStart = this.#container.querySelector("[data-start]");
 
-    if (containerStart != null)
-      containerStart.innerHTML = this.#start.toString();
+    this.#startElement.innerHTML = this.#start.toString();
 
+    // move the element
     this.#container.style.top = newOffset + "px";
   };
 
