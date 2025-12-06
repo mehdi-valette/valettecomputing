@@ -15,22 +15,20 @@ import { minutesToHours } from "../minutes-to-hours.js";
 const template = document.createElement("template");
 template.innerHTML = `
   <style>
-    .outer {
-      position: absolute;
-      width: 100%;
+    .container {
+      align-items: center;
+      background-color: blue;
+      border: 1px solid white;
+      box-sizing: border-box;
+      color: white;
       cursor: move;
-      user-select: none;
-    }
-
-    .inner {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      color: white;
-      justify-content: center;
-      background-color: blue;
-      width: 100%;
       height: 100%;
+      justify-content: center;
+      position: absolute;
+      user-select: none;
+      width: 100%;
 
       .title {
         font-size: 1.2rem;
@@ -45,16 +43,15 @@ template.innerHTML = `
         font-size: 0.8rem;
       }
     }
+      
   </style>
 
-  <div class="outer">
-    <div class="inner">
+  <div class="container">
       <div class="title"></div>
       <div>
         <span class="time"></span>
         <span class="duration"></span>
       </div>
-    </div>
   </div>
 `;
 
@@ -99,7 +96,7 @@ export class VsPeriod extends HTMLElement {
       document.importNode(template.content, true)
     );
 
-    this.#container = this.shadowRoot?.querySelector(".outer") ?? template;
+    this.#container = this.shadowRoot?.querySelector(".container") ?? template;
 
     this.#titleElement = this.#container.querySelector(".title") ?? template;
     this.#timeElement = this.#container.querySelector(".time") ?? template;
@@ -120,6 +117,7 @@ export class VsPeriod extends HTMLElement {
     this.#container.addEventListener("mousedown", (evt) => {
       this.#dragOffset = evt.offsetY;
       this.#dragging = true;
+      this.#parent?.appendChild(this);
     });
 
     this.#timeElement.innerHTML = this.#start.toString();
@@ -127,12 +125,38 @@ export class VsPeriod extends HTMLElement {
     document.addEventListener("mousemove", this.#mousemove);
 
     document.addEventListener("mouseup", () => {
+      if (!this.#dragging) return;
+
       this.#dragOffset = 0;
       this.#dragging = false;
     });
 
     this.#updateText();
   }
+
+  /** @param {Array<Element>} others */
+  checkIntersection = (others) => {
+    this.#container.style.backgroundColor = "blue";
+
+    const filtered = others.filter(
+      (other) => other !== this && other instanceof VsPeriod
+    );
+
+    filtered.forEach((other) => {
+      if (!(other instanceof VsPeriod)) return;
+
+      other.checkIntersection(filtered);
+
+      const otherTop = other.#container.getBoundingClientRect().top;
+      const otherBottom = other.#container.getBoundingClientRect().bottom;
+      const thisTop = this.#container.getBoundingClientRect().top;
+      const thisBottom = this.#container.getBoundingClientRect().bottom;
+
+      if (thisBottom <= otherTop || thisTop >= otherBottom) return;
+
+      this.#container.style.backgroundColor = "red";
+    });
+  };
 
   /** @param {VsCalendarDay} parent */
   setParent = (parent) => {
@@ -155,7 +179,7 @@ export class VsPeriod extends HTMLElement {
       positions.parentTop -
       this.#dragOffset;
 
-    this.#updatePeriodBeginning(newOffset, positions);
+    this.#updatePosition(newOffset, positions);
 
     this.#scrollIntoView();
   };
@@ -174,11 +198,11 @@ export class VsPeriod extends HTMLElement {
   };
 
   /**
-   * map the new position to a new start time
+   * adjust the new position and map it to a new start time
    * @param {number} newOffset
    * @param {Positions} pos
    */
-  #updatePeriodBeginning = (newOffset, pos) => {
+  #updatePosition = (newOffset, pos) => {
     if (this.#parent == null) return;
 
     // adjust the new offset by steps of 15 minutes
@@ -188,22 +212,22 @@ export class VsPeriod extends HTMLElement {
     // if the offset doesn't change, nothing changes
     if (newOffset === this.#container.offsetTop) return;
 
-    // bound the box to the parent box
+    // keep the box within the parent box
     if (newOffset < 0) newOffset = 0;
 
     if (pos.parentTop + newOffset + pos.selfHeight > pos.parentBottom)
       newOffset = pos.parentHeight - pos.selfHeight;
 
-    // calculate and show the start and end times
+    // calculate the start and end times
     this.#start = Math.round(
       (this.#parent.totalMinutes * newOffset) / pos.parentHeight
     );
 
     this.#end = Math.round(this.#start + this.#duration);
 
-    // move the element
+    // move the element, dispatch the event and update the text
     this.#container.style.top = newOffset + "px";
-
+    this.dispatchEvent(new CustomEvent("moved"));
     this.#updateText();
   };
 

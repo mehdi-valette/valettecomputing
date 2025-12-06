@@ -73,10 +73,16 @@ export class VsCalendarDay extends HTMLElement {
 
     slot.addEventListener("slotchange", (evt) => {
       slot.assignedElements().forEach((element) => {
-        if (!(element instanceof VsPeriod || element instanceof VsTimeline))
-          return;
+        if (element instanceof VsTimeline) element.setParent(this);
 
-        element.setParent(this);
+        if (element instanceof VsPeriod) {
+          element.setParent(this);
+          element.addEventListener("moved", () => {
+            const periods = this.querySelectorAll("vs-period");
+
+            element.checkIntersection(Array.from(periods));
+          });
+        }
       });
     });
   };
