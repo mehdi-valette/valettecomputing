@@ -59,7 +59,6 @@ export class VsTimeline extends HTMLElement {
       const line = document.importNode(lineTemplate.content, true);
 
       const div = line.querySelector("div");
-      console.log(div);
 
       if (div == null) return;
 
