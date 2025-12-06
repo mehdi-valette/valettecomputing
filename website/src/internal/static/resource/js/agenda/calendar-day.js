@@ -9,10 +9,10 @@ template.innerHTML = `
       height: 1200px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
+      margin: 2rem 0;
     }
 
     .timeline-container {
-      width: 10rem; 
       position: relative;
     }
 
@@ -39,6 +39,9 @@ export class VsCalendarDay extends HTMLElement {
   /** @type {HTMLElement} main container of this custom element */
   #container;
 
+  /** @type {HTMLElement} graph container of this custom element */
+  #graphContainer;
+
   /** @type {number} */
   #totalMinutes;
 
@@ -51,6 +54,9 @@ export class VsCalendarDay extends HTMLElement {
 
     this.#container =
       this.shadowRoot?.querySelector(".main-container") ?? template;
+
+    this.#graphContainer =
+      this.shadowRoot?.querySelector(".graph-container") ?? template;
 
     this.#totalMinutes = 1440;
   }
@@ -77,7 +83,7 @@ export class VsCalendarDay extends HTMLElement {
 
   // get the number of pixels per minute
   get pixelStep() {
-    return this.#container.scrollHeight / this.#totalMinutes;
+    return this.#graphContainer.scrollHeight / this.#totalMinutes;
   }
 
   get totalMinutes() {
@@ -85,7 +91,7 @@ export class VsCalendarDay extends HTMLElement {
   }
 
   get height() {
-    return this.#container.clientHeight;
+    return this.#graphContainer.clientHeight;
   }
 
   get top() {

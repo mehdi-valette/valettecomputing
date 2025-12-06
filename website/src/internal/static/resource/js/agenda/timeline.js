@@ -7,13 +7,19 @@ containerTemplate.innerHTML = `
   <style>
     .container {
       position: relative;
-      width: 10rem;
+      width: 5rem;
     }
 
     .line {
       border-top: 1px solid blue;
       position: absolute;
       width: 100%;
+    }
+
+    .time {
+      margin-top: -0.6em;
+      background-color: white;
+      width: 3rem;
     }
   </style>
 
@@ -22,7 +28,9 @@ containerTemplate.innerHTML = `
 
 const lineTemplate = document.createElement("template");
 lineTemplate.innerHTML = `
-  <div class="line"></div>
+  <div class="line">
+    <div class="time"></div>
+  </div>
 `;
 
 export class VsTimeline extends HTMLElement {
@@ -55,17 +63,18 @@ export class VsTimeline extends HTMLElement {
   #createTimeline = () => {
     const pixelStep = this.#parent?.pixelStep ?? 0;
 
-    for (let i = 0; i < 48; i++) {
-      const line = document.importNode(lineTemplate.content, true);
+    for (let i = 0; i <= 1440; i += 60) {
+      const template = document.importNode(lineTemplate.content, true);
 
-      const div = line.querySelector("div");
+      const line = template.querySelector(".line");
+      const time = template.querySelector(".time");
 
-      if (div == null) return;
+      if (!(line instanceof HTMLElement && time instanceof HTMLElement)) return;
 
-      div.style.top = pixelStep * 30 * i + "px";
-      div.append(document.createTextNode(minutesToHours(i * 30)));
+      line.style.top = pixelStep * i + "px";
+      time.append(document.createTextNode(minutesToHours(i)));
 
-      this.#container.appendChild(line);
+      this.#container.appendChild(template);
     }
   };
 }
