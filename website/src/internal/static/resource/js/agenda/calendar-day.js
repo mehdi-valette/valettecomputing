@@ -76,7 +76,7 @@ export class VsCalendarDay extends HTMLElement {
         if (element instanceof VsTimeline) element.setParent(this);
 
         if (element instanceof VsPeriod) {
-          element.setParent(this);
+          element.init(this);
           element.checkIntersection(
             Array.from(this.querySelectorAll("vs-period"))
           );

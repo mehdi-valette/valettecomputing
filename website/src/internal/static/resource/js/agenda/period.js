@@ -129,8 +129,30 @@ export class VsPeriod extends HTMLElement {
 
     this.#title = "Massage Classique";
     this.#start = 0;
-    this.#end = 90;
+    this.#end = 0;
     this.#duration = this.#end - this.#start;
+  }
+
+  static observedAttributes = ["start", "end"];
+
+  /**
+   * @param {string} name
+   * @param {string} oldValue
+   * @param {string} newValue
+   */
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log(name, newValue, this.#parent);
+    switch (name) {
+      case "start": {
+        this.#start = Number.parseInt(newValue);
+        break;
+      }
+      case "end": {
+        this.#end = Number.parseInt(newValue);
+        this.#duration = this.#end - this.#start;
+        break;
+      }
+    }
   }
 
   connectedCallback() {
@@ -161,24 +183,29 @@ export class VsPeriod extends HTMLElement {
 
       other.checkIntersection(filtered);
 
-      const otherTop = other.#container.getBoundingClientRect().top;
-      const otherBottom = other.#container.getBoundingClientRect().bottom;
-      const thisTop = this.#container.getBoundingClientRect().top;
-      const thisBottom = this.#container.getBoundingClientRect().bottom;
-
-      if (thisBottom <= otherTop || thisTop >= otherBottom) return;
+      if (this.end <= other.start || this.start >= other.end) return;
 
       this.#container.classList.add("intersect");
     });
   };
 
   /** @param {VsCalendarDay} parent */
-  setParent = (parent) => {
+  init = (parent) => {
     this.#parent = parent;
 
     this.#container.style.height =
       (this.#parent.height / this.#parent.totalMinutes) * this.#duration + "px";
+
+    this.#moveToStart();
   };
+
+  get start() {
+    return this.#start;
+  }
+
+  get end() {
+    return this.#end;
+  }
 
   /** @param {MouseEvent} evt */
   #mousedown = (evt) => {
@@ -208,7 +235,8 @@ export class VsPeriod extends HTMLElement {
       this.#parent.getBoundingClientRect().top -
       this.#dragOffset;
 
-    this.#updatePosition(newOffset, positions);
+    this.#adjustStart(newOffset, positions);
+    this.#moveToStart();
 
     const newPosition = this.#top;
 
@@ -241,7 +269,7 @@ export class VsPeriod extends HTMLElement {
    * @param {number} newOffset
    * @param {Positions} pos
    */
-  #updatePosition = (newOffset, pos) => {
+  #adjustStart = (newOffset, pos) => {
     if (this.#parent == null) return;
 
     // adjust the new offset by steps of 15 minutes
@@ -257,15 +285,23 @@ export class VsPeriod extends HTMLElement {
     if (pos.parentTop + newOffset + pos.selfHeight > pos.parentBottom)
       newOffset = pos.parentHeight - pos.selfHeight;
 
-    // calculate the start and end times
     this.#start = Math.round(
       (this.#parent.totalMinutes * newOffset) / pos.parentHeight
     );
+    this.#end = this.#start + this.#duration;
 
-    this.#end = Math.round(this.#start + this.#duration);
+    this.setAttribute("start", this.#start.toString());
+    this.setAttribute("end", this.#end.toString());
+  };
+
+  /** move the period to display it at the start time */
+  #moveToStart = () => {
+    if (this.#parent == null) return;
+
+    this.#duration = this.#end - this.#start;
 
     // move the element, dispatch the event and update the text
-    this.#container.style.top = newOffset + "px";
+    this.#container.style.top = this.#start * this.#parent.pixelStep + "px";
     this.dispatchEvent(new CustomEvent("moved"));
     this.#updateText();
   };
