@@ -1,6 +1,6 @@
 /** @typedef {import ("./calendar-day.js").VsCalendarDay} VsCalendarDay */
 
-import { minutesToHours } from "../minutes-to-hours.js";
+import { minutesToHours } from "./minutes-to-hours.js";
 
 const containerTemplate = document.createElement("template");
 containerTemplate.innerHTML = `

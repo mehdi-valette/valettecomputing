@@ -11,7 +11,7 @@
 
 /** @typedef {"up" | "down" | "none"} Direction */
 
-import { minutesToHours } from "../minutes-to-hours.js";
+import { minutesToHours } from "./minutes-to-hours.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -141,10 +141,12 @@ export class VsPeriod extends HTMLElement {
    * @param {string} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    console.log(name, newValue, this.#parent);
+    if (oldValue === newValue) return;
+
     switch (name) {
       case "start": {
         this.#start = Number.parseInt(newValue);
+        this.#duration = this.#end - this.#start;
         break;
       }
       case "end": {
@@ -196,15 +198,32 @@ export class VsPeriod extends HTMLElement {
     this.#container.style.height =
       (this.#parent.height / this.#parent.totalMinutes) * this.#duration + "px";
 
-    this.#moveToStart();
+    this.start = this.#start;
   };
+
+  get end() {
+    return this.#end;
+  }
+
+  set end(val) {
+    this.#end = val;
+    this.setAttribute("end", this.#end.toString());
+  }
 
   get start() {
     return this.#start;
   }
 
-  get end() {
-    return this.#end;
+  set start(val) {
+    if (this.#parent == null) return;
+
+    // move the element, dispatch the event and update the text
+    this.#start = val;
+    this.end = this.#start + this.#duration;
+    this.#container.style.top = this.#start * this.#parent.pixelStep + "px";
+    this.#updateText();
+    this.setAttribute("start", this.#start.toString());
+    this.dispatchEvent(new CustomEvent("moved"));
   }
 
   /** @param {MouseEvent} evt */
@@ -236,7 +255,6 @@ export class VsPeriod extends HTMLElement {
       this.#dragOffset;
 
     this.#adjustStart(newOffset, positions);
-    this.#moveToStart();
 
     const newPosition = this.#top;
 
@@ -285,25 +303,9 @@ export class VsPeriod extends HTMLElement {
     if (pos.parentTop + newOffset + pos.selfHeight > pos.parentBottom)
       newOffset = pos.parentHeight - pos.selfHeight;
 
-    this.#start = Math.round(
+    this.start = Math.round(
       (this.#parent.totalMinutes * newOffset) / pos.parentHeight
     );
-    this.#end = this.#start + this.#duration;
-
-    this.setAttribute("start", this.#start.toString());
-    this.setAttribute("end", this.#end.toString());
-  };
-
-  /** move the period to display it at the start time */
-  #moveToStart = () => {
-    if (this.#parent == null) return;
-
-    this.#duration = this.#end - this.#start;
-
-    // move the element, dispatch the event and update the text
-    this.#container.style.top = this.#start * this.#parent.pixelStep + "px";
-    this.dispatchEvent(new CustomEvent("moved"));
-    this.#updateText();
   };
 
   /** @returns {Positions} */
