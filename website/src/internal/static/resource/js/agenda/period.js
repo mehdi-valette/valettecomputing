@@ -15,22 +15,35 @@ const template = document.createElement("template");
 template.innerHTML = `
   <style>
     .container {
-      align-items: center;
-      background-color: blue;
+      background-image: linear-gradient(90deg, lightblue 0%, lightblue 5%, blue 5%, blue 100%);
       border: 1px solid white;
       box-sizing: border-box;
-      color: white;
       cursor: move;
-      display: flex;
-      flex-direction: column;
       height: 100%;
-      justify-content: center;
       position: absolute;
-      user-select: none;
       width: 100%;
+
+      &.intersect {
+        background-image: linear-gradient(90deg, red 0%, red 5%, darkred 5%, darkred 100%);
+        opacity: .7;
+      }
+
+      .content {      
+        position: sticky;
+        top: 0;
+        display: flex;
+        padding-left: 10%;
+        align-items: center;
+        color: white;
+        flex-direction: column;
+        justify-content: center;
+        user-select: none;
+        pointer-events: none;
+      }
 
       .title {
         font-size: 1.2rem;
+        pointer-events: none;
       }
 
       .time {
@@ -46,11 +59,13 @@ template.innerHTML = `
   </style>
 
   <div class="container">
+    <div class="content">
       <div class="title"></div>
       <div>
         <span class="time"></span>
         <span class="duration"></span>
       </div>
+    </div>
   </div>
 `;
 
@@ -113,29 +128,23 @@ export class VsPeriod extends HTMLElement {
   }
 
   connectedCallback() {
-    this.#container.addEventListener("mousedown", (evt) => {
-      this.#dragOffset = evt.offsetY;
-      this.#dragging = true;
-      this.#parent?.appendChild(this);
-    });
-
     this.#timeElement.innerHTML = this.#start.toString();
-
-    document.addEventListener("mousemove", this.#mousemove);
-
-    document.addEventListener("mouseup", () => {
-      if (!this.#dragging) return;
-
-      this.#dragOffset = 0;
-      this.#dragging = false;
-    });
-
     this.#updateText();
+
+    this.#container.addEventListener("mousedown", this.#mousedown);
+    document.addEventListener("mousemove", this.#mousemove);
+    document.addEventListener("mouseup", this.#mouseup);
+  }
+
+  disconnectedCallback() {
+    this.#container.removeEventListener("mousedown", this.#mousedown);
+    document.removeEventListener("mousemove", this.#mousemove);
+    document.removeEventListener("mouseup", this.#mouseup);
   }
 
   /** @param {Array<Element>} others */
   checkIntersection = (others) => {
-    this.#container.style.backgroundColor = "blue";
+    this.#container.classList.remove("intersect");
 
     const filtered = others.filter(
       (other) => other !== this && other instanceof VsPeriod
@@ -153,7 +162,7 @@ export class VsPeriod extends HTMLElement {
 
       if (thisBottom <= otherTop || thisTop >= otherBottom) return;
 
-      this.#container.style.backgroundColor = "red";
+      this.#container.classList.add("intersect");
     });
   };
 
@@ -166,6 +175,20 @@ export class VsPeriod extends HTMLElement {
   };
 
   /** @param {MouseEvent} evt */
+  #mousedown = (evt) => {
+    this.#dragOffset = evt.offsetY;
+    this.#dragging = true;
+    this.#parent?.appendChild(this);
+  };
+
+  #mouseup = () => {
+    if (!this.#dragging) return;
+
+    this.#dragOffset = 0;
+    this.#dragging = false;
+  };
+
+  /** @param {MouseEvent} evt */
   #mousemove = (evt) => {
     if (!this.#dragging || this.#parent == null) return;
 
@@ -174,9 +197,8 @@ export class VsPeriod extends HTMLElement {
     let newOffset =
       evt.pageY -
       Math.round(window.pageYOffset) -
-      this.#parent.getBoundingClientRect().top;
-
-    console.log(evt.movementY);
+      this.#parent.getBoundingClientRect().top -
+      this.#dragOffset;
 
     this.#updatePosition(newOffset, positions);
 
