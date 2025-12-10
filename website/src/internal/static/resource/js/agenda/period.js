@@ -222,8 +222,6 @@ export class VsPeriod extends HTMLElement {
   #scrollIntoView = () => {
     const selfBox = this.#container.getBoundingClientRect();
 
-    // 021 215 63 61 - UBS
-
     if (selfBox.top < 0 && this.#dragDirection == "up") {
       document.documentElement.scrollBy({ top: selfBox.top });
     }
