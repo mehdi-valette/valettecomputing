@@ -1,7 +1,6 @@
 /**
  * @typedef Positions
  * @type {object}
- * @property {number} documentTop
  * @property {number} parentBottom
  * @property {number} parentHeight
  * @property {number} parentTop
@@ -173,11 +172,11 @@ export class VsPeriod extends HTMLElement {
     const positions = this.#getPositions();
 
     let newOffset =
-      evt.screenY +
-      positions.documentTop -
-      positions.selfHeight -
-      positions.parentTop -
-      this.#dragOffset;
+      evt.pageY -
+      Math.round(window.pageYOffset) -
+      this.#parent.getBoundingClientRect().top;
+
+    console.log(evt.movementY);
 
     this.#updatePosition(newOffset, positions);
 
@@ -235,14 +234,12 @@ export class VsPeriod extends HTMLElement {
   #getPositions = () => {
     if (this.#parent == null) throw new Error("the parent must be defined");
 
-    const documentTop = document.documentElement.scrollTop;
     const parentTop = this.#parent.top;
     const parentHeight = this.#parent.height;
     const parentBottom = parentTop + parentHeight;
     const selfHeight = this.#container.scrollHeight;
 
     return {
-      documentTop,
       parentBottom,
       parentHeight,
       parentTop,

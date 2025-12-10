@@ -6,7 +6,7 @@ template.innerHTML = `
   <style>
     .main-container {
       width: 500px;
-      height: 1200px;
+      height: 5000px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       margin: 2rem 0;
@@ -77,6 +77,10 @@ export class VsCalendarDay extends HTMLElement {
 
         if (element instanceof VsPeriod) {
           element.setParent(this);
+          element.checkIntersection(
+            Array.from(this.querySelectorAll("vs-period"))
+          );
+
           element.addEventListener("moved", () => {
             const periods = this.querySelectorAll("vs-period");
 
