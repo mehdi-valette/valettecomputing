@@ -127,13 +127,13 @@ export class VsPeriod extends HTMLElement {
     this.#dragging = false;
     this.#parent = null;
 
-    this.#title = "Massage Classique";
+    this.#title = "";
     this.#start = 0;
     this.#end = 0;
     this.#duration = this.#end - this.#start;
   }
 
-  static observedAttributes = ["start", "end"];
+  static observedAttributes = ["start", "end", "title"];
 
   /**
    * @param {string} name
@@ -144,14 +144,18 @@ export class VsPeriod extends HTMLElement {
     if (oldValue === newValue) return;
 
     switch (name) {
+      case "end": {
+        this.#end = Number.parseInt(newValue);
+        this.#duration = this.#end - this.#start;
+        break;
+      }
       case "start": {
         this.#start = Number.parseInt(newValue);
         this.#duration = this.#end - this.#start;
         break;
       }
-      case "end": {
-        this.#end = Number.parseInt(newValue);
-        this.#duration = this.#end - this.#start;
+      case "title": {
+        this.#title = newValue;
         break;
       }
     }
@@ -224,6 +228,16 @@ export class VsPeriod extends HTMLElement {
     this.#updateText();
     this.setAttribute("start", this.#start.toString());
     this.dispatchEvent(new CustomEvent("moved"));
+  }
+
+  get title() {
+    return this.#title;
+  }
+
+  set title(val) {
+    this.#title = val;
+    this.setAttribute("title", this.#title);
+    this.#updateText();
   }
 
   /** @param {MouseEvent} evt */
@@ -327,6 +341,7 @@ export class VsPeriod extends HTMLElement {
 
   #updateText = () => {
     this.#titleElement.innerHTML = this.#title;
+
     this.#timeElement.innerHTML = `${minutesToHours(
       this.#start
     )} - ${minutesToHours(this.#end)}`;
