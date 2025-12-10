@@ -9,6 +9,8 @@
 
 /** @typedef {import ("./calendar-day.js").VsCalendarDay} VsCalendarDay */
 
+/** @typedef {"up" | "down" | "none"} Direction */
+
 import { minutesToHours } from "../minutes-to-hours.js";
 
 const template = document.createElement("template");
@@ -73,6 +75,9 @@ export class VsPeriod extends HTMLElement {
   /** @type {number} the offset between the cursor and the top of this custom element */
   #dragOffset;
 
+  /** @type {Direction} */
+  #dragDirection;
+
   /** @type {boolean} is true when this custom element is being dragged */
   #dragging;
 
@@ -118,6 +123,7 @@ export class VsPeriod extends HTMLElement {
       this.#container.querySelector(".duration") ?? template;
 
     this.#dragOffset = 0;
+    this.#dragDirection = "none";
     this.#dragging = false;
     this.#parent = null;
 
@@ -194,6 +200,8 @@ export class VsPeriod extends HTMLElement {
 
     const positions = this.#getPositions();
 
+    const oldPosition = this.#top;
+
     let newOffset =
       evt.pageY -
       Math.round(window.pageYOffset) -
@@ -202,21 +210,33 @@ export class VsPeriod extends HTMLElement {
 
     this.#updatePosition(newOffset, positions);
 
+    const newPosition = this.#top;
+
+    if (newPosition > oldPosition) this.#dragDirection = "down";
+    else if (newPosition < oldPosition) this.#dragDirection = "up";
+    else this.#dragDirection = "none";
+
     this.#scrollIntoView();
   };
 
   #scrollIntoView = () => {
     const selfBox = this.#container.getBoundingClientRect();
 
-    if (selfBox.top < 0) {
+    // 021 215 63 61 - UBS
+
+    if (selfBox.top < 0 && this.#dragDirection == "up") {
       document.documentElement.scrollBy({ top: selfBox.top });
     }
 
-    if (selfBox.bottom > window.innerHeight) {
+    if (selfBox.bottom > window.innerHeight && this.#dragDirection == "down") {
       const scrollOffset = selfBox.bottom - window.innerHeight;
       document.documentElement.scrollBy({ top: scrollOffset });
     }
   };
+
+  get #top() {
+    return Number.parseInt(this.#container.style.top.replace("px", ""), 10);
+  }
 
   /**
    * adjust the new position and map it to a new start time
