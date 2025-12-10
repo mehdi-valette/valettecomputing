@@ -6,7 +6,7 @@ template.innerHTML = `
   <style>
     .main-container {
       width: 500px;
-      height: 5000px;
+      height: 2880px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       margin: 2rem 0;
