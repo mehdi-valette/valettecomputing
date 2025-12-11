@@ -21,13 +21,13 @@ template.innerHTML = `
       border: 1px solid white;
       box-sizing: border-box;
       cursor: move;
-      height: 100%;
       position: absolute;
       width: 100%;
 
       &.intersect {
         background-image: linear-gradient(90deg, red 0%, red 5%, darkred 5%, darkred 100%);
         opacity: .7;
+        z-index: 10;
       }
 
       .content {      
@@ -112,7 +112,7 @@ export class VsPeriod extends HTMLElement {
     super();
 
     this.attachShadow({ mode: "open" }).append(
-      document.importNode(template.content, true)
+      document.importNode(template.content, true),
     );
 
     this.#container = this.shadowRoot?.querySelector(".container") ?? template;
@@ -137,21 +137,29 @@ export class VsPeriod extends HTMLElement {
 
   /**
    * @param {string} name
-   * @param {string} oldValue
-   * @param {string} newValue
+   * @param {string | boolean | null} oldValue
+   * @param {string | boolean | null} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
+    if (oldValue === newValue || typeof newValue !== "string") return;
 
     switch (name) {
       case "end": {
-        this.#end = Number.parseInt(newValue);
-        this.#duration = this.#end - this.#start;
+        if (this.initialized) this.end = Number.parseInt(newValue);
+        else {
+          this.#end = Number.parseInt(newValue);
+          this.#duration = this.#end - this.#start;
+        }
+
         break;
       }
       case "start": {
-        this.#start = Number.parseInt(newValue);
-        this.#duration = this.#end - this.#start;
+        if (this.initialized) this.start = Number.parseInt(newValue);
+        else {
+          this.#start = Number.parseInt(newValue);
+          this.#duration = this.#end - this.#start;
+        }
+
         break;
       }
       case "title": {
@@ -159,11 +167,13 @@ export class VsPeriod extends HTMLElement {
         break;
       }
     }
+
+    this.#redraw();
   }
 
   connectedCallback() {
     this.#timeElement.innerHTML = this.#start.toString();
-    this.#updateText();
+    this.#redraw();
 
     this.#container.addEventListener("mousedown", this.#mousedown);
     document.addEventListener("mousemove", this.#mousemove);
@@ -181,7 +191,7 @@ export class VsPeriod extends HTMLElement {
     this.#container.classList.remove("intersect");
 
     const filtered = others.filter(
-      (other) => other !== this && other instanceof VsPeriod
+      (other) => other !== this && other instanceof VsPeriod,
     );
 
     filtered.forEach((other) => {
@@ -198,10 +208,6 @@ export class VsPeriod extends HTMLElement {
   /** @param {VsCalendarDay} parent */
   init = (parent) => {
     this.#parent = parent;
-
-    this.#container.style.height =
-      (this.#parent.height / this.#parent.totalMinutes) * this.#duration + "px";
-
     this.start = this.#start;
   };
 
@@ -211,7 +217,12 @@ export class VsPeriod extends HTMLElement {
 
   set end(val) {
     this.#end = val;
+    this.#duration = this.#end - this.#start;
     this.setAttribute("end", this.#end.toString());
+  }
+
+  get initialized() {
+    return this.#parent != null && this.#duration > 0;
   }
 
   get start() {
@@ -219,15 +230,9 @@ export class VsPeriod extends HTMLElement {
   }
 
   set start(val) {
-    if (this.#parent == null) return;
-
-    // move the element, dispatch the event and update the text
     this.#start = val;
     this.end = this.#start + this.#duration;
-    this.#container.style.top = this.#start * this.#parent.pixelStep + "px";
-    this.#updateText();
     this.setAttribute("start", this.#start.toString());
-    this.dispatchEvent(new CustomEvent("moved"));
   }
 
   get title() {
@@ -237,7 +242,6 @@ export class VsPeriod extends HTMLElement {
   set title(val) {
     this.#title = val;
     this.setAttribute("title", this.#title);
-    this.#updateText();
   }
 
   /** @param {MouseEvent} evt */
@@ -318,7 +322,7 @@ export class VsPeriod extends HTMLElement {
       newOffset = pos.parentHeight - pos.selfHeight;
 
     this.start = Math.round(
-      (this.#parent.totalMinutes * newOffset) / pos.parentHeight
+      (this.#parent.totalMinutes * newOffset) / pos.parentHeight,
     );
   };
 
@@ -339,14 +343,25 @@ export class VsPeriod extends HTMLElement {
     };
   };
 
-  #updateText = () => {
+  #redraw = () => {
     this.#titleElement.innerHTML = this.#title;
 
     this.#timeElement.innerHTML = `${minutesToHours(
-      this.#start
+      this.#start,
     )} - ${minutesToHours(this.#end)}`;
 
     this.#durationElement.innerHTML = `(${this.#duration}mn)`;
+
+    requestAnimationFrame(() => {
+      if (this.#parent == null) return;
+
+      this.#container.style.top = this.#start * this.#parent.pixelStep + "px";
+
+      this.#container.style.height =
+        this.#duration * this.#parent.pixelStep + "px";
+    });
+
+    this.dispatchEvent(new CustomEvent("moved"));
   };
 }
 
