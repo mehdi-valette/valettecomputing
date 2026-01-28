@@ -6,9 +6,9 @@
   --color-button-background-disabled: hsl(from var(--color-button-background) h s calc(l + 30));
   --color-button-text: hsl(from var(--color-primary) h s calc(l + 100));
 
-  --color-primary-background-gradient: linear-gradient(to bottom right,
+  --color-primary-background-gradient: linear-gradient(to right,
       hsl(from var(--color-primary) h s calc(l + 40)),
-      hsl(from var(--color-primary) h s calc(l + 60)));
+      hsl(from var(--color-primary) h s calc(l + 45)));
 
   --color-border: hsl(from var(--color-primary) h s calc(l - 30));
 
