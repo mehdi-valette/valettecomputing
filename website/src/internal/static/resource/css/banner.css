@@ -24,41 +24,52 @@
 
 .banner-code {
   grid-area: code;
-  animation: code 4s ease-in-out infinite;
-}
-
-@keyframes code {
-  50% {
-    transform: translate(10rem, 5rem) rotate(45deg);
-  }
 }
 
 .banner-json {
   grid-area: json;
-  animation: json 2s linear infinite;
   align-self: end;
-}
-
-@keyframes json {
-  50% {
-    transform: translate(0, 2rem) scale(0.8, 1);
-  }
 }
 
 .banner-cli {
   grid-area: cli;
   margin-top: 3rem;
-  animation: cli 7s ease-in-out infinite;
-}
-
-@keyframes cli {
-  50% {
-    transform: translate(2rem, 15rem) rotate(-45deg);
-  }
 }
 
 .banner-developer {
   grid-area: developer;
   justify-self: center;
   margin-top: -5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .banner-cli {
+    animation: cli 7s ease-in-out infinite;
+  }
+
+  @keyframes cli {
+    50% {
+      transform: translate(2rem, 15rem) rotate(-45deg);
+    }
+  }
+
+  .banner-json {
+    animation: json 2s linear infinite;
+  }
+
+  @keyframes json {
+    50% {
+      transform: translate(0, 2rem) scale(0.8, 1);
+    }
+  }
+
+  .banner-code {
+    animation: code 4s ease-in-out infinite;
+  }
+
+  @keyframes code {
+    50% {
+      transform: translate(10rem, 5rem) rotate(45deg);
+    }
+  }
 }
