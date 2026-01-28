@@ -89,9 +89,13 @@
       <div class="img-container"><img src="/static/image/shield.svg"></div>
       <div>
         <h2>Sécurité</h2>
-        <p> Sécurisation des environnements Linux : comptes utilisateur, réseaux et programmes.
-        </p>
-        <div style="text-align: center;"><a href="#security-detail" class="button">En savoir plus</a></div>
+
+        <ul class="animatable zoomable">
+          <li><strong>Comptes:</strong> Limiter les droits des comptes au strict minimum.</li>
+          <li><strong>Pare-feu:</strong> Fermer toute les connections qui ne sont pas attendues.</li>
+          <li><strong>Processus:</strong> Limiter les accès accordés aux processus (SELinux, AppArmor).</li>
+          <li><strong>Encryption:</strong> Implémenter ou vérifier l'encryption des disques durs et des emails.</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -167,54 +171,6 @@
     </div>
     <img class="animatable zoomable" src="/static/image/mehdi.png">
   </section>
-
-  <hr>
-
-  <section id="security-detail" class="two-columns">
-    <div>
-      <h2 class="animatable zoomable">Sécurité informatique</h2>
-
-      <h3 class="animatable zoomable">Limiter les comptes</h3>
-      <p class="animatable zoomable">
-        J'ai souvent vu des comptes qui ont bien plus de droits que nécessaire, voir même s'authentifier en root,
-        parce que "c'est plus facile". Malheureusement les pirates aussi trouvent que "c'est plus facile". Il leur
-        suffit d'accéder à n'importe quel compte pour accéder à tout le système.
-      </p>
-      <p class="animatable zoomable">
-        Pourtant Linux offre de nombreuses façons d'accorder uniquement les accès nécessaires. En définissant les droits
-        par dossier avec les permissions du système de fichiers, les ACLs et les attributs. En limitant ce qui peut être
-        exécuté en Sudo. En se connectant par SSH avec des certificats plutôt que des clés.
-      </p>
-
-      <h3 class="animatable zoomable">Fermer le pare-feu</h3>
-      <p class="animatable zoomable">
-        De trop nombreux serveurs ouvrent tous les ports, comme ça plus de problème ! Mais c'est sous-estimer la
-        complexité des systèmes actuels. Des logiciels qui écoutent par défaut sur des ports non sécurisés, des virus
-        qui transmettent des données volées, ce sont des risques bien réels.
-      </p>
-      <p class="animatable zoomable">
-        Pour vérifier que tout est bien paramétré, mieux vaut connaître les pare-feux bas-niveau comme nftables (ou son
-        ancêtre iptables). C'est plus de travail, plus de maintenance, mais aussi plus de sécurité !
-      </p>
-
-      <h3 class="animatable zoomable">Contraindre les processus</h3>
-      <p class="animatable zoomable">
-        Si vous lisez les revues d'informatique, vous avez sûrement vu des titres tels que "Nouvelle faille
-        découverte dans X" ou encore "Une mise à jour de Y le rend vulnérable à telle attaque". Les pirates profitent
-        souvent de failles dans des logiciels bien réputés. Que ces failles soient le fruit d'un bug dans le programme
-        ou d'une mauvaise configuration, il faut toujours partir du principe qu'elles peuvent exister.
-      </p>
-      <p class="animatable zoomable">
-        Pour éviter qu'un logiciel ne mette en danger tout le système on fait souvent appel à SELinux ou AppArmor. Ces
-        modules du kernel Linux permettent de limiter les droits des processus, même si ces derniers sont exécutés en
-        root.
-        Ainsi, une faille dans un logiciel ne permet plus d'attaquer tout le système.
-      </p>
-    </div>
-
-    <img class="animatable zoomable" src="/static/image/shield.svg" />
-  </section>
-
 </body>
 
 </html>
