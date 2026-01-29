@@ -2,8 +2,8 @@
  * @description shows lines of 1s and 0s going from right to left, as if someone was typing
  */
 
-export class VsRtlCode extends HTMLCanvasElement {
-  /** @type {Array<{text: string, posY: number; interval: number}>} */
+class VsBinaryRtl extends HTMLCanvasElement {
+  /** @type {Array<{text: string, posY: number; interval: number | null}>} */
   lines = [];
 
   /** @type {CanvasRenderingContext2D | null} */
@@ -61,7 +61,9 @@ export class VsRtlCode extends HTMLCanvasElement {
   refreshAllLines = () => {
     if (this.ctx == null) return;
 
-    for (const l of this.lines) clearInterval(l.interval);
+    for (const l of this.lines)
+      if (l.interval != null) clearInterval(l.interval);
+
     this.lines = [];
 
     let posY = this.lineHeight;
@@ -84,7 +86,7 @@ export class VsRtlCode extends HTMLCanvasElement {
       text += Math.random() > 0.5 ? "1" : "0";
     }
 
-    this.lines[lineIndex] = { text, posY, interval: 0 };
+    this.lines[lineIndex] = { text, posY, interval: null };
 
     if (!this.motionReduced) {
       this.lines[lineIndex].interval = setInterval(
@@ -128,4 +130,4 @@ export class VsRtlCode extends HTMLCanvasElement {
   };
 }
 
-customElements.define("vs-rtl-code", VsRtlCode, { extends: "canvas" });
+customElements.define("binary-rtl", VsBinaryRtl, { extends: "canvas" });
