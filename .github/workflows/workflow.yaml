@@ -47,4 +47,4 @@ jobs:
             ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/debian/valettesoftware
 
       - name: Restart remote service
-        run: ssh ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} "systemctl restart valettesoftware.service"
+        run: ssh ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} "sudo systemctl restart valettesoftware.service"
