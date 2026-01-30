@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: build
-        run: go build ./cmd/valettesoftware.go
+        run: go build ./src/cmd/valettesoftware.go
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
