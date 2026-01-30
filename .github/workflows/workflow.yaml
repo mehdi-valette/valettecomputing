@@ -44,4 +44,4 @@ jobs:
       - name: Upload via rsync
         run: |
           rsync -avz valettesoftware \
-            ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/debian
+            ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/debian/valettesoftware
