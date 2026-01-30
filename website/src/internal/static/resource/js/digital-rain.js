@@ -6,7 +6,7 @@ class DigitalRain extends HTMLCanvasElement {
   #snakes = [];
 
   connectedCallback() {
-    this.style = "background-color: darkblue;";
+    this.style = "background-color: darkblue; height: 100%;";
     this.ctx = this.getContext("2d");
 
     this.#createSnakes();
