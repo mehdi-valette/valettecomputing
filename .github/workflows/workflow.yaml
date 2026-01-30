@@ -11,7 +11,6 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: '1.25.6'
-          cache: true
       - name: build
         run: cd website/src && go build ./cmd/valettesoftware.go
       - name: Upload build artifacts
