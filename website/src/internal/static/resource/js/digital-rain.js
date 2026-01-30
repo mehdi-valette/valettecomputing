@@ -268,11 +268,11 @@ class Snake {
       return;
     }
 
-    this.#updateSnake();
-    this.#paintSnake();
+    this.#updateChars();
+    this.#paintChars();
   };
 
-  #updateSnake = () => {
+  #updateChars = () => {
     if (this.#updateDelay < this.#maxUpdateDelay) {
       this.#updateDelay++;
       return;
@@ -288,7 +288,7 @@ class Snake {
     this.#chars.push(Alphabet.pickChar(""));
   };
 
-  #paintSnake = () => {
+  #paintChars = () => {
     const lastIndex = this.#chars.length - 1;
 
     for (const i in this.#chars) {
