@@ -191,7 +191,7 @@ class VsDigitalRain extends HTMLCanvasElement {
 
       this.ctx.clearRect(0, 0, -this.width, this.height);
       for (const snake of this.#snakes) {
-        snake.paint();
+        snake.refresh();
       }
     }, 20);
   };
@@ -257,10 +257,10 @@ class Snake {
 
     this.#startDelay = 0;
 
-    this.paint();
+    this.refresh();
   };
 
-  paint = () => {
+  refresh = () => {
     if (this.#posY > this.#fullHeight) this.#reset();
 
     if (this.#startDelay > 0) {
@@ -268,18 +268,27 @@ class Snake {
       return;
     }
 
-    if (this.#updateDelay < this.#maxUpdateDelay) this.#updateDelay++;
-    else {
-      this.#updateDelay = 0;
+    this.#updateSnake();
+    this.#paintSnake();
+  };
 
-      if (this.#chars.length > this.#maxLength) {
-        this.#chars.shift();
-        this.#posY += this.#charHeight;
-      }
-
-      this.#chars.push(Alphabet.pickChar(""));
+  #updateSnake = () => {
+    if (this.#updateDelay < this.#maxUpdateDelay) {
+      this.#updateDelay++;
+      return;
     }
 
+    this.#updateDelay = 0;
+
+    if (this.#chars.length > this.#maxLength) {
+      this.#chars.shift();
+      this.#posY += this.#charHeight;
+    }
+
+    this.#chars.push(Alphabet.pickChar(""));
+  };
+
+  #paintSnake = () => {
     const lastIndex = this.#chars.length - 1;
 
     for (const i in this.#chars) {
