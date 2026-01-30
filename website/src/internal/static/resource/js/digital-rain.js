@@ -26,7 +26,7 @@ class DigitalRain extends HTMLCanvasElement {
     this.ctx.scale(-1, 1);
 
     const charBox = this.ctx.measureText("0");
-    const charHeight = charBox.emHeightAscent + charBox.emHeightDescent;
+    const charHeight = charBox.fontBoundingBoxAscent + charBox.fontBoundingBoxDescent;
     const charWidth = charBox.width;
 
     for (let i = 0; i < 20; i++) {
