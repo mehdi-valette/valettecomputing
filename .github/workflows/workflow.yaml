@@ -19,16 +19,28 @@ jobs:
         with:
           name: valettesoftware
           path: website/src/valettesoftware
+
   deploy:
-    - name: Get SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: valettesoftware
 
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      - name: Set as executable file
+        run: |
+          chmod +x valettesoftware
 
-    - name: Upload via rsync
-      run: |
-        rsync -avz website/src/valettesoftware \
-          ${{ variables.SSH_USER }}@${{ variables.SSH_HOST }}:/home/debian
+      - name: Get SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Upload via rsync
+        run: |
+          rsync -avz valettesoftware \
+            ${{ variables.SSH_USER }}@${{ variables.SSH_HOST }}:/home/debian
