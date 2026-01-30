@@ -37,14 +37,13 @@ class BinaryRtl extends HTMLCanvasElement {
     this.width = this.clientWidth;
     this.height = this.clientHeight;
 
-    // it looks like changing the width and height resets the context
+    // changing the width and height resets the context
     this.#ctx.font = "5rem mono";
     this.#ctx.fillStyle = "#ccf";
 
-    this.#charsPerLine =
-      (this.clientWidth / this.#ctx.measureText("01").width) * 2;
-
-    this.#lineHeight = this.#ctx.measureText("01").emHeightAscent * 2;
+    const charBox = this.#ctx.measureText("0");
+    this.#charsPerLine = this.clientWidth / (charBox.width) + 2;
+    this.#lineHeight = charBox.fontBoundingBoxAscent + charBox.fontBoundingBoxDescent;
   };
 
   #handleMotionReduce = () => {
