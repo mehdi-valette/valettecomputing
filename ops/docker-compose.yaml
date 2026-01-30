@@ -1,9 +1,7 @@
 services:
   dev:
     container_name: valettesoftware
-    build:
-      context: .
-      dockerfile: .Dockerfile
+    build: .
     volumes:
       - ../website:/home/vscode/app
     userns_mode: keep-id:uid=1000,gid=1000
