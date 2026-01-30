@@ -1,130 +1,4 @@
-class Alphabet {
-  static #characters = [
-    "｡",
-    "｢",
-    "｣",
-    "､",
-    "･",
-    "ｦ",
-    "ｧ",
-    "ｨ",
-    "ｩ",
-    "ｪ",
-    "ｫ",
-    "ｬ",
-    "ｭ",
-    "ｮ",
-    "ｯ",
-    "ｰ",
-    "ｱ",
-    "ｲ",
-    "ｳ",
-    "ｴ",
-    "ｵ",
-    "ｶ",
-    "ｷ",
-    "ｸ",
-    "ｹ",
-    "ｺ",
-    "ｻ",
-    "ｼ",
-    "ｽ",
-    "ｾ",
-    "ｿ",
-    "ﾀ",
-    "ﾁ",
-    "ﾂ",
-    "ﾃ",
-    "ﾄ",
-    "ﾅ",
-    "ﾆ",
-    "ﾇ",
-    "ﾈ",
-    "ﾉ",
-    "ﾊ",
-    "ﾋ",
-    "ﾌ",
-    "ﾍ",
-    "ﾎ",
-    "ﾏ",
-    "ﾐ",
-    "ﾑ",
-    "ﾒ",
-    "ﾓ",
-    "ﾔ",
-    "ﾕ",
-    "ﾖ",
-    "ﾗ",
-    "ﾘ",
-    "ﾙ",
-    "ﾚ",
-    "ﾛ",
-    "ﾜ",
-    "ﾝ",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z",
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-  ];
-
-  /** @param {string} excludedCharacter */
-  static pickChar = (excludedCharacter) => {
-    /** @type {string} */
-    let character;
-
-    do {
-      const index = Math.floor(Math.random() * this.#characters.length);
-      character = this.#characters[index];
-    } while (character === excludedCharacter);
-
-    return character;
-  };
-
-  /** @param {number} size */
-  static generateArray = (size) => {
-    const chars = [];
-
-    for (let i = 0; i < size; i++) {
-      chars.push(this.pickChar(""));
-    }
-
-    return chars;
-  };
-}
-
-class VsDigitalRain extends HTMLCanvasElement {
+class DigitalRain extends HTMLCanvasElement {
   /** @type {number | null} */
   #interval = null;
 
@@ -154,8 +28,6 @@ class VsDigitalRain extends HTMLCanvasElement {
     const charBox = this.ctx.measureText("0");
     const charHeight = charBox.emHeightAscent + charBox.emHeightDescent;
     const charWidth = charBox.width;
-
-    console.log(charWidth);
 
     for (let i = 0; i < 20; i++) {
       this.#snakes.push(
@@ -306,4 +178,130 @@ class Snake {
   };
 }
 
-customElements.define("digital-rain", VsDigitalRain, { extends: "canvas" });
+class Alphabet {
+  static #characters = [
+    "｡",
+    "｢",
+    "｣",
+    "､",
+    "･",
+    "ｦ",
+    "ｧ",
+    "ｨ",
+    "ｩ",
+    "ｪ",
+    "ｫ",
+    "ｬ",
+    "ｭ",
+    "ｮ",
+    "ｯ",
+    "ｰ",
+    "ｱ",
+    "ｲ",
+    "ｳ",
+    "ｴ",
+    "ｵ",
+    "ｶ",
+    "ｷ",
+    "ｸ",
+    "ｹ",
+    "ｺ",
+    "ｻ",
+    "ｼ",
+    "ｽ",
+    "ｾ",
+    "ｿ",
+    "ﾀ",
+    "ﾁ",
+    "ﾂ",
+    "ﾃ",
+    "ﾄ",
+    "ﾅ",
+    "ﾆ",
+    "ﾇ",
+    "ﾈ",
+    "ﾉ",
+    "ﾊ",
+    "ﾋ",
+    "ﾌ",
+    "ﾍ",
+    "ﾎ",
+    "ﾏ",
+    "ﾐ",
+    "ﾑ",
+    "ﾒ",
+    "ﾓ",
+    "ﾔ",
+    "ﾕ",
+    "ﾖ",
+    "ﾗ",
+    "ﾘ",
+    "ﾙ",
+    "ﾚ",
+    "ﾛ",
+    "ﾜ",
+    "ﾝ",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+  ];
+
+  /** @param {string} excludedCharacter */
+  static pickChar = (excludedCharacter) => {
+    /** @type {string} */
+    let character;
+
+    do {
+      const index = Math.floor(Math.random() * this.#characters.length);
+      character = this.#characters[index];
+    } while (character === excludedCharacter);
+
+    return character;
+  };
+
+  /** @param {number} size */
+  static generateArray = (size) => {
+    const chars = [];
+
+    for (let i = 0; i < size; i++) {
+      chars.push(this.pickChar(""));
+    }
+
+    return chars;
+  };
+}
+
+customElements.define("digital-rain", DigitalRain, { extends: "canvas" });

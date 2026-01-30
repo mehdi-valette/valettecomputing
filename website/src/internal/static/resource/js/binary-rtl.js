@@ -2,7 +2,7 @@
  * @description shows lines of 1s and 0s going from right to left, as if someone was typing
  */
 
-class VsBinaryRtl extends HTMLCanvasElement {
+class BinaryRtl extends HTMLCanvasElement {
   /** @type {Array<{text: string, posY: number; interval: number | null}>} */
   #lines = [];
 
@@ -129,4 +129,4 @@ class VsBinaryRtl extends HTMLCanvasElement {
   };
 }
 
-customElements.define("binary-rtl", VsBinaryRtl, { extends: "canvas" });
+customElements.define("binary-rtl", BinaryRtl, { extends: "canvas" });
