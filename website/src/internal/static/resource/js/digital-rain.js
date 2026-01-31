@@ -1,38 +1,62 @@
-class DigitalRain extends HTMLCanvasElement {
+class DigitalRain extends HTMLElement {
+  static observedAttributes = ["class"];
+
   /** @type {number | null} */
   #interval = null;
 
   /** @type {Array<Snake>} */
   #snakes = [];
 
+  #ctx;
+
+  #canvas;
+
+  constructor() {
+    super();
+
+    this.#canvas = document.createElement("canvas");
+    this.#ctx = this.#canvas.getContext("2d");
+  }
+
   connectedCallback() {
-    this.style = "background-color: darkblue;";
-    this.ctx = this.getContext("2d");
+    this.#canvas.style = "background-color: darkblue; width: 100%; height: 100%";
+
+    this.appendChild(this.#canvas);
 
     this.#createSnakes();
     this.#handleMotionReduce();
   }
 
+  /**
+   * @param {string} name
+   * @param {string} _oldValue 
+   * @param {string} newValue 
+    */
+  attributeChangedCallback(name, _oldValue, newValue) {
+    if(name !== "class") return;
+    this.#canvas.className = newValue ?? "";
+  }
+
   #createSnakes = () => {
-    if (this.ctx == null) return;
+    if (this.#ctx == null) return;
 
-    const fullHeight = this.getBoundingClientRect().height;
-    const fullWidth = this.getBoundingClientRect().width;
+    const fullHeight = this.#canvas.getBoundingClientRect().height;
+    const fullWidth = this.#canvas.getBoundingClientRect().width;
 
-    this.width = fullWidth;
-    this.height = fullHeight;
+    this.#canvas.width = fullWidth;
+    this.#canvas.height = fullHeight;
 
-    this.ctx.font = "bold .8rem mono";
-    this.ctx.scale(-1, 1);
+    this.#ctx.font = "bold .8rem mono";
+    this.#ctx.scale(-1, 1);
 
-    const charBox = this.ctx.measureText("0");
+    const charBox = this.#ctx.measureText("0");
     const charHeight = charBox.fontBoundingBoxAscent + charBox.fontBoundingBoxDescent;
     const charWidth = charBox.width;
 
     for (let i = 0; i < 20; i++) {
       this.#snakes.push(
         new Snake({
-          ctx: this.ctx,
+          ctx: this.#ctx,
           charHeight,
           charWidth,
           fullHeight,
@@ -59,9 +83,9 @@ class DigitalRain extends HTMLCanvasElement {
 
   #animate = () => {
     this.#interval = setInterval(() => {
-      if (this.ctx == null) return;
+      if (this.#ctx == null) return;
 
-      this.ctx.clearRect(0, 0, -this.width, this.height);
+      this.#ctx.clearRect(0, 0, -this.#canvas.width, this.#canvas.height);
       for (const snake of this.#snakes) {
         snake.refresh();
       }
@@ -304,4 +328,4 @@ class Alphabet {
   };
 }
 
-customElements.define("digital-rain", DigitalRain, { extends: "canvas" });
+customElements.define("vs-digital-rain", DigitalRain);
