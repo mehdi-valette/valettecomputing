@@ -11,3 +11,9 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+@media (max-width: 1000px) and (orientation: portrait) {
+  html {
+    font-size: 24px;
+  }
+}
