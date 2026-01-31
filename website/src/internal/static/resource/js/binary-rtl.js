@@ -2,7 +2,7 @@
  * @description shows lines of 1s and 0s going from right to left, as if someone was typing
  */
 
-class BinaryRtl extends HTMLCanvasElement {
+class BinaryRtl extends HTMLElement {
   /** @type {Array<{text: string, posY: number; interval: number | null}>} */
   #lines = [];
 
@@ -12,14 +12,27 @@ class BinaryRtl extends HTMLCanvasElement {
   #lineHeight = 0;
   #charsPerLine = 0;
   #motionReduced = false;
+  #canvas;
+
+  constructor() {
+    super();
+    this.#canvas = document.createElement("canvas");
+  }
 
   connectedCallback() {
-    this.style = "position: fixed; width: 100%; height: 100%; z-index: -1;";
-    this.#ctx = this.getContext("2d");
+    this.#canvas.style = "width: 100%; height: 100%;"
 
-    this.#handleResize();
-    this.#handleMotionReduce();
-    this.#refreshAllLines();
+    this.style = "position: fixed; width: 100%; height: 100%; z-index: -1";
+
+    this.appendChild(this.#canvas);
+
+    requestAnimationFrame(() => {
+      this.#ctx = this.#canvas.getContext("2d");
+
+      this.#handleResize();
+      this.#handleMotionReduce();
+      this.#refreshAllLines();
+    });
   }
 
   #handleResize = () => {
@@ -34,8 +47,8 @@ class BinaryRtl extends HTMLCanvasElement {
   #setSizes = () => {
     if (this.#ctx == null) return;
 
-    this.width = this.clientWidth;
-    this.height = this.clientHeight;
+    this.#canvas.width = this.clientWidth;
+    this.#canvas.height = this.clientHeight;
 
     // changing the width and height resets the context
     this.#ctx.font = "5rem mono";
@@ -128,4 +141,4 @@ class BinaryRtl extends HTMLCanvasElement {
   };
 }
 
-customElements.define("binary-rtl", BinaryRtl, { extends: "canvas" });
+customElements.define("vs-binary-rtl", BinaryRtl);
