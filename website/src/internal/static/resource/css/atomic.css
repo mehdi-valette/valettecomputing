@@ -6,10 +6,22 @@
   height: 100%;
 }
 
+.width-full {
+  width: 100%;
+}
+
 .rounded-sm {
   border-radius: .3rem;
 }
 
 .shadow {
   box-shadow: 3px 3px;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.behind {
+  z-index: -1;
 }
