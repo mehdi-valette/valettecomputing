@@ -19,7 +19,7 @@ class DigitalRain extends HTMLElement {
   }
 
   connectedCallback() {
-    this.#canvas.style = "background-color: darkblue; width: 100%; height: 100%";
+    this.#canvas.style = "background-color: darkblue;";
 
     this.appendChild(this.#canvas);
 
