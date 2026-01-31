@@ -3,6 +3,8 @@
  */
 
 class BinaryRtl extends HTMLElement {
+  static observedAttributes = ["class"];
+  
   /** @type {Array<{text: string, posY: number; interval: number | null}>} */
   #lines = [];
 
@@ -20,10 +22,6 @@ class BinaryRtl extends HTMLElement {
   }
 
   connectedCallback() {
-    this.#canvas.style = "width: 100%; height: 100%;"
-
-    this.style = "position: fixed; width: 100%; height: 100%; z-index: -1";
-
     this.appendChild(this.#canvas);
 
     requestAnimationFrame(() => {
@@ -33,6 +31,17 @@ class BinaryRtl extends HTMLElement {
       this.#handleMotionReduce();
       this.#refreshAllLines();
     });
+  }
+
+  /**
+   * 
+   * @param {string} name 
+   * @param {string} _oldValue 
+   * @param {string} newValue 
+   */
+  attributeChangedCallback(name, _oldValue, newValue) {
+    if(name !== "class") return;
+    this.#canvas.className = newValue ?? "";
   }
 
   #handleResize = () => {
