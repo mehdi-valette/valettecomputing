@@ -1,0 +1,23 @@
+.menu-vertical {
+  background: rgb(240 240 255);
+  border: 1px inset lightblue;
+  border-radius: .3rem;
+  display: flex;
+  height: fit-content;
+  flex-direction: column;
+  justify-content: left;
+  padding: 0;
+
+  .item {
+    list-style-type: none;
+    margin-bottom: 0;
+    text-decoration: none;
+    padding: 1rem;
+    margin: 0;
+    transition: background-color .2s ease-out;
+
+    &:hover {
+      background-color: rgb(from black r g b / 0.1);
+    }
+  }
+}

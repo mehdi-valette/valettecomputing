@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"valette.software/internal/blog"
 	"valette.software/internal/config"
 	"valette.software/internal/contactform"
 	"valette.software/internal/page"
@@ -31,6 +32,7 @@ func buildListenUrl() string {
 func main() {
 	config.ReadConfig("config.ini")
 	page.Init()
+	blog.Init()
 
 	http.Handle("GET /static/", http.StripPrefix("/static/", static.Serve()))
 
@@ -39,6 +41,14 @@ func main() {
 
 		if err != nil {
 			log.Print("couldn't display the index page")
+		}
+	})
+
+	http.HandleFunc("GET /articles/{name}", func(res http.ResponseWriter, req *http.Request) {
+		err := page.DisplayArticle(res, req.PathValue("name"))
+
+		if err != nil {
+			log.Print("couldn't display the article page")
 		}
 	})
 

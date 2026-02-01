@@ -1,0 +1,94 @@
+<html>
+
+<head>
+  <style>
+    @import url("/static/css/atomic.css");
+    @import url("/static/css/body.css");
+    @import url("/static/css/list.css");
+    @import url("/static/css/menu.css");
+    @import url("/static/css/variables.css");
+
+    .article {
+      display: flex;
+      margin: auto;
+      justify-content: center;
+    }
+
+    .left-menu {
+      margin-top: 10rem;
+    }
+
+    .markdown {
+      box-sizing: border-box;
+      max-width: 60rem;
+      padding: 2rem;
+
+      code:not([class]) {
+        background-color: rgb(200 200 255);
+        border: 1px inset black;
+        border-radius: .3rem;
+        padding: 0 .3rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      pre {
+        font-size: 1rem;
+
+        .language-javascript {
+          border: 3px inset lightblue;
+          background: rgb(230 230 255);
+        }
+
+        &:has(.language-mermaid) {
+          text-align: center;
+          padding: 1rem;
+        }
+      }
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+</head>
+
+<body>
+
+  <div class="article">
+    <div class="left-menu">
+      Other articles
+      <menu class="menu-vertical">
+        <a class="item" href="/articles/event%20loop">What is the event loop</a>
+        <a class="item" href="/articles/stop%20propagation">Stop stopPropagation</a>
+        <a class="item" href="/articles/jsdoc">What is JSDoc</a>
+      </menu>
+    </div>
+
+    <div class="markdown">
+      {{ .Article }}
+    </div>
+  </div>
+
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({ startOnLoad: false });
+
+    mermaid.run({
+      querySelector: '.language-mermaid'
+    });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+</body>
+
+</html>

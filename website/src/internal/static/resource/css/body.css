@@ -1,7 +1,7 @@
 body {
   background: var(--color-primary-background-gradient);
   color: var(--color-text);
-  font-family: monospace;
+  font-family: arial;
   font-size: 1.3rem;
   margin: 0;
   padding-bottom: 3rem;
