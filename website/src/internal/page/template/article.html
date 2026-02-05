@@ -8,21 +8,21 @@
     @import url("/static/css/menu.css");
     @import url("/static/css/variables.css");
 
-    .article {
-      display: flex;
+    .content {
+      border: 1px inset;
+      background-color: rgb(255 255 255 / 0.7);
+      max-width: 64rem;
       margin: auto;
-      justify-content: center;
-    }
+      padding: 2rem;
+      border-radius: 1rem;
 
-    .left-menu {
-      margin-top: 10rem;
+      &>h1 {
+        text-align: center;
+        margin: 0 0 5rem 0;
+      }
     }
 
     .markdown {
-      box-sizing: border-box;
-      max-width: 60rem;
-      padding: 2rem;
-
       code:not([class]) {
         background-color: rgb(200 200 255);
         border: 1px inset black;
@@ -42,7 +42,8 @@
         font-size: 1rem;
 
         .language-javascript {
-          border: 3px inset lightblue;
+          border: 1px inset lightblue;
+          border-radius: .15rem;
           background: rgb(230 230 255);
         }
 
@@ -55,23 +56,24 @@
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+  <script type="module" src="/static/js/binary-grid.js"></script>
 </head>
 
 <body>
 
-  <div class="article">
-    <div class="left-menu">
-      Other articles
-      <menu class="menu-vertical">
-        <a class="item" href="/articles/event%20loop">What is the event loop</a>
-        <a class="item" href="/articles/stop%20propagation">Stop stopPropagation</a>
-        <a class="item" href="/articles/jsdoc">What is JSDoc</a>
-      </menu>
-    </div>
+  {{ template "main-menu" }}
 
+  <vs-binary-grid class="fixed width-full height-full behind"></vs-binary-grid>
+
+  <div class="content">
+    {{ if .Article }}
+    <h1>{{ .Article.Title }}</h1>
     <div class="markdown">
-      {{ .Article }}
+      {{ .Article.Html }}
     </div>
+    {{ else }}
+    <div>Article not found</div>
+    {{ end }}
   </div>
 
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"log"
 	"net/http"
@@ -41,6 +42,34 @@ func main() {
 
 		if err != nil {
 			log.Print("couldn't display the index page")
+		}
+	})
+
+	http.HandleFunc("GET /articles/", func(res http.ResponseWriter, req *http.Request) {
+		err := page.DisplayArticlesSummary(res)
+
+		if err != nil {
+			log.Print("couldn't display the articles's summary page\n", err)
+		}
+	})
+
+	http.HandleFunc("POST /articles", func(res http.ResponseWriter, req *http.Request) {
+		newArticle := blog.NewArticle{}
+
+		decoder := json.NewDecoder(req.Body)
+		err := decoder.Decode(&newArticle)
+
+		if err != nil {
+			res.WriteHeader(404)
+			log.Print(err)
+			return
+		}
+
+		err = blog.AddArticle(newArticle)
+
+		if err != nil {
+			res.WriteHeader(500)
+			log.Print(err)
 		}
 	})
 

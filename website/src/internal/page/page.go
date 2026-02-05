@@ -3,6 +3,7 @@ package page
 import (
 	"bytes"
 	"embed"
+	"errors"
 	"html/template"
 	"io"
 	"log"
@@ -28,15 +29,33 @@ func DisplayIndex(buf io.Writer) error {
 	return templates.ExecuteTemplate(buf, "index.html", nil)
 }
 
-func DisplayArticle(buf io.Writer, articleName string) error {
-	articleText := bytes.NewBuffer(nil)
-	err := blog.Render(articleText, articleName)
+func DisplayArticlesSummary(buf io.Writer) error {
+	articles, err := blog.ListArticles()
 
 	if err != nil {
 		return err
 	}
 
-	return templates.ExecuteTemplate(buf, "article.html", struct{ Article template.HTML }{Article: template.HTML(articleText.String())})
+	type templateData struct {
+		Articles []blog.Article
+	}
+
+	return templates.ExecuteTemplate(buf, "articles.html", templateData{articles})
+}
+
+func DisplayArticle(buf io.Writer, slug string) error {
+	articleText := bytes.NewBuffer(nil)
+	article, err := blog.Render(articleText, slug)
+
+	if errors.Is(err, blog.ErrNotFound) {
+		return templates.ExecuteTemplate(buf, "article.html", nil)
+	}
+
+	type templateData struct {
+		Article blog.RenderedArticle
+	}
+
+	return templates.ExecuteTemplate(buf, "article.html", templateData{article})
 }
 
 func DisplayContactFormSuccess(buf io.Writer) error {

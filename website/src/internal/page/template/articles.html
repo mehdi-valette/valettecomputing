@@ -1,0 +1,88 @@
+<html>
+
+<head>
+  <style>
+    @import url("/static/css/atomic.css");
+    @import url("/static/css/body.css");
+    @import url("/static/css/list.css");
+    @import url("/static/css/menu.css");
+    @import url("/static/css/variables.css");
+  </style>
+
+  <style>
+    a {
+      text-decoration: none;
+    }
+
+    .articles-list {
+      max-width: 42rem;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+    }
+
+    .link {
+      color: blue;
+      text-decoration: underline;
+    }
+
+    .card {
+      border: 1px inset;
+      padding: 1rem;
+      background-color: rgb(255 255 255 / 0.6);
+      text-decoration: none;
+      color: black;
+      transition: .3s ease-out, .3s ease-out;
+      transition-property: background-color box-shadow;
+      border-radius: .3rem;
+      box-shadow: 3px 3px;
+
+      &:hover {
+        background-color: rgb(255 255 255  / 0.4);
+        box-shadow: 5px 5px;
+        margin: -2px 2px 2px -2px;
+      }
+
+      h1 {
+        margin: 0 0 1rem 0;
+        text-decoration: none;
+        font-size: 1.5rem;
+        border-bottom: 1px solid black;
+      }
+
+      footer {
+        margin-top: 1rem;
+        text-align: right;
+      }
+    }
+  </style>
+
+  <script type="module" src="/static/js/binary-grid.js"></script>
+</head>
+
+<body>
+  {{ template "main-menu" }}
+
+  <vs-binary-grid class="fixed width-full height-full behind"></vs-binary-grid>
+
+  <div class="articles-list">
+  {{ range $article := .Articles }}
+    <a href="/articles/{{ $article.Slug }}">
+      <article class="card">
+        <h1>
+          {{ $article.Title }}
+        </h1>
+
+        {{ $article.Summary }}
+
+        <footer>
+          <div class="link">Read the article</div>
+        </footer>
+      </article>
+    </a>
+  {{ end }}
+  </div>
+</body>
+
+</html>
