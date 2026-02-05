@@ -14,6 +14,7 @@
     @import url("/static/css/hr.css");
     @import url("/static/css/link.css");
     @import url("/static/css/list.css");
+    @import url("/static/css/menu.css");
     @import url("/static/css/services.css");
     @import url("/static/css/two-columns.css");
     @import url("/static/css/variables.css");
@@ -26,6 +27,8 @@
 </head>
 
 <body>
+  {{ template "main-menu"}}
+
   <vs-binary-grid class="fixed width-full height-full behind"></vs-binary-grid>
 
   <div class="banner">
@@ -177,7 +180,8 @@
         Je suis participant et modérateur de ces réunions qui ont lieu chaque deux semaines.
       </p>
     </div>
-    <img class="animatable zoomable rounded-sm border-sm shadow" src="/static/image/mehdi.png">
+    <img width="300" height="324.86" class="animatable zoomable rounded-sm border-sm shadow"
+      src="/static/image/mehdi.webp">
   </section>
 </body>
 

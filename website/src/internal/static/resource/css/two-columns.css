@@ -24,7 +24,5 @@
 }
 
 .two-columns img {
-  height: 20rem;
-  object-fit: contain;
   margin: auto;
 }
