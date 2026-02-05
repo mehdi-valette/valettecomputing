@@ -2,7 +2,7 @@
 
 cd src && /usr/local/go/bin/go run ./cmd/valettesoftware.go --port 8080 &
 
-while inotifywait -r -e modify .; do
+while inotifywait -r -e modify src; do
   PID=$(pidof valettesoftware)
   echo "killing $PID"
   kill $PID
