@@ -90,7 +90,10 @@ class Painter {
     this.#drawAll();
 
     if (!this.#motionReduced && this.#interval == null) {
-      this.#interval = setInterval(this.#animate, 100);
+      this.#interval = setInterval(
+        () => requestAnimationFrame(() => this.#animate()),
+        200,
+      );
     } else if (this.#motionReduced && this.#interval != null) {
       clearInterval(this.#interval);
       this.#interval = null;
