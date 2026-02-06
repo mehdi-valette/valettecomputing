@@ -16,9 +16,14 @@
       padding: 2rem;
       border-radius: 1rem;
 
+      header {
+        text-align: right;
+      }
+
       &>h1 {
         text-align: center;
         margin: 0 0 5rem 0;
+        margin-top: 1rem;
       }
     }
 
@@ -53,6 +58,13 @@
         }
       }
     }
+
+    @media (max-width: 1000px) {
+      .content {
+        border-radius: 0;
+        border: none;
+      }
+    }
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
@@ -65,16 +77,20 @@
 
   <vs-binary-grid class="fixed width-full height-full behind"></vs-binary-grid>
 
-  <div class="content">
+  <article class="content">
     {{ if .Article }}
-    <h1>{{ .Article.Title }}</h1>
-    <div class="markdown">
-      {{ .Article.Html }}
-    </div>
+      <header>
+        {{ .Article.Author }} - <time datetime="{{ .Article.DateIso }}">{{ .Article.DateHuman }}</time>
+      </header>
+
+      <h1>{{ .Article.Title }}</h1>
+      <div class="markdown">
+        {{ .Article.Html }}
+      </div>
     {{ else }}
-    <div>Article not found</div>
+      Article not found
     {{ end }}
-  </div>
+  </article>
 
 
   <script type="module">

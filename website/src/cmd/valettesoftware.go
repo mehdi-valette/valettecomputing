@@ -54,7 +54,7 @@ func main() {
 	})
 
 	http.HandleFunc("POST /articles", func(res http.ResponseWriter, req *http.Request) {
-		newArticle := blog.NewArticle{}
+		newArticle := blog.NewPost{}
 
 		decoder := json.NewDecoder(req.Body)
 		err := decoder.Decode(&newArticle)
@@ -65,7 +65,7 @@ func main() {
 			return
 		}
 
-		err = blog.AddArticle(newArticle)
+		err = blog.AddPost(newArticle)
 
 		if err != nil {
 			res.WriteHeader(500)

@@ -30,17 +30,17 @@ func DisplayIndex(buf io.Writer) error {
 }
 
 func DisplayArticlesSummary(buf io.Writer) error {
-	articles, err := blog.ListArticles()
+	articles, err := blog.ListPosts()
 
 	if err != nil {
 		return err
 	}
 
 	type templateData struct {
-		Articles []blog.Article
+		Articles []blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "articles.html", templateData{articles})
+	return templates.ExecuteTemplate(buf, "posts.html", templateData{articles})
 }
 
 func DisplayArticle(buf io.Writer, slug string) error {
@@ -48,14 +48,14 @@ func DisplayArticle(buf io.Writer, slug string) error {
 	article, err := blog.Render(articleText, slug)
 
 	if errors.Is(err, blog.ErrNotFound) {
-		return templates.ExecuteTemplate(buf, "article.html", nil)
+		return templates.ExecuteTemplate(buf, "post.html", nil)
 	}
 
 	type templateData struct {
-		Article blog.RenderedArticle
+		Article blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "article.html", templateData{article})
+	return templates.ExecuteTemplate(buf, "post.html", templateData{article})
 }
 
 func DisplayContactFormSuccess(buf io.Writer) error {

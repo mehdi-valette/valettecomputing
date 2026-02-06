@@ -1,11 +1,8 @@
 package blog
 
 import (
-	"embed"
 	"errors"
-	"html/template"
 	"io"
-	"io/fs"
 	"log"
 	"regexp"
 	"strings"
@@ -15,45 +12,43 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
 	"github.com/gomarkdown/markdown/parser"
 )
 
-//go:embed articles
-var fsBlog embed.FS
-
-var resources fs.FS
 var htmlRenderer *html.Renderer
 var mdExtensions parser.Extensions
 var db *sql.DB
+var timezoneCet *time.Location
+var monthsFr = []string{"janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"}
 
 func Init() {
 	var err error
 
-	db, err = sql.Open("sqlite", "../articles.db")
+	db, err = sql.Open("sqlite", "../blog.db")
 
 	if err != nil {
-		log.Fatal("couldn't open the articles' database:", err)
+		log.Fatal("couldn't open the blog's database:", err)
 	}
 
-	resources, err = fs.Sub(fsBlog, "articles")
 	mdExtensions = parser.CommonExtensions
 
-	if err != nil {
-		log.Fatal("the blog articles cannot be found")
-	}
-
 	htmlRenderer = html.NewRenderer(html.RendererOptions{})
+
+	timezoneCet, err = time.LoadLocation("Europe/Zurich")
+
+	if err != nil {
+		log.Fatal("couldn't load the timezone Europe/Zurich")
+	}
 }
 
-func AddArticle(newArticle NewArticle) error {
+func AddPost(newArticle NewPost) error {
 	currentTimestamp := time.Now().UnixMilli() / 1000
 	slug := makeSlug(newArticle.Title)
 
 	_, err := db.Exec(
-		"INSERT INTO article(title, timestamp, slug, summary, content) VALUES(?, ?, ?, ?, ?)",
-		newArticle.Title, currentTimestamp, slug, newArticle.Summary, newArticle.Content,
+		"INSERT INTO post(title, author, timestamp, slug, summary, content) VALUES(?, ?, ?, ?, ?, ?)",
+		newArticle.Title, newArticle.Author, currentTimestamp, slug, newArticle.Summary, newArticle.Content,
 	)
 
 	if err != nil {
@@ -64,64 +59,67 @@ func AddArticle(newArticle NewArticle) error {
 	return nil
 }
 
-func ListArticles() ([]Article, error) {
-	currentArticle := Article{}
-	allArticles := []Article{}
+func ListPosts() ([]RenderedPost, error) {
+	currentPost := RenderedPost{}
+	allPosts := []RenderedPost{}
 
-	results, err := db.Query("SELECT title, timestamp, summary, slug FROM article")
+	results, err := db.Query("SELECT title, author, timestamp, summary, slug FROM post")
 
 	if err != nil {
-		return []Article{}, err
+		return []RenderedPost{}, err
 	}
 
 	for results.Next() {
 		err := results.Scan(
-			&currentArticle.Title,
-			&currentArticle.Timestamp,
-			&currentArticle.Summary,
-			&currentArticle.Slug,
+			&currentPost.Title,
+			&currentPost.Author,
+			&currentPost.Timestamp,
+			&currentPost.Summary,
+			&currentPost.Slug,
 		)
 
 		if err != nil {
-			return []Article{}, err
+			return []RenderedPost{}, err
 		}
 
-		allArticles = append(allArticles, currentArticle)
+		currentPost.CalculateDates()
+
+		allPosts = append(allPosts, currentPost)
 	}
 
-	return allArticles, nil
+	return allPosts, nil
 }
 
-func Render(output io.Writer, slug string) (RenderedArticle, error) {
-	article := RenderedArticle{}
+func Render(output io.Writer, slug string) (RenderedPost, error) {
+	post := RenderedPost{}
 
-	result := db.QueryRow("SELECT title, timestamp, summary, content FROM article WHERE slug = ?", slug)
+	result := db.QueryRow("SELECT title, author, timestamp, summary, content FROM post WHERE slug = ?", slug)
 
-	err := result.Scan(&article.Title, &article.Timestamp, &article.Summary, &article.Content)
+	err := result.Scan(&post.Title, &post.Author, &post.Timestamp, &post.Summary, &post.Content)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return RenderedArticle{}, ErrNotFound
+		return RenderedPost{}, ErrNotFound
 	} else if err != nil {
 		log.Print(err)
-		return RenderedArticle{}, err
+		return RenderedPost{}, err
 	}
 
-	htmlFile := markdown.Render(
-		parser.NewWithExtensions(parser.CommonExtensions).Parse([]byte(article.Content)),
-		htmlRenderer,
-	)
+	post.CalculateDates()
+	post.CalculateHtmlContent()
 
-	article.Html = template.HTML(htmlFile)
-
-	return article, err
+	return post, err
 }
 
 func makeSlug(text string) string {
 	slug := strings.ToLower(text)
-	slug = strings.ReplaceAll(slug, " ", "-")
-	reg := regexp.MustCompile(`[^a-z0-9-]`)
 
-	slug = string(reg.ReplaceAll([]byte(slug), []byte("0")))
+	charsToRemove := regexp.MustCompile(`[.,:;!?^'"]`)
+	charsToMap := strings.NewReplacer(" ", "-", "ç", "c", "à", "a", "â", "a", "é", "e", "è", "e", "ê", "e", "ë", "e", "î", "i", "ï", "i", "ô", "o", "ö", "o", "ù", "u", "û", "u", "ü", "u", "ÿ", "y")
+	unknownChars := regexp.MustCompile(`[^a-z0-9-]`)
+
+	slug = string(charsToRemove.ReplaceAll([]byte(slug), []byte("")))
+	slug = charsToMap.Replace(slug)
+	slug = string(unknownChars.ReplaceAll([]byte(slug), []byte("0")))
 
 	return slug
 }
