@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2026-02-06 11:38+0100\n"
+"PO-Revision-Date: 2026-02-06 11:40+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "Développement"
+msgstr ""
+
+msgid "De zéro:"
+msgstr ""
+
+msgid "Automatisation:"
+msgstr ""
+
+msgid "Renfort:"
+msgstr ""
+
+msgid "Consultation:"
+msgstr ""
+
+msgid "Spécifications, développement et déploiement."
+msgstr ""
+
+msgid "Remplacer les tâches répétitives par des scripts."
+msgstr ""
+
+msgid "Prêter main forte à une équipe de développement."
+msgstr ""
+
+msgid "Recevoir un avis extérieur et expert sur les projets logiciels."
+msgstr ""
+
+msgid "Administration Linux"
+msgstr ""
+
+msgid "Mise en place:"
+msgstr ""
+
+msgid "Comptes:"
+msgstr ""
+
+msgid "Sécurisation:"
+msgstr ""
+
+msgid "Surveillance:"
+msgstr ""
+
+msgid "Installer Linux et des logiciels."
+msgstr ""
+
+msgid "Gérer les comptes et les droits."
+msgstr ""
+
+msgid "Analyser les systèmes et les processus."
+msgstr ""
+
+msgid "Vérifier l'état du système, notamment les sauvegardes et les mises à jours."
+msgstr ""
+
+msgid "Déploiement"
+msgstr ""
+
+msgid "Services:"
+msgstr ""
+
+msgid "Conteneurs:"
+msgstr ""
+
+msgid "CI/CD:"
+msgstr ""
+
+msgid "Kubernetes:"
+msgstr ""
+
+msgid "Déployer une application en tant que service sur un serveur."
+msgstr ""
+
+msgid "Conteneuriser une application."
+msgstr ""
+
+msgid "Automatiser les tests et le déploiement des logiciels."
+msgstr ""
+
+msgid "Mettre en place et maintenir un cluster Kubernetes."
+msgstr ""
+
+msgid "Comptes:"
+msgstr ""
+
+msgid "Pare-feu:"
+msgstr ""
+
+msgid "Processus:"
+msgstr ""
+
+msgid "Encryption:"
+msgstr ""
+
+msgid "Limiter les droits des comptes au strict minimum."
+msgstr ""
+
+msgid "Fermer toute les connections qui ne sont pas attendues."
+msgstr ""
+
+msgid "Limiter les accès accordés aux processus (SELinux, AppArmor)."
+msgstr ""
+
+msgid "Implémenter ou vérifier l'encryption des disques durs et des emails."
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Une mission à me confier ?"
+msgstr ""
+
+msgid "Une question à me poser ?"
+msgstr ""
+
+msgid "Contactez-moi et je répondrai au plus vite !"
+msgstr ""
+
+msgid "Nous explorerons vos difficultés et les solutions que je peux apporter."
+msgstr ""
+
+msgid "Nom complet"
+msgstr ""
+
+msgid "Entreprise (factulatif)"
+msgstr ""
+
+msgid "Email ou tél. (pour vous répondre)"
+msgstr ""
+
+msgid "Concerne"
+msgstr ""
+
+msgid "Autre"
+msgstr ""
+
+msgid "Emploi fixe"
+msgstr ""
+
+msgid "Emploi temporaire"
+msgstr ""
+
+msgid "Mission"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "À propos de moi"
+msgstr ""
+
+msgid "Avec un bachelor en informatique de gestion, plusieurs certifications, et près de 10 ans d'expérience."
+msgstr ""
+
+msgid "Lorsque je ne m'occupe pas d'informatique, je m'intéresse à la logique et à l'analyse objective."
+msgstr ""
+
+msgid "Sécurité" 
+msgstr ""
+
+msgid "un (logiciel efficace)"
+msgstr ""
+
+msgid "dans un (environnement sécurisé)"
+msgstr ""
+
+msgid "logiciel efficace"
+msgstr ""
+
+msgid "environnement sécurisé"
+msgstr ""

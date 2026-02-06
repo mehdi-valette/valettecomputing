@@ -10,6 +10,7 @@ import (
 	"valette.software/internal/blog"
 	"valette.software/internal/config"
 	"valette.software/internal/contactform"
+	"valette.software/internal/i18n"
 	"valette.software/internal/page"
 	"valette.software/internal/static"
 )
@@ -32,8 +33,10 @@ func buildListenUrl() string {
 
 func main() {
 	config.ReadConfig("config.ini")
+
 	page.Init()
 	blog.Init()
+	i18n.Init()
 
 	http.Handle("GET /static/", http.StripPrefix("/static/", static.Serve()))
 
@@ -41,7 +44,7 @@ func main() {
 		err := page.DisplayIndex(res)
 
 		if err != nil {
-			log.Print("couldn't display the index page")
+			log.Print("couldn't display the index page\n", err)
 		}
 	})
 

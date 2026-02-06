@@ -1,0 +1,195 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2026-02-06 11:38+0100\n"
+"PO-Revision-Date: 2026-02-06 13:17+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: .\n"
+
+msgid "Développement"
+msgstr "Development"
+
+msgid "De zéro:"
+msgstr "From zero:"
+
+msgid "Automatisation:"
+msgstr "Automatisation:"
+
+msgid "Renfort:"
+msgstr "Support:"
+
+msgid "Consultation:"
+msgstr "Consultaton:"
+
+msgid "Spécifications, développement et déploiement."
+msgstr "Specifications, development and deployment."
+
+msgid "Remplacer les tâches répétitives par des scripts."
+msgstr "Replace repetitive tasks with scripts."
+
+msgid "Prêter main forte à une équipe de développement."
+msgstr "Lend a hand to a development team."
+
+msgid "Recevoir un avis extérieur et expert sur les projets logiciels."
+msgstr "Receive an external and expert opinion about software projects."
+
+msgid "Administration Linux"
+msgstr "Linux adinistration"
+
+msgid "Mise en place:"
+msgstr "Set up:"
+
+msgid "Comptes:"
+msgstr "Accounts:"
+
+msgid "Sécurisation:"
+msgstr "Hardening:"
+
+msgid "Surveillance:"
+msgstr "Monitoring:"
+
+msgid "Installer Linux et des logiciels."
+msgstr "Install Linux and software."
+
+msgid "Gérer les comptes et les droits."
+msgstr "Manage accounts and rights."
+
+msgid "Analyser les systèmes et les processus."
+msgstr "Analyze systems and processes."
+
+msgid ""
+"Vérifier l'état du système, notamment les sauvegardes et les mises à jours."
+msgstr "Verify the system status, notably backups and updates."
+
+msgid "Déploiement"
+msgstr "Deployment"
+
+msgid "Services:"
+msgstr "Services:"
+
+msgid "Conteneurs:"
+msgstr "Containers:"
+
+msgid "CI/CD:"
+msgstr "CI/CD:"
+
+msgid "Kubernetes:"
+msgstr "Kubernetes:"
+
+msgid "Déployer une application en tant que service sur un serveur."
+msgstr "Deploy and application as a service on a server."
+
+msgid "Conteneuriser une application."
+msgstr "Containerise an application."
+
+msgid "Automatiser les tests et le déploiement des logiciels."
+msgstr "Automate software tests and deployment."
+
+msgid "Mettre en place et maintenir un cluster Kubernetes."
+msgstr "Set up and maintain a Kubernetes cluster."
+
+msgid "Pare-feu:"
+msgstr "Firewall:"
+
+msgid "Processus:"
+msgstr "Processes:"
+
+msgid "Encryption:"
+msgstr "Encryption:"
+
+msgid "Limiter les droits des comptes au strict minimum."
+msgstr "Limit account permissions to the bare minimum."
+
+msgid "Fermer toute les connections qui ne sont pas attendues."
+msgstr "Close all the connections that are not expected."
+
+msgid "Limiter les accès accordés aux processus (SELinux, AppArmor)."
+msgstr "Restrict the access given to processes (SELinux, AppArmor)."
+
+msgid "Implémenter ou vérifier l'encryption des disques durs et des emails."
+msgstr "Implement or verify hard disks and emails encryption."
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Une mission à me confier ?"
+msgstr "A mission to entrust me?"
+
+msgid "Une question à me poser ?"
+msgstr "A question to ask me?"
+
+msgid "Contactez-moi et je répondrai au plus vite !"
+msgstr "Contact me and I'll answer ASAP!"
+
+msgid "Nous explorerons vos difficultés et les solutions que je peux apporter."
+msgstr "We'll explore your difficulties and the solutions I can provide."
+
+msgid "Nom complet"
+msgstr "Full name"
+
+msgid "Entreprise (factulatif)"
+msgstr "Company (optional)"
+
+msgid "Email ou tél. (pour vous répondre)"
+msgstr "Email or tel (for an answer)"
+
+msgid "Concerne"
+msgstr "About"
+
+msgid "Autre"
+msgstr "Other"
+
+msgid "Emploi fixe"
+msgstr "Fix job"
+
+msgid "Emploi temporaire"
+msgstr "Temporary job"
+
+msgid "Mission"
+msgstr "Mission"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "À propos de moi"
+msgstr "About me"
+
+msgid ""
+"Avec un bachelor en informatique de gestion, plusieurs certifications, et "
+"près de 10 ans d'expérience."
+msgstr ""
+"With a bachelor's degree in IT, several certifications, and nearly 10 years "
+"of professional experience, I have acquired extensive expertise in software "
+"development and system administration. Still passionate about these fields, "
+"I approach technical challenges with rigour and professionalism."
+
+msgid ""
+"Lorsque je ne m'occupe pas d'informatique, je m'intéresse à la logique et à "
+"l'analyse objective."
+msgstr ""
+"When I'm not working on computers, I'm interested in logic and objective "
+"analysis. A few years ago, I started an online debate group to develop my "
+"critical thinking skills. I participate in, and moderate these meetings "
+"which take place every two weeks."
+
+msgid "Sécurité"
+msgstr "Security"
+
+msgid "un (logiciel efficace)"
+msgstr "an"
+
+msgid "dans un (environnement sécurisé)"
+msgstr "in a"
+
+msgid "logiciel efficace"
+msgstr "efficient software"
+
+msgid "environnement sécurisé"
+msgstr "secured environment"

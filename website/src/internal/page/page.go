@@ -9,12 +9,17 @@ import (
 	"log"
 
 	"valette.software/internal/blog"
+	"valette.software/internal/i18n"
 )
 
 //go:embed template
 var fsTemplate embed.FS
 
 var templates *template.Template
+
+type templateData struct {
+	T i18n.Localizer
+}
 
 func Init() {
 	var err error
@@ -26,7 +31,15 @@ func Init() {
 }
 
 func DisplayIndex(buf io.Writer) error {
-	return templates.ExecuteTemplate(buf, "index.html", nil)
+
+	type data struct {
+		templateData
+		Articles []blog.RenderedPost
+	}
+
+	localizer, _ := i18n.GetLocale("en")
+
+	return templates.ExecuteTemplate(buf, "index.html", templateData{T: localizer})
 }
 
 func DisplayArticlesSummary(buf io.Writer) error {
@@ -36,11 +49,16 @@ func DisplayArticlesSummary(buf io.Writer) error {
 		return err
 	}
 
-	type templateData struct {
+	type data struct {
+		templateData
 		Articles []blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "posts.html", templateData{articles})
+	localizer, _ := i18n.GetLocale("fr")
+
+	return templates.ExecuteTemplate(buf, "posts.html", data{
+		templateData: templateData{T: localizer}, Articles: articles,
+	})
 }
 
 func DisplayArticle(buf io.Writer, slug string) error {

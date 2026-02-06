@@ -39,10 +39,10 @@
 
     <h1 class="banner-title">Valette Software</h1>
     <h2 class="banner-subtitle">
-      <div class=" small">un</div>
-      logiciel efficace
-      <div class="small" style="margin-top: 3rem;">dans un</div>
-      environnement sécurisé
+      <div class=" small">{{ .T.Get "un (logiciel efficace)" }}</div>
+      {{ .T.Get "logiciel efficace" }}
+      <div class="small" style="margin-top: 3rem;">{{ .T.Get "dans un (environnement sécurisé)" }}</div>
+      {{ .T.Get "environnement sécurisé" }}
     </h2>
   </div>
 
@@ -54,13 +54,13 @@
         <vs-digital-rain class="rounded-sm height-full"></vs-digital-rain>
       </div>
       <div>
-        <h2>Développement</h2>
+        <h2>{{ .T.Get "Développement" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>De zéro:</strong> Spécifications, développement et déploiement.</li>
-          <li><strong>Automatisation:</strong> Remplacer les tâches répétitives par des scripts.</li>
-          <li><strong>Renfort:</strong> Prêter main forte à une équipe de développement.</li>
-          <li><strong>Consultation:</strong> Recevoir un avis extérieur et expert sur les projets logiciels.</li>
+          <li><strong>{{ .T.Get "De zéro:" }}</strong> {{ .T.Get "Spécifications, développement et déploiement." }}</li>
+          <li><strong>{{ .T.Get "Automatisation:" }}</strong> {{ .T.Get "Remplacer les tâches répétitives par des scripts." }}</li>
+          <li><strong>{{ .T.Get "Renfort:" }}</strong> {{ .T.Get "Prêter main forte à une équipe de développement." }}</li>
+          <li><strong>{{ .T.Get "Consultation:" }}</strong> {{ .T.Get "Recevoir un avis extérieur et expert sur les projets logiciels." }}</li>
         </ul>
       </div>
     </div>
@@ -68,13 +68,13 @@
     <div class=" animatable zoomable">
       <div class="img-container"><img src="/static/image/linux-laptop.svg"></div>
       <div>
-        <h2>Administration Linux</h2>
+        <h2>{{ .T.Get "Administration Linux" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>Mise en place:</strong> Installer Linux et des logiciels.</li>
-          <li><strong>Comptes:</strong> Gérer les comptes et les droits.</li>
-          <li><strong>Sécurisation:</strong> Analyser les systèmes et les processus.</li>
-          <li><strong>Surveillance:</strong> Vérifier l'état du système, notamment les sauvegardes et les mises à jours.
+          <li><strong>{{ .T.Get "Mise en place:" }}</strong> {{ .T.Get "Installer Linux et des logiciels." }}</li>
+          <li><strong>{{ .T.Get "Comptes:" }}</strong> {{ .T.Get "Gérer les comptes et les droits." }}</li>
+          <li><strong>{{ .T.Get "Sécurisation:" }}</strong> {{ .T.Get "Analyser les systèmes et les processus." }}</li>
+          <li><strong>{{ .T.Get "Surveillance:" }}</strong> {{ .T.Get "Vérifier l'état du système, notamment les sauvegardes et les mises à jours." }}
           </li>
         </ul>
       </div>
@@ -83,13 +83,13 @@
     <div class="animatable zoomable">
       <div class="img-container"><img src="/static/image/deployment.svg"></div>
       <div>
-        <h2>Déploiement</h2>
+        <h2>{{ .T.Get "Déploiement" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>Services:</strong> Déployer une application en tant que service sur un serveur.</li>
-          <li><strong>Conteneurs:</strong> Conteneuriser une application.</li>
-          <li><strong>CI/CD:</strong> Automatiser les tests et le déploiement des logiciels.</li>
-          <li><strong>Kubernetes:</strong> Mettre en place et maintenir un cluster Kubernetes.</li>
+          <li><strong>{{ .T.Get "Services:" }}</strong> {{ .T.Get "Déployer une application en tant que service sur un serveur." }}</li>
+          <li><strong>{{ .T.Get "Conteneurs:" }}</strong> {{ .T.Get "Conteneuriser une application." }}</li>
+          <li><strong>{{ .T.Get "CI/CD:" }}</strong> {{ .T.Get "Automatiser les tests et le déploiement des logiciels." }}</li>
+          <li><strong>{{ .T.Get "Kubernetes:" }}</strong> {{ .T.Get "Mettre en place et maintenir un cluster Kubernetes." }}</li>
         </ul>
       </div>
     </div>
@@ -97,13 +97,13 @@
     <div class="animatable zoomable">
       <div class="img-container"><img src="/static/image/shield.svg"></div>
       <div>
-        <h2>Sécurité</h2>
+        <h2>{{ .T.Get "Sécurité" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>Comptes:</strong> Limiter les droits des comptes au strict minimum.</li>
-          <li><strong>Pare-feu:</strong> Fermer toute les connections qui ne sont pas attendues.</li>
-          <li><strong>Processus:</strong> Limiter les accès accordés aux processus (SELinux, AppArmor).</li>
-          <li><strong>Encryption:</strong> Implémenter ou vérifier l'encryption des disques durs et des emails.</li>
+          <li><strong>{{ .T.Get "Comptes:" }}</strong> {{ .T.Get "Limiter les droits des comptes au strict minimum." }}</li>
+          <li><strong>{{ .T.Get "Pare-feu:" }}</strong> {{ .T.Get "Fermer toute les connections qui ne sont pas attendues." }}</li>
+          <li><strong>{{ .T.Get "Processus:" }}</strong> {{ .T.Get "Limiter les accès accordés aux processus (SELinux, AppArmor)." }}</li>
+          <li><strong>{{ .T.Get "Encryption:" }}</strong> {{ .T.Get "Implémenter ou vérifier l'encryption des disques durs et des emails." }}</li>
         </ul>
       </div>
     </div>
@@ -113,11 +113,11 @@
 
   <section class="two-columns">
     <div class="animatable zoomable">
-      <h2>Contact</h2>
-      <p>Une mission à me confier ?</p>
-      <p>Une question à me poser ?</p>
-      <p>Contactez-moi et je répondrai au plus vite !</p>
-      <p>Nous explorerons vos difficultés et les solutions que je peux apporter.</p>
+      <h2>{{ .T.Get "Contact" }}</h2>
+      <p>{{ .T.Get "Une mission à me confier ?" }}</p>
+      <p>{{ .T.Get "Une question à me poser ?" }}</p>
+      <p>{{ .T.Get "Contactez-moi et je répondrai au plus vite !" }}</p>
+      <p>{{ .T.Get "Nous explorerons vos difficultés et les solutions que je peux apporter." }}</p>
 
       <p style="margin-top: 4rem">
         <a class="link" href="mailto:mehdi.valette@gmail.com">mehdi.valette@gmail.com</a>
@@ -131,32 +131,32 @@
     <div class="contact animatable zoomable" id="contact-form-container" style="position: relative;">
       <form id="contact-form" onsubmit="return handleContactForm()">
         <label>
-          Nom complet
+          {{ .T.Get "Nom complet" }}
           <input name="name" required>
         </label>
         <label>
-          Entreprise (factulatif)
+          {{ .T.Get "Entreprise (factulatif)" }}
           <input name="company">
         </label>
         <label>
-          Email ou tél. (pour vous répondre)
+          {{ .T.Get "Email ou tél. (pour vous répondre)" }}
           <input name="contact" required>
         </label>
         <label>
-          Concerne
+          {{ .T.Get "Concerne" }}
           <select name="subject">
-            <option value="other">Autre</option>
-            <option value="fix">Emploi fixe</option>
-            <option value="temporary">Emploi temporaire</option>
-            <option value="mission">Mission</option>
+            <option value="other">{{ .T.Get "Autre" }}</option>
+            <option value="fix">{{ .T.Get "Emploi fixe" }}</option>
+            <option value="temporary">{{ .T.Get "Emploi temporaire" }}</option>
+            <option value="mission">{{ .T.Get "Mission" }}</option>
           </select>
         </label>
         <label>
-          Message
+          {{ .T.Get "Message" }}
           <textarea name="message" rows="5" required></textarea>
         </label>
 
-        <button class="button" type="submit">Envoyer</button>
+        <button class="button" type="submit">{{ .T.Get "Envoyer" }}</button>
       </form>
     </div>
 
@@ -166,23 +166,18 @@
 
   <section class="two-columns">
     <div>
-      <h2 class="animatable zoomable">À propos de moi</h2>
+      <h2 class="animatable zoomable">{{ .T.Get "À propos de moi" }}</h2>
       <p class="animatable zoomable">
-        Avec un bachelor en informatique de gestion, plusieurs certifications, et près de 10 ans d'expérience
-        professionnelle,
-        j'ai acquis une grande expertise en développement logiciel et en administration système.
-        Toujours autant passionné par ces domaines, c'est avec rigueur et professionalisme que je relève les défis
-        techniques.
+        {{ .T.Get "Avec un bachelor en informatique de gestion, plusieurs certifications, et près de 10 ans d'expérience." }}
       </p>
       <p class="animatable zoomable">
-        Lorsque je ne m'occupe pas d'informatique, je m'intéresse à la logique et à l'analyse objective.
-        Il y a quelques années, j'ai lancé un groupe de débats en ligne pour travailler mon esprit critique.
-        Je suis participant et modérateur de ces réunions qui ont lieu chaque deux semaines.
+        {{ .T.Get "Lorsque je ne m'occupe pas d'informatique, je m'intéresse à la logique et à l'analyse objective." }}
       </p>
     </div>
-    <img width="300" height="324.86" class="animatable zoomable rounded-sm border-sm shadow"
+    <img alt="Mehdi" width="300" height="324.86" class="animatable zoomable rounded-sm border-sm shadow"
       src="/static/image/mehdi.webp">
   </section>
+
 </body>
 
 </html>
