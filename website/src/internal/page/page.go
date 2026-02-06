@@ -10,6 +10,7 @@ import (
 
 	"valette.software/internal/blog"
 	"valette.software/internal/i18n"
+	"valette.software/internal/reqcontext"
 )
 
 //go:embed template
@@ -30,19 +31,17 @@ func Init() {
 	}
 }
 
-func DisplayIndex(buf io.Writer) error {
+func DisplayIndex(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 
 	type data struct {
 		templateData
 		Articles []blog.RenderedPost
 	}
 
-	localizer, _ := i18n.GetLocale("en")
-
-	return templates.ExecuteTemplate(buf, "index.html", templateData{T: localizer})
+	return templates.ExecuteTemplate(buf, "index.html", templateData{T: reqCtx.Localizer})
 }
 
-func DisplayArticlesSummary(buf io.Writer) error {
+func DisplayArticlesSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 	articles, err := blog.ListPosts()
 
 	if err != nil {
@@ -54,14 +53,12 @@ func DisplayArticlesSummary(buf io.Writer) error {
 		Articles []blog.RenderedPost
 	}
 
-	localizer, _ := i18n.GetLocale("fr")
-
 	return templates.ExecuteTemplate(buf, "posts.html", data{
-		templateData: templateData{T: localizer}, Articles: articles,
+		templateData: templateData{T: reqCtx.Localizer}, Articles: articles,
 	})
 }
 
-func DisplayArticle(buf io.Writer, slug string) error {
+func DisplayArticle(buf io.Writer, reqCtx reqcontext.ReqContext, slug string) error {
 	articleText := bytes.NewBuffer(nil)
 	article, err := blog.Render(articleText, slug)
 
@@ -69,11 +66,12 @@ func DisplayArticle(buf io.Writer, slug string) error {
 		return templates.ExecuteTemplate(buf, "post.html", nil)
 	}
 
-	type templateData struct {
+	type data struct {
+		templateData
 		Article blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "post.html", templateData{article})
+	return templates.ExecuteTemplate(buf, "post.html", data{templateData: templateData{T: reqCtx.Localizer}, Article: article})
 }
 
 func DisplayContactFormSuccess(buf io.Writer) error {

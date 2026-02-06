@@ -23,3 +23,9 @@
     }
   }
 }
+
+.icon-big {
+  height: 1.2rem;
+  vertical-align: baseline;
+  margin-right: .3rem;
+}

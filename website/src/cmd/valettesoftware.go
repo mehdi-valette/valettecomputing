@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"log"
 	"net/http"
@@ -9,11 +8,33 @@ import (
 
 	"valette.software/internal/blog"
 	"valette.software/internal/config"
-	"valette.software/internal/contactform"
 	"valette.software/internal/i18n"
 	"valette.software/internal/page"
-	"valette.software/internal/static"
+	"valette.software/internal/router"
 )
+
+func main() {
+	config.ReadConfig("config.ini")
+
+	page.Init()
+	blog.Init()
+	i18n.Init()
+
+	root := router.Build()
+
+	http.Handle("/", root)
+
+	url := buildListenUrl()
+
+	println("server listening on", url)
+	err := http.ListenAndServe(url, nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	println("server closed")
+}
 
 func buildListenUrl() string {
 	port := "80"
@@ -29,79 +50,4 @@ func buildListenUrl() string {
 	}
 
 	return "0.0.0.0:" + port
-}
-
-func main() {
-	config.ReadConfig("config.ini")
-
-	page.Init()
-	blog.Init()
-	i18n.Init()
-
-	http.Handle("GET /static/", http.StripPrefix("/static/", static.Serve()))
-
-	http.HandleFunc("GET /", func(res http.ResponseWriter, req *http.Request) {
-		err := page.DisplayIndex(res)
-
-		if err != nil {
-			log.Print("couldn't display the index page\n", err)
-		}
-	})
-
-	http.HandleFunc("GET /articles/", func(res http.ResponseWriter, req *http.Request) {
-		err := page.DisplayArticlesSummary(res)
-
-		if err != nil {
-			log.Print("couldn't display the articles's summary page\n", err)
-		}
-	})
-
-	http.HandleFunc("POST /articles", func(res http.ResponseWriter, req *http.Request) {
-		newArticle := blog.NewPost{}
-
-		decoder := json.NewDecoder(req.Body)
-		err := decoder.Decode(&newArticle)
-
-		if err != nil {
-			res.WriteHeader(404)
-			log.Print(err)
-			return
-		}
-
-		err = blog.AddPost(newArticle)
-
-		if err != nil {
-			res.WriteHeader(500)
-			log.Print(err)
-		}
-	})
-
-	http.HandleFunc("GET /articles/{name}", func(res http.ResponseWriter, req *http.Request) {
-		err := page.DisplayArticle(res, req.PathValue("name"))
-
-		if err != nil {
-			log.Print("couldn't display the article page")
-		}
-	})
-
-	http.HandleFunc("GET /agenda", func(res http.ResponseWriter, req *http.Request) {
-		err := page.DisplayAgenda(res)
-
-		if err != nil {
-			log.Print("couldn't display the agenda page", err)
-		}
-	})
-
-	http.HandleFunc("POST /contact", contactform.HandleContactFormRequest)
-
-	url := buildListenUrl()
-
-	println("server listening on", url)
-	err := http.ListenAndServe(url, nil)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	println("server closed")
 }

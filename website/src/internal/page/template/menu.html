@@ -1,7 +1,12 @@
 
 {{ define "main-menu"}}
 <menu class="menu-horizontal">
-  <li class="item"><a href="/">Accueil</a></li>
-  <li class="item"><a href="/articles/">Articles</a></li>
+  <li class="item"><a href="{{ .T.Link "/" }}">{{ .T.Get "Accueil (menu)" }}</a></li>
+  <li class="item"><a href="{{ .T.Link "/articles/" }}">{{ .T.Get "Articles (menu)" }}</a></li>
+  {{ if eq .T.Lang "en" }}
+  <li class="item"><a href="/fr"><img class="icon-big" src="/static/image/france.svg"> français</a></li>
+  {{ else }}
+  <li class="item"><a href="/en"><img class="icon-big" src="/static/image/england.svg"> english</a></li>
+  {{ end }}
 </menu>
 {{ end }}
