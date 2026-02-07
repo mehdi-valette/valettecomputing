@@ -73,8 +73,8 @@ func DisplayArticle(buf io.Writer, reqCtx reqcontext.ReqContext, slug string) er
 	return templates.ExecuteTemplate(buf, "post.html", data{templateData: templateData{Ctx: reqCtx}, Article: article})
 }
 
-func DisplayContactFormSuccess(buf io.Writer) error {
-	return templates.ExecuteTemplate(buf, "contactformsuccess.html", nil)
+func DisplayContactFormSuccess(buf io.Writer, reqCtx reqcontext.ReqContext) error {
+	return templates.ExecuteTemplate(buf, "contactformsuccess.html", templateData{Ctx: reqCtx})
 }
 
 func DisplayAgenda(buf io.Writer) error {

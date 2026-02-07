@@ -188,3 +188,16 @@ msgstr ""
 
 msgid "Articles (menu)"
 msgstr ""
+
+msgid "Envoyer (contact form)"
+msgstr ""
+
+msgid "Je vous remercie pour votre message."
+msgstr ""
+
+msgid "Je vous répondrai au plus vite !"
+msgstr ""
+
+msgid "Revenir au formulaire"
+msgstr ""
+

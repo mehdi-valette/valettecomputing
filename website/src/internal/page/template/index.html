@@ -131,7 +131,7 @@
     </div>
 
     <div class="contact animatable zoomable" id="contact-form-container" style="position: relative;">
-      <form id="contact-form" onsubmit="return handleContactForm()">
+      <form action="{{ $t.Link "/contact" }}" id="contact-form" onsubmit="return handleContactForm()">
         <label>
           {{ $t.Get "Nom complet" }}
           <input name="name" required>
@@ -158,7 +158,7 @@
           <textarea name="message" rows="5" required></textarea>
         </label>
 
-        <button class="button" type="submit">{{ $t.Get "Envoyer" }}</button>
+        <button class="button" type="submit">{{ $t.Get "Envoyer (contact form)" }}</button>
       </form>
     </div>
 

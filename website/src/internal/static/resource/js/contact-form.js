@@ -12,12 +12,22 @@ function handleContactForm() {
   return false;
 }
 
+/** @param {FormData} form  */
 async function sendContactForm(form) {
   const contactForm = document.getElementById("contact-form");
+  if (!(contactForm instanceof HTMLFormElement)) {
+    console.error("the contact form is not found");
+    return;
+  }
+
   const container = document.getElementById("contact-form-container");
+  if (container == null) {
+    console.error("the contact form container is not found");
+    return;
+  }
 
   try {
-    const response = await fetch("/contact", {
+    const response = await fetch(contactForm.action, {
       body: new URLSearchParams(form).toString(),
       method: "post",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },

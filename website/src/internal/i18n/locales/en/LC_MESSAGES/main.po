@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2026-02-06 11:38+0100\n"
-"PO-Revision-Date: 2026-02-06 20:46+0100\n"
+"PO-Revision-Date: 2026-02-07 15:34+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -199,3 +199,15 @@ msgstr "Home"
 
 msgid "Articles (menu)"
 msgstr "Articles"
+
+msgid "Envoyer (contact form)"
+msgstr "Send"
+
+msgid "Je vous remercie pour votre message."
+msgstr "Thank you for your message."
+
+msgid "Je vous répondrai au plus vite !"
+msgstr "I'll answer ASAP!"
+
+msgid "Revenir au formulaire"
+msgstr "Back to the form"

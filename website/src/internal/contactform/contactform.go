@@ -7,6 +7,7 @@ import (
 
 	"valette.software/internal/config"
 	"valette.software/internal/page"
+	"valette.software/internal/reqcontext"
 )
 
 type ContactForm struct {
@@ -19,6 +20,7 @@ type ContactForm struct {
 
 func HandleContactFormRequest(res http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
+	reqCtx := reqcontext.GetValue(req.Context())
 
 	if err != nil {
 		fmt.Println(err)
@@ -40,7 +42,7 @@ func HandleContactFormRequest(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	err = page.DisplayContactFormSuccess(res)
+	err = page.DisplayContactFormSuccess(res, reqCtx)
 
 	if err != nil {
 		fmt.Println(err)
