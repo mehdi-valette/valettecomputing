@@ -11,6 +11,7 @@ import (
 
 type NewPost struct {
 	Author    string `json:"author"`
+	Language  string `json:"language"`
 	Timestamp int64  `json:"timestamp"`
 	Title     string `json:"title"`
 	Summary   string `json:"summary"`
@@ -19,6 +20,7 @@ type NewPost struct {
 
 type Post struct {
 	ArticleId int64
+	Language  string
 	Slug      string
 	Author    string
 	Title     string

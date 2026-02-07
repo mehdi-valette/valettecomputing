@@ -47,8 +47,8 @@ func AddPost(newArticle NewPost) error {
 	slug := makeSlug(newArticle.Title)
 
 	_, err := db.Exec(
-		"INSERT INTO post(title, author, timestamp, slug, summary, content) VALUES(?, ?, ?, ?, ?, ?)",
-		newArticle.Title, newArticle.Author, currentTimestamp, slug, newArticle.Summary, newArticle.Content,
+		"INSERT INTO post(title, language, author, timestamp, slug, summary, content) VALUES(?, ?, ?, ?, ?, ?, ?)",
+		newArticle.Title, newArticle.Language, newArticle.Author, currentTimestamp, slug, newArticle.Summary, newArticle.Content,
 	)
 
 	if err != nil {
@@ -59,11 +59,11 @@ func AddPost(newArticle NewPost) error {
 	return nil
 }
 
-func ListPosts() ([]RenderedPost, error) {
+func ListPosts(lang string) ([]RenderedPost, error) {
 	currentPost := RenderedPost{}
 	allPosts := []RenderedPost{}
 
-	results, err := db.Query("SELECT title, author, timestamp, summary, slug FROM post")
+	results, err := db.Query("SELECT title, author, timestamp, summary, slug FROM post WHERE language = ?", lang)
 
 	if err != nil {
 		return []RenderedPost{}, err

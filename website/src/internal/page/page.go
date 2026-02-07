@@ -42,7 +42,7 @@ func DisplayIndex(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 }
 
 func DisplayArticlesSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
-	articles, err := blog.ListPosts()
+	articles, err := blog.ListPosts(reqCtx.Localizer.Lang())
 
 	if err != nil {
 		return err
