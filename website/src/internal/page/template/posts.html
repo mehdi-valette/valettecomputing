@@ -85,7 +85,9 @@
 
   <div class="articles-list">
   {{ range $article := .Articles }}
-    <a href="{{ $.T.Link (print "/articles/" $article.Slug) }}">
+    {{ $t := $.Ctx.Localizer}}
+
+    <a href="{{ $t.Link (print "/articles/" $article.Slug) }}">
       <article class="card">
         <h1>
           {{ $article.Title }}

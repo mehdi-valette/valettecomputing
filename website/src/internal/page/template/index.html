@@ -29,6 +29,8 @@
 <body>
   {{ template "main-menu" . }}
 
+  {{ $t := .Ctx.Localizer }}
+
   <vs-binary-grid class="fixed width-full height-full behind"></vs-binary-grid>
 
   <div class="banner">
@@ -39,10 +41,10 @@
 
     <h1 class="banner-title">Valette Software</h1>
     <h2 class="banner-subtitle">
-      <div class=" small">{{ .T.Get "un (logiciel efficace)" }}</div>
-      {{ .T.Get "logiciel efficace" }}
-      <div class="small" style="margin-top: 3rem;">{{ .T.Get "dans un (environnement sécurisé)" }}</div>
-      {{ .T.Get "environnement sécurisé" }}
+      <div class=" small">{{ $t.Get "un (logiciel efficace)" }}</div>
+      {{ $t.Get "logiciel efficace" }}
+      <div class="small" style="margin-top: 3rem;">{{ $t.Get "dans un (environnement sécurisé)" }}</div>
+      {{ $t.Get "environnement sécurisé" }}
     </h2>
   </div>
 
@@ -54,13 +56,13 @@
         <vs-digital-rain class="rounded-sm height-full"></vs-digital-rain>
       </div>
       <div>
-        <h2>{{ .T.Get "Développement" }}</h2>
+        <h2>{{ $t.Get "Développement" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>{{ .T.Get "De zéro:" }}</strong> {{ .T.Get "Spécifications, développement et déploiement." }}</li>
-          <li><strong>{{ .T.Get "Automatisation:" }}</strong> {{ .T.Get "Remplacer les tâches répétitives par des scripts." }}</li>
-          <li><strong>{{ .T.Get "Renfort:" }}</strong> {{ .T.Get "Prêter main forte à une équipe de développement." }}</li>
-          <li><strong>{{ .T.Get "Consultation:" }}</strong> {{ .T.Get "Recevoir un avis extérieur et expert sur les projets logiciels." }}</li>
+          <li><strong>{{ $t.Get "De zéro:" }}</strong> {{ $t.Get "Spécifications, développement et déploiement." }}</li>
+          <li><strong>{{ $t.Get "Automatisation:" }}</strong> {{ $t.Get "Remplacer les tâches répétitives par des scripts." }}</li>
+          <li><strong>{{ $t.Get "Renfort:" }}</strong> {{ $t.Get "Prêter main forte à une équipe de développement." }}</li>
+          <li><strong>{{ $t.Get "Consultation:" }}</strong> {{ $t.Get "Recevoir un avis extérieur et expert sur les projets logiciels." }}</li>
         </ul>
       </div>
     </div>
@@ -68,13 +70,13 @@
     <div class=" animatable zoomable">
       <div class="img-container"><img src="/static/image/linux-laptop.svg"></div>
       <div>
-        <h2>{{ .T.Get "Administration Linux" }}</h2>
+        <h2>{{ $t.Get "Administration Linux" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>{{ .T.Get "Mise en place:" }}</strong> {{ .T.Get "Installer Linux et des logiciels." }}</li>
-          <li><strong>{{ .T.Get "Comptes:" }}</strong> {{ .T.Get "Gérer les comptes et les droits." }}</li>
-          <li><strong>{{ .T.Get "Sécurisation:" }}</strong> {{ .T.Get "Analyser les systèmes et les processus." }}</li>
-          <li><strong>{{ .T.Get "Surveillance:" }}</strong> {{ .T.Get "Vérifier l'état du système, notamment les sauvegardes et les mises à jours." }}
+          <li><strong>{{ $t.Get "Mise en place:" }}</strong> {{ $t.Get "Installer Linux et des logiciels." }}</li>
+          <li><strong>{{ $t.Get "Comptes:" }}</strong> {{ $t.Get "Gérer les comptes et les droits." }}</li>
+          <li><strong>{{ $t.Get "Sécurisation:" }}</strong> {{ $t.Get "Analyser les systèmes et les processus." }}</li>
+          <li><strong>{{ $t.Get "Surveillance:" }}</strong> {{ $t.Get "Vérifier l'état du système, notamment les sauvegardes et les mises à jours." }}
           </li>
         </ul>
       </div>
@@ -83,13 +85,13 @@
     <div class="animatable zoomable">
       <div class="img-container"><img src="/static/image/deployment.svg"></div>
       <div>
-        <h2>{{ .T.Get "Déploiement" }}</h2>
+        <h2>{{ $t.Get "Déploiement" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>{{ .T.Get "Services:" }}</strong> {{ .T.Get "Déployer une application en tant que service sur un serveur." }}</li>
-          <li><strong>{{ .T.Get "Conteneurs:" }}</strong> {{ .T.Get "Conteneuriser une application." }}</li>
-          <li><strong>{{ .T.Get "CI/CD:" }}</strong> {{ .T.Get "Automatiser les tests et le déploiement des logiciels." }}</li>
-          <li><strong>{{ .T.Get "Kubernetes:" }}</strong> {{ .T.Get "Mettre en place et maintenir un cluster Kubernetes." }}</li>
+          <li><strong>{{ $t.Get "Services:" }}</strong> {{ $t.Get "Déployer une application en tant que service sur un serveur." }}</li>
+          <li><strong>{{ $t.Get "Conteneurs:" }}</strong> {{ $t.Get "Conteneuriser une application." }}</li>
+          <li><strong>{{ $t.Get "CI/CD:" }}</strong> {{ $t.Get "Automatiser les tests et le déploiement des logiciels." }}</li>
+          <li><strong>{{ $t.Get "Kubernetes:" }}</strong> {{ $t.Get "Mettre en place et maintenir un cluster Kubernetes." }}</li>
         </ul>
       </div>
     </div>
@@ -97,13 +99,13 @@
     <div class="animatable zoomable">
       <div class="img-container"><img src="/static/image/shield.svg"></div>
       <div>
-        <h2>{{ .T.Get "Sécurité" }}</h2>
+        <h2>{{ $t.Get "Sécurité" }}</h2>
 
         <ul class="animatable zoomable">
-          <li><strong>{{ .T.Get "Comptes:" }}</strong> {{ .T.Get "Limiter les droits des comptes au strict minimum." }}</li>
-          <li><strong>{{ .T.Get "Pare-feu:" }}</strong> {{ .T.Get "Fermer toute les connections qui ne sont pas attendues." }}</li>
-          <li><strong>{{ .T.Get "Processus:" }}</strong> {{ .T.Get "Limiter les accès accordés aux processus (SELinux, AppArmor)." }}</li>
-          <li><strong>{{ .T.Get "Encryption:" }}</strong> {{ .T.Get "Implémenter ou vérifier l'encryption des disques durs et des emails." }}</li>
+          <li><strong>{{ $t.Get "Comptes:" }}</strong> {{ $t.Get "Limiter les droits des comptes au strict minimum." }}</li>
+          <li><strong>{{ $t.Get "Pare-feu:" }}</strong> {{ $t.Get "Fermer toute les connections qui ne sont pas attendues." }}</li>
+          <li><strong>{{ $t.Get "Processus:" }}</strong> {{ $t.Get "Limiter les accès accordés aux processus (SELinux, AppArmor)." }}</li>
+          <li><strong>{{ $t.Get "Encryption:" }}</strong> {{ $t.Get "Implémenter ou vérifier l'encryption des disques durs et des emails." }}</li>
         </ul>
       </div>
     </div>
@@ -113,11 +115,11 @@
 
   <section class="two-columns">
     <div class="animatable zoomable">
-      <h2>{{ .T.Get "Contact" }}</h2>
-      <p>{{ .T.Get "Une mission à me confier ?" }}</p>
-      <p>{{ .T.Get "Une question à me poser ?" }}</p>
-      <p>{{ .T.Get "Contactez-moi et je répondrai au plus vite !" }}</p>
-      <p>{{ .T.Get "Nous explorerons vos difficultés et les solutions que je peux apporter." }}</p>
+      <h2>{{ $t.Get "Contact" }}</h2>
+      <p>{{ $t.Get "Une mission à me confier ?" }}</p>
+      <p>{{ $t.Get "Une question à me poser ?" }}</p>
+      <p>{{ $t.Get "Contactez-moi et je répondrai au plus vite !" }}</p>
+      <p>{{ $t.Get "Nous explorerons vos difficultés et les solutions que je peux apporter." }}</p>
 
       <p style="margin-top: 4rem">
         <a class="link" href="mailto:mehdi.valette@gmail.com">mehdi.valette@gmail.com</a>
@@ -131,32 +133,32 @@
     <div class="contact animatable zoomable" id="contact-form-container" style="position: relative;">
       <form id="contact-form" onsubmit="return handleContactForm()">
         <label>
-          {{ .T.Get "Nom complet" }}
+          {{ $t.Get "Nom complet" }}
           <input name="name" required>
         </label>
         <label>
-          {{ .T.Get "Entreprise (factulatif)" }}
+          {{ $t.Get "Entreprise (factulatif)" }}
           <input name="company">
         </label>
         <label>
-          {{ .T.Get "Email ou tél. (pour vous répondre)" }}
+          {{ $t.Get "Email ou tél. (pour vous répondre)" }}
           <input name="contact" required>
         </label>
         <label>
-          {{ .T.Get "Concerne" }}
+          {{ $t.Get "Concerne" }}
           <select name="subject">
-            <option value="other">{{ .T.Get "Autre" }}</option>
-            <option value="fix">{{ .T.Get "Emploi fixe" }}</option>
-            <option value="temporary">{{ .T.Get "Emploi temporaire" }}</option>
-            <option value="mission">{{ .T.Get "Mission" }}</option>
+            <option value="other">{{ $t.Get "Autre" }}</option>
+            <option value="fix">{{ $t.Get "Emploi fixe" }}</option>
+            <option value="temporary">{{ $t.Get "Emploi temporaire" }}</option>
+            <option value="mission">{{ $t.Get "Mission" }}</option>
           </select>
         </label>
         <label>
-          {{ .T.Get "Message" }}
+          {{ $t.Get "Message" }}
           <textarea name="message" rows="5" required></textarea>
         </label>
 
-        <button class="button" type="submit">{{ .T.Get "Envoyer" }}</button>
+        <button class="button" type="submit">{{ $t.Get "Envoyer" }}</button>
       </form>
     </div>
 
@@ -166,12 +168,12 @@
 
   <section class="two-columns">
     <div>
-      <h2 class="animatable zoomable">{{ .T.Get "À propos de moi" }}</h2>
+      <h2 class="animatable zoomable">{{ $t.Get "À propos de moi" }}</h2>
       <p class="animatable zoomable">
-        {{ .T.Get "Avec un bachelor en informatique de gestion, plusieurs certifications, et près de 10 ans d'expérience." }}
+        {{ $t.Get "Avec un bachelor en informatique de gestion, plusieurs certifications, et près de 10 ans d'expérience." }}
       </p>
       <p class="animatable zoomable">
-        {{ .T.Get "Lorsque je ne m'occupe pas d'informatique, je m'intéresse à la logique et à l'analyse objective." }}
+        {{ $t.Get "Lorsque je ne m'occupe pas d'informatique, je m'intéresse à la logique et à l'analyse objective." }}
       </p>
     </div>
     <img alt="Mehdi" width="300" height="324.86" class="animatable zoomable rounded-sm border-sm shadow"

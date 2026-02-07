@@ -29,6 +29,9 @@ func Build() *http.ServeMux {
 			req.URL.Path = "/"
 		}
 
+		// add the current path in the context
+		ctxValue.CurrentPath = req.URL.Path
+
 		newCtx := reqcontext.SetValue(req.Context(), ctxValue)
 
 		router.ServeHTTP(res, req.WithContext(newCtx))

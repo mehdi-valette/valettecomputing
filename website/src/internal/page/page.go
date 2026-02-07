@@ -9,7 +9,6 @@ import (
 	"log"
 
 	"valette.software/internal/blog"
-	"valette.software/internal/i18n"
 	"valette.software/internal/reqcontext"
 )
 
@@ -19,7 +18,7 @@ var fsTemplate embed.FS
 var templates *template.Template
 
 type templateData struct {
-	T i18n.Localizer
+	Ctx reqcontext.ReqContext
 }
 
 func Init() {
@@ -38,7 +37,7 @@ func DisplayIndex(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 		Articles []blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "index.html", templateData{T: reqCtx.Localizer})
+	return templates.ExecuteTemplate(buf, "index.html", templateData{Ctx: reqCtx})
 }
 
 func DisplayArticlesSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
@@ -54,7 +53,7 @@ func DisplayArticlesSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 	}
 
 	return templates.ExecuteTemplate(buf, "posts.html", data{
-		templateData: templateData{T: reqCtx.Localizer}, Articles: articles,
+		templateData: templateData{Ctx: reqCtx}, Articles: articles,
 	})
 }
 
@@ -71,7 +70,7 @@ func DisplayArticle(buf io.Writer, reqCtx reqcontext.ReqContext, slug string) er
 		Article blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "post.html", data{templateData: templateData{T: reqCtx.Localizer}, Article: article})
+	return templates.ExecuteTemplate(buf, "post.html", data{templateData: templateData{Ctx: reqCtx}, Article: article})
 }
 
 func DisplayContactFormSuccess(buf io.Writer) error {

@@ -9,7 +9,8 @@ import (
 const requestContextKey = iota
 
 type ReqContext struct {
-	Localizer i18n.Localizer
+	Localizer   i18n.Localizer
+	CurrentPath string
 }
 
 func SetValue(ctx context.Context, value ReqContext) context.Context {

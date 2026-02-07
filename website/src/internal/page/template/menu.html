@@ -1,12 +1,14 @@
 
 {{ define "main-menu"}}
+{{ $t := .Ctx.Localizer}}
+
 <menu class="menu-horizontal">
-  <li class="item"><a href="{{ .T.Link "/" }}">{{ .T.Get "Accueil (menu)" }}</a></li>
-  <li class="item"><a href="{{ .T.Link "/articles/" }}">{{ .T.Get "Articles (menu)" }}</a></li>
-  {{ if eq .T.Lang "en" }}
-  <li class="item"><a href="/fr"><img class="icon-big" src="/static/image/france.svg"> français</a></li>
+  <li class="item"><a href="{{ $t.Link "/" }}">{{ $t.Get "Accueil (menu)" }}</a></li>
+  <li class="item"><a href="{{ $t.Link "/articles/" }}">{{ $t.Get "Articles (menu)" }}</a></li>
+  {{ if eq $t.Lang "en" }}
+  <li class="item"><a href="{{ print "/fr" .Ctx.CurrentPath }}"><img class="icon-big" src="/static/image/france.svg"> français</a></li>
   {{ else }}
-  <li class="item"><a href="/en"><img class="icon-big" src="/static/image/england.svg"> english</a></li>
+  <li class="item"><a href="{{ print "/en" .Ctx.CurrentPath }}"><img class="icon-big" src="/static/image/england.svg"> english</a></li>
   {{ end }}
 </menu>
 {{ end }}
