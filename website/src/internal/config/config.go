@@ -75,8 +75,8 @@ func getValue(line string) (string, string, error) {
 	return "", "", errUnknown
 }
 
-func ReadConfig(file string) {
-	data, err := os.ReadFile(file)
+func Init() {
+	data, err := os.ReadFile("/etc/valettesoftware.conf")
 	smtpData := SmtpData{}
 
 	if err != nil {

@@ -14,8 +14,7 @@ import (
 )
 
 func main() {
-	config.ReadConfig("config.ini")
-
+	config.Init()
 	page.Init()
 	blog.Init()
 	i18n.Init()
