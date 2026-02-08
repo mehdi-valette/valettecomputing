@@ -76,7 +76,7 @@ func getValue(line string) (string, string, error) {
 }
 
 func Init() {
-	data, err := os.ReadFile("/etc/valettesoftware.conf")
+	data, err := os.ReadFile("/etc/valettesoftware/valettesoftware.conf")
 	smtpData := SmtpData{}
 
 	if err != nil {

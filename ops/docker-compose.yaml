@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - ../website:/home/vscode/app
-      - ../website/config.ini:/etc/valettesoftware.conf
+      - ../website/config.ini:/etc/valettesoftware/valettesoftware.conf
     userns_mode: keep-id:uid=1000,gid=1000
     ports:
       - "8080:8080"
