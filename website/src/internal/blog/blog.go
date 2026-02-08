@@ -25,7 +25,7 @@ var monthsFr = []string{"janvier", "février", "mars", "avril", "mai", "juin", "
 func Init() {
 	var err error
 
-	db, err = sql.Open("sqlite", "blog.db")
+	db, err = sql.Open("sqlite", "/var/lib/valettesoftware/blog.db")
 
 	if err != nil {
 		log.Fatal("couldn't open the blog's database:", err)
