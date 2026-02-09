@@ -10,7 +10,7 @@
         home: /nonexistent
         system: true
 
-    - name: Install the unit file for software.service
+    - name: Install the unit file for valettesoftware.service
       ansible.builtin.template:
         src: ./resources/valettesoftware.service
         dest: /etc/systemd/system/valettesoftware.service
