@@ -44,7 +44,7 @@ jobs:
       - name: Upload via rsync
         run: |
           rsync -avz valettesoftware \
-            ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/debian/valettesoftware
+            ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/usr/sbin/valettesoftware
 
       - name: Restart remote service
         run: ssh ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} "sudo systemctl restart valettesoftware.service"

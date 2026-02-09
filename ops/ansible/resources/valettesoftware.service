@@ -1,0 +1,14 @@
+[Unit]
+Description=Run valettesoftware.
+
+[Install]
+WantedBy=multi-user.target
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/valettesoftware --port=8080
+User=valettesoftware
+Group=valettesoftware
+Restart=always
+RestartSec=5

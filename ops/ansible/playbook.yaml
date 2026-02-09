@@ -1,0 +1,35 @@
+- name: setup service 
+  hosts: main
+  become: true
+  tasks:
+    - name: Create the user valettesoftware
+      ansible.builtin.user:
+        name: valettesoftware
+        shell: /usr/sbin/nologin
+        create_home: false
+        home: /nonexistent
+        system: true
+
+    - name: Install the unit file for software.service
+      ansible.builtin.template:
+        src: ./resources/valettesoftware.service
+        dest: /etc/systemd/system/valettesoftware.service
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+
+    - name: Create the configuration directory
+      ansible.builtin.file:
+        path: /etc/valettesoftware
+        state: directory
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
+
+    - name: Create the data directory
+      ansible.builtin.file:
+        path: /var/lib/valettesoftware
+        state: directory
+        owner: root
+        group: root
+        mode: u=rwx,g=rx,o=rx
