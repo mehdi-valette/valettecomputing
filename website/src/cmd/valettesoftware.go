@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"log"
 	"net/http"
 	"os"
@@ -38,13 +37,9 @@ func main() {
 func buildListenUrl() string {
 	port := "80"
 
-	for argIndex, arg := range os.Args {
-		if arg == "--port" {
-			if argIndex >= len(os.Args)-1 {
-				log.Fatal(errors.New("the argument --port requires a value"))
-			}
-
-			port = os.Args[argIndex+1]
+	for _, arg := range os.Args {
+		if len(arg) > 7 && arg[0:7] == "--port=" {
+			port = arg[7:]
 		}
 	}
 
