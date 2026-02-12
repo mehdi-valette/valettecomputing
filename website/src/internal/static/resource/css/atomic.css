@@ -25,3 +25,7 @@
 .behind {
   z-index: -1;
 }
+
+.spacer {
+  flex-grow: 1;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <style>
+    @import url("/static/css/animation.css");
+    @import url("/static/css/atomic.css");
+    @import url("/static/css/body.css");
+    @import url("/static/css/button.css");
+    @import url("/static/css/menu.css");
+    @import url("/static/css/variables.css");
+
+    .blog {
+      display: flex;
+      gap: 2rem;
+      width: 96rem;
+      margin: auto;
+      height: 52rem;
+      overflow: hidden;
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      overflow: auto;
+      height: 100%;
+      padding-right: 1rem;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    a:has(.card) {
+      text-decoration: none;
+      color: black;
+    }
+
+    a>.card {
+      width: 20rem;
+      border-radius: .3rem;
+      background-color: rgb(255 255 255 / 0.8);
+      padding: 1rem;
+      border: 1px inset;
+      transition: background-color .3s ease;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(255 255 255 / 0.5);
+      }
+    }
+
+    .content {
+      padding: 1rem;
+      background-color: rgb(255 255 255 / 0.9);
+      flex-grow: 1;
+      border-radius: .3rem;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-header {
+      display: flex;
+      gap: .5rem;
+    }
+
+    .post-title {
+      display: block;
+      width: 100%;
+    }
+
+    .post-summary {
+      width: 100%;
+      height: 4rem;
+    }
+
+    .post-content {
+      width: 100%;
+      height: 40rem;
+    }
+
+    .side-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+</head>
+
+<body>
+  <menu class="menu-horizontal">
+    <li class="item"><a href="/logout">Logout</a></li>
+  </menu>
+
+  <div class="blog">
+
+    <div class="side-menu">
+      <button data-hx-get="/new-post" data-hx-target="#blog-edit-post" id="blog-edit-post-reset">New Post</button>
+
+      <div class="cards">
+        {{ range $article := .Articles}}
+        <a data-hx-get="/edit-posts/{{ $article.ArticleId }}" data-hx-target="#blog-edit-post">
+          <article class="card">
+            {{ $article.DateHuman }} | {{ $article.Author }}
+            <h1>{{ $article.Title }}</h1>
+            <p>{{ $article.Summary }}</p>
+          </article>
+        </a>
+        {{ end }}
+      </div>
+    </div>
+
+    <div id="blog-edit-post" class="content">
+      {{ template "post-edit.html" }}
+    </div>
+  </div>
+</body>
+
+</html>

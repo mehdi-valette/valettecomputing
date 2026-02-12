@@ -1,10 +1,11 @@
 package router
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 
 	"valette.software/internal/blog"
 	"valette.software/internal/contactform"
@@ -95,6 +96,14 @@ func buildRouter() *http.ServeMux {
 		}
 	})
 
+	router.HandleFunc("GET /admin/", func(res http.ResponseWriter, req *http.Request) {
+		err := page.DisplayAdmin(res)
+
+		if err != nil {
+			log.Print("Couldn't display the admin page\n", err)
+		}
+	})
+
 	router.HandleFunc("GET /articles/", func(res http.ResponseWriter, req *http.Request) {
 		reqCtx := reqcontext.GetValue(req.Context())
 
@@ -105,22 +114,129 @@ func buildRouter() *http.ServeMux {
 		}
 	})
 
-	router.HandleFunc("POST /articles", func(res http.ResponseWriter, req *http.Request) {
-		newArticle := blog.NewPost{}
-
-		decoder := json.NewDecoder(req.Body)
-		err := decoder.Decode(&newArticle)
+	router.HandleFunc("GET /new-post", func(res http.ResponseWriter, req *http.Request) {
+		err := page.DisplayPostNew(res)
 
 		if err != nil {
-			res.WriteHeader(404)
+			res.WriteHeader(500)
+			log.Print(err)
+		}
+	})
+
+	router.HandleFunc("GET /edit-posts/{id}", func(res http.ResponseWriter, req *http.Request) {
+		id, err := strconv.ParseInt(
+			req.PathValue("id"),
+			10,
+			64,
+		)
+
+		if err != nil {
+			res.WriteHeader(400)
+			res.Write([]byte("post's id must be a number"))
+			return
+		}
+
+		post, err := blog.GetPostById(id)
+
+		if err != nil {
+			res.WriteHeader(500)
+			return
+		}
+
+		page.DisplayPostEdition(res, post)
+	})
+
+	router.HandleFunc("POST /posts", func(res http.ResponseWriter, req *http.Request) {
+		date, err := time.Parse("2006-01-02", req.FormValue("date"))
+
+		if err != nil {
+			date = time.Now()
+		}
+
+		newPost := blog.NewPost{
+			Author:    req.FormValue("author"),
+			Language:  req.FormValue("language"),
+			Title:     req.FormValue("title"),
+			Timestamp: date.Unix(),
+			Summary:   req.FormValue("summary"),
+			Content:   req.FormValue("content"),
+		}
+
+		renderedPost, err := blog.AddPost(newPost)
+
+		if err != nil {
+			res.WriteHeader(500)
+			log.Print(err)
+		}
+
+		err = page.DisplayPostEdition(res, renderedPost)
+
+		if err != nil {
+			log.Print("couldn't display the post after creation\n", err)
+		}
+	})
+
+	router.HandleFunc("PUT /posts/{id}", func(res http.ResponseWriter, req *http.Request) {
+		id, err := strconv.ParseInt(req.FormValue("id"), 10, 64)
+
+		if err != nil {
+			res.WriteHeader(400)
+			res.Write([]byte("the post's ID must be an integer"))
+			return
+		}
+
+		date, err := time.Parse("2006-01-02", req.FormValue("date"))
+
+		if err != nil {
+			date = time.Now()
+		}
+
+		newPost := blog.RenderedPost{
+			Post: blog.Post{
+				ArticleId: id,
+				Slug:      req.FormValue("slug"),
+				Author:    req.FormValue("author"),
+				Language:  req.FormValue("language"),
+				Title:     req.FormValue("title"),
+				Timestamp: date.Unix(),
+				Summary:   req.FormValue("summary"),
+				Content:   req.FormValue("content"),
+			},
+		}
+
+		renderedPost, err := blog.UpdatePost(newPost)
+
+		if err != nil {
+			res.Write([]byte(err.Error()))
 			log.Print(err)
 			return
 		}
 
-		err = blog.AddPost(newArticle)
+		err = page.DisplayPostEdition(res, renderedPost)
+
+		if err != nil {
+			log.Print("couldn't display the post after update\n", err)
+		}
+	})
+
+	router.HandleFunc("DELETE /posts/{id}", func(res http.ResponseWriter, req *http.Request) {
+		id, err := strconv.ParseInt(req.FormValue("id"), 10, 64)
 
 		if err != nil {
 			res.WriteHeader(500)
+			return
+		}
+
+		err = blog.DeletePostById(id)
+
+		if err != nil {
+			res.WriteHeader(500)
+			log.Print(err)
+		}
+
+		err = page.DisplayPostNew(res)
+
+		if err != nil {
 			log.Print(err)
 		}
 	})
@@ -131,7 +247,7 @@ func buildRouter() *http.ServeMux {
 		err := page.DisplayArticle(res, reqCtx, req.PathValue("name"))
 
 		if err != nil {
-			log.Print("couldn't display the article page")
+			log.Print("couldn't display the article page\n", err)
 		}
 	})
 

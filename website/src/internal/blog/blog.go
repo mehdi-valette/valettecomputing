@@ -21,6 +21,7 @@ var mdExtensions parser.Extensions
 var db *sql.DB
 var timezoneCet *time.Location
 var monthsFr = []string{"janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"}
+var monthsEn = []string{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
 
 func Init() {
 	var err error
@@ -42,28 +43,60 @@ func Init() {
 	}
 }
 
-func AddPost(newArticle NewPost) error {
-	currentTimestamp := time.Now().UnixMilli() / 1000
-	slug := makeSlug(newArticle.Title)
+func AddPost(newPost NewPost) (RenderedPost, error) {
+	slug := makeSlug(newPost.Title)
 
-	_, err := db.Exec(
+	if newPost.Timestamp == 0 {
+		newPost.Timestamp = time.Now().Unix()
+	}
+
+	result, err := db.Exec(
 		"INSERT INTO post(title, language, author, timestamp, slug, summary, content) VALUES(?, ?, ?, ?, ?, ?, ?)",
-		newArticle.Title, newArticle.Language, newArticle.Author, currentTimestamp, slug, newArticle.Summary, newArticle.Content,
+		newPost.Title, newPost.Language, newPost.Author, newPost.Timestamp, slug, newPost.Summary, newPost.Content,
 	)
 
 	if err != nil {
-		log.Print(err)
-		return err
+		return RenderedPost{}, err
 	}
 
-	return nil
+	newId, err := result.LastInsertId()
+
+	if err != nil {
+		return RenderedPost{}, err
+	}
+
+	renderedPost := newPost.ToRenderedPost(newId, slug)
+
+	return renderedPost, nil
+}
+
+func UpdatePost(post RenderedPost) (RenderedPost, error) {
+	_, err := db.Exec(
+		"UPDATE post SET title = ?, language = ?, author = ?, timestamp = ?, slug = ?, summary = ?, content = ? WHERE article_id = ?",
+		post.Title, post.Language, post.Author, post.Timestamp, post.Slug, post.Summary, post.Content, post.ArticleId,
+	)
+
+	if err != nil {
+		return RenderedPost{}, err
+	}
+
+	post.CalculateDates()
+	post.CalculateHtmlContent()
+
+	return post, nil
 }
 
 func ListPosts(lang string) ([]RenderedPost, error) {
 	currentPost := RenderedPost{}
 	allPosts := []RenderedPost{}
+	var err error
+	var results *sql.Rows
 
-	results, err := db.Query("SELECT title, author, timestamp, summary, slug FROM post WHERE language = ?", lang)
+	if lang != "" {
+		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post WHERE language = ?", lang)
+	} else {
+		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post")
+	}
 
 	if err != nil {
 		return []RenderedPost{}, err
@@ -71,8 +104,10 @@ func ListPosts(lang string) ([]RenderedPost, error) {
 
 	for results.Next() {
 		err := results.Scan(
+			&currentPost.ArticleId,
 			&currentPost.Title,
 			&currentPost.Author,
+			&currentPost.Language,
 			&currentPost.Timestamp,
 			&currentPost.Summary,
 			&currentPost.Slug,
@@ -90,7 +125,7 @@ func ListPosts(lang string) ([]RenderedPost, error) {
 	return allPosts, nil
 }
 
-func Render(output io.Writer, slug string) (RenderedPost, error) {
+func GetPostBySlug(output io.Writer, slug string) (RenderedPost, error) {
 	post := RenderedPost{}
 
 	result := db.QueryRow("SELECT title, author, timestamp, summary, content FROM post WHERE slug = ?", slug)
@@ -108,6 +143,32 @@ func Render(output io.Writer, slug string) (RenderedPost, error) {
 	post.CalculateHtmlContent()
 
 	return post, err
+}
+
+func GetPostById(id int64) (RenderedPost, error) {
+	post := RenderedPost{}
+
+	result := db.QueryRow("SELECT article_id, language, slug, title, author, timestamp, summary, content FROM post WHERE article_id = ?", id)
+
+	err := result.Scan(&post.ArticleId, &post.Language, &post.Slug, &post.Title, &post.Author, &post.Timestamp, &post.Summary, &post.Content)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return RenderedPost{}, ErrNotFound
+	} else if err != nil {
+		log.Print(err)
+		return RenderedPost{}, err
+	}
+
+	post.CalculateDates()
+	post.CalculateHtmlContent()
+
+	return post, err
+}
+
+func DeletePostById(id int64) error {
+	_, err := db.Exec("DELETE FROM post WHERE article_id = ?", id)
+
+	return err
 }
 
 func makeSlug(text string) string {

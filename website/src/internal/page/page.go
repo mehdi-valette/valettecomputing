@@ -59,7 +59,7 @@ func DisplayArticlesSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 
 func DisplayArticle(buf io.Writer, reqCtx reqcontext.ReqContext, slug string) error {
 	articleText := bytes.NewBuffer(nil)
-	article, err := blog.Render(articleText, slug)
+	article, err := blog.GetPostBySlug(articleText, slug)
 
 	if errors.Is(err, blog.ErrNotFound) {
 		return templates.ExecuteTemplate(buf, "post.html", nil)
@@ -79,4 +79,30 @@ func DisplayContactFormSuccess(buf io.Writer, reqCtx reqcontext.ReqContext) erro
 
 func DisplayAgenda(buf io.Writer) error {
 	return templates.ExecuteTemplate(buf, "agenda.html", nil)
+}
+
+func DisplayAdmin(buf io.Writer) error {
+	articles, err := blog.ListPosts("")
+
+	if err != nil {
+		return err
+	}
+
+	type data struct {
+		Articles []blog.RenderedPost
+	}
+
+	return templates.ExecuteTemplate(buf, "admin.html", data{articles})
+}
+
+func DisplayPostEdition(buf io.Writer, post blog.RenderedPost) error {
+	type data struct {
+		Post blog.RenderedPost
+	}
+
+	return templates.ExecuteTemplate(buf, "post-edit.html", data{Post: post})
+}
+
+func DisplayPostNew(buf io.Writer) error {
+	return templates.ExecuteTemplate(buf, "post-edit.html", nil)
 }

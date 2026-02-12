@@ -1,0 +1,31 @@
+<form id="blog-edit-post-form" class="form" data-hx-target="#blog-edit-post">
+  <div class="form-header">
+    <select name="language">
+      <option value="fr" {{ if eq .Post.Language "fr" }} selected {{ end }}>français</option>
+      <option value="en" {{ if eq .Post.Language "en" }} selected {{ end }}>english</option>
+    </select>
+
+    <input type="date" name="date" value="{{ slice (or .Post.DateIso " ----------") 0 10 }}">
+    <input name="author" placeholder="author" value="Mehdi Valette" value="{{ or .Post.Author "" }}">
+
+    <input class="spacer" name="slug" placeholder="slug" value="{{ .Post.Slug }}">
+    <input type="hidden" name="id" value="{{ .Post.ArticleId }}">
+
+    {{ if .Post}}
+    <button data-hx-delete="/posts/{{ .Post.ArticleId }}">Delete</button>
+    <button data-hx-put="/posts/{{ .Post.ArticleId }}">Save</button>
+    {{ else }}
+    <button data-hx-post="/posts">Create</button>
+    {{ end }}
+
+  </div>
+
+  <input class="post-title" placeholder="title" name="title" value="{{ .Post.Title }}">
+
+  <textarea class="post-summary" name="summary">
+    {{- .Post.Summary -}}
+  </textarea>
+  <textarea class="post-content" name="content">
+    {{- .Post.Content -}}
+  </textarea>
+</form>
