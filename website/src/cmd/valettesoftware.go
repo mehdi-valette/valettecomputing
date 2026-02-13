@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"valette.software/internal/authentication"
 	"valette.software/internal/blog"
 	"valette.software/internal/config"
 	"valette.software/internal/i18n"
@@ -17,6 +18,7 @@ func main() {
 	page.Init()
 	blog.Init()
 	i18n.Init()
+	authentication.Init(config.GetConfig())
 
 	root := router.Build()
 

@@ -106,3 +106,7 @@ func DisplayPostEdition(buf io.Writer, post blog.RenderedPost) error {
 func DisplayPostNew(buf io.Writer) error {
 	return templates.ExecuteTemplate(buf, "post-edit.html", nil)
 }
+
+func DisplayLoginForm(buf io.Writer) error {
+	return templates.ExecuteTemplate(buf, "admin-login.html", nil)
+}

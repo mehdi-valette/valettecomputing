@@ -11,6 +11,15 @@ const requestContextKey = iota
 type ReqContext struct {
 	Localizer   i18n.Localizer
 	CurrentPath string
+	Admin       bool
+}
+
+func NewContext() ReqContext {
+	return ReqContext{
+		Localizer:   nil,
+		CurrentPath: "",
+		Admin:       false,
+	}
 }
 
 func SetValue(ctx context.Context, value ReqContext) context.Context {

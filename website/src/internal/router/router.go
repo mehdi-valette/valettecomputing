@@ -3,11 +3,9 @@ package router
 import (
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
-	"time"
 
-	"valette.software/internal/blog"
+	"valette.software/internal/authentication"
 	"valette.software/internal/contactform"
 	"valette.software/internal/i18n"
 	"valette.software/internal/page"
@@ -21,17 +19,16 @@ func Build() *http.ServeMux {
 	router := buildRouter()
 
 	root.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		ctxValue := reqcontext.ReqContext{}
+		localizer, newPath := getLocale(req.URL.Path)
+		sessionId := getSessionId(req)
 
-		// add the locale in the context and remove it from the path
-		req.URL.Path = AddLocale(&ctxValue, req.URL.Path)
+		req.URL.Path = newPath
 
-		if req.URL.Path == "" {
-			req.URL.Path = "/"
+		ctxValue := reqcontext.ReqContext{
+			Localizer:   localizer,
+			Admin:       authentication.CheckSession(sessionId),
+			CurrentPath: newPath,
 		}
-
-		// add the current path in the context
-		ctxValue.CurrentPath = req.URL.Path
 
 		newCtx := reqcontext.SetValue(req.Context(), ctxValue)
 
@@ -41,7 +38,7 @@ func Build() *http.ServeMux {
 	return root
 }
 
-func AddLocale(ctx *reqcontext.ReqContext, path string) string {
+func getLocale(path string) (i18n.Localizer, string) {
 	stripPrefix := ""
 	pathFragments := strings.Split(path, "/")
 
@@ -76,9 +73,23 @@ func AddLocale(ctx *reqcontext.ReqContext, path string) string {
 		log.Print("locale not found\n", err)
 	}
 
-	ctx.Localizer = localizer
+	newPath := strings.TrimPrefix(path, stripPrefix)
 
-	return strings.TrimPrefix(path, stripPrefix)
+	if newPath == "" {
+		newPath = "/"
+	}
+
+	return localizer, newPath
+}
+
+func getSessionId(req *http.Request) string {
+	cookie, err := req.Cookie("session-id")
+
+	if err != nil {
+		return ""
+	}
+
+	return cookie.Value
 }
 
 func buildRouter() *http.ServeMux {
@@ -86,180 +97,50 @@ func buildRouter() *http.ServeMux {
 
 	router.Handle("GET /static/", http.StripPrefix("/static/", static.Serve()))
 
-	router.HandleFunc("GET /", func(res http.ResponseWriter, req *http.Request) {
-		reqCtx := reqcontext.GetValue(req.Context())
+	router.HandleFunc("GET /", indexPage)
 
-		err := page.DisplayIndex(res, reqCtx)
+	router.HandleFunc("GET /articles/", listPosts)
 
-		if err != nil {
-			log.Print("couldn't display the index page\n", err)
-		}
-	})
+	router.HandleFunc("POST /login", login)
 
-	router.HandleFunc("GET /admin/", func(res http.ResponseWriter, req *http.Request) {
-		err := page.DisplayAdmin(res)
+	router.HandleFunc("GET /logout", logout)
 
-		if err != nil {
-			log.Print("Couldn't display the admin page\n", err)
-		}
-	})
+	router.HandleFunc("GET /articles/{name}", getPost)
 
-	router.HandleFunc("GET /articles/", func(res http.ResponseWriter, req *http.Request) {
-		reqCtx := reqcontext.GetValue(req.Context())
-
-		err := page.DisplayArticlesSummary(res, reqCtx)
-
-		if err != nil {
-			log.Print("couldn't display the articles's summary page\n", err)
-		}
-	})
-
-	router.HandleFunc("GET /new-post", func(res http.ResponseWriter, req *http.Request) {
-		err := page.DisplayPostNew(res)
-
-		if err != nil {
-			res.WriteHeader(500)
-			log.Print(err)
-		}
-	})
-
-	router.HandleFunc("GET /edit-posts/{id}", func(res http.ResponseWriter, req *http.Request) {
-		id, err := strconv.ParseInt(
-			req.PathValue("id"),
-			10,
-			64,
-		)
-
-		if err != nil {
-			res.WriteHeader(400)
-			res.Write([]byte("post's id must be a number"))
-			return
-		}
-
-		post, err := blog.GetPostById(id)
-
-		if err != nil {
-			res.WriteHeader(500)
-			return
-		}
-
-		page.DisplayPostEdition(res, post)
-	})
-
-	router.HandleFunc("POST /posts", func(res http.ResponseWriter, req *http.Request) {
-		date, err := time.Parse("2006-01-02", req.FormValue("date"))
-
-		if err != nil {
-			date = time.Now()
-		}
-
-		newPost := blog.NewPost{
-			Author:    req.FormValue("author"),
-			Language:  req.FormValue("language"),
-			Title:     req.FormValue("title"),
-			Timestamp: date.Unix(),
-			Summary:   req.FormValue("summary"),
-			Content:   req.FormValue("content"),
-		}
-
-		renderedPost, err := blog.AddPost(newPost)
-
-		if err != nil {
-			res.WriteHeader(500)
-			log.Print(err)
-		}
-
-		err = page.DisplayPostEdition(res, renderedPost)
-
-		if err != nil {
-			log.Print("couldn't display the post after creation\n", err)
-		}
-	})
-
-	router.HandleFunc("PUT /posts/{id}", func(res http.ResponseWriter, req *http.Request) {
-		id, err := strconv.ParseInt(req.FormValue("id"), 10, 64)
-
-		if err != nil {
-			res.WriteHeader(400)
-			res.Write([]byte("the post's ID must be an integer"))
-			return
-		}
-
-		date, err := time.Parse("2006-01-02", req.FormValue("date"))
-
-		if err != nil {
-			date = time.Now()
-		}
-
-		newPost := blog.RenderedPost{
-			Post: blog.Post{
-				ArticleId: id,
-				Slug:      req.FormValue("slug"),
-				Author:    req.FormValue("author"),
-				Language:  req.FormValue("language"),
-				Title:     req.FormValue("title"),
-				Timestamp: date.Unix(),
-				Summary:   req.FormValue("summary"),
-				Content:   req.FormValue("content"),
-			},
-		}
-
-		renderedPost, err := blog.UpdatePost(newPost)
-
-		if err != nil {
-			res.Write([]byte(err.Error()))
-			log.Print(err)
-			return
-		}
-
-		err = page.DisplayPostEdition(res, renderedPost)
-
-		if err != nil {
-			log.Print("couldn't display the post after update\n", err)
-		}
-	})
-
-	router.HandleFunc("DELETE /posts/{id}", func(res http.ResponseWriter, req *http.Request) {
-		id, err := strconv.ParseInt(req.FormValue("id"), 10, 64)
-
-		if err != nil {
-			res.WriteHeader(500)
-			return
-		}
-
-		err = blog.DeletePostById(id)
-
-		if err != nil {
-			res.WriteHeader(500)
-			log.Print(err)
-		}
-
-		err = page.DisplayPostNew(res)
-
-		if err != nil {
-			log.Print(err)
-		}
-	})
-
-	router.HandleFunc("GET /articles/{name}", func(res http.ResponseWriter, req *http.Request) {
-		reqCtx := reqcontext.GetValue(req.Context())
-
-		err := page.DisplayArticle(res, reqCtx, req.PathValue("name"))
-
-		if err != nil {
-			log.Print("couldn't display the article page\n", err)
-		}
-	})
-
-	router.HandleFunc("GET /agenda", func(res http.ResponseWriter, req *http.Request) {
-		err := page.DisplayAgenda(res)
-
-		if err != nil {
-			log.Print("couldn't display the agenda page", err)
-		}
-	})
+	router.HandleFunc("GET /agenda", getAgenda)
 
 	router.HandleFunc("POST /contact", contactform.HandleContactFormRequest)
 
+	router.HandleFunc("GET /admin/", requireAdmin(adminPage))
+
+	router.HandleFunc("GET /new-post", requireAdmin(newPostController))
+
+	router.HandleFunc("GET /edit-posts/{id}", requireAdmin(getEditablePost))
+
+	router.HandleFunc("POST /posts", requireAdmin(createPost))
+
+	router.HandleFunc("PUT /posts/{id}", requireAdmin(updatePost))
+
+	router.HandleFunc("DELETE /posts/{id}", requireAdmin(deletePost))
+
 	return router
+}
+
+func requireAdmin(handler http.HandlerFunc) http.HandlerFunc {
+	return func(res http.ResponseWriter, req *http.Request) {
+		reqCtx := reqcontext.GetValue(req.Context())
+
+		if reqCtx.Admin {
+			handler(res, req)
+			return
+		}
+
+		printError(page.DisplayLoginForm(res))
+	}
+}
+
+func printError(err error) {
+	if err != nil {
+		log.Print(err)
+	}
 }

@@ -17,12 +17,14 @@ var config Configurator = &Config{}
 type Configurator interface {
 	GetSmtpAuth() smtp.Auth
 	GetSmtp() SmtpData
-	setData(data SmtpData, auth smtp.Auth)
+	GetAdminPassword() string
+	setData(data SmtpData, auth smtp.Auth, adminPassword string)
 }
 
 type Config struct {
-	SmtpAuth smtp.Auth
-	SmtpData SmtpData
+	smtpAuth      smtp.Auth
+	smtpData      SmtpData
+	adminPassword string
 }
 
 type SmtpData struct {
@@ -37,16 +39,21 @@ type SmtpData struct {
 var _ Configurator = &Config{}
 
 func (c Config) GetSmtpAuth() smtp.Auth {
-	return c.SmtpAuth
+	return c.smtpAuth
 }
 
 func (c Config) GetSmtp() SmtpData {
-	return c.SmtpData
+	return c.smtpData
 }
 
-func (c *Config) setData(data SmtpData, auth smtp.Auth) {
-	c.SmtpData = data
-	c.SmtpAuth = auth
+func (c Config) GetAdminPassword() string {
+	return c.adminPassword
+}
+
+func (c *Config) setData(data SmtpData, auth smtp.Auth, adminPassword string) {
+	c.smtpData = data
+	c.smtpAuth = auth
+	c.adminPassword = adminPassword
 }
 
 func getValue(line string) (string, string, error) {
@@ -78,6 +85,7 @@ func getValue(line string) (string, string, error) {
 func Init() {
 	data, err := os.ReadFile("/etc/valettesoftware/valettesoftware.conf")
 	smtpData := SmtpData{}
+	adminPassword := ""
 
 	if err != nil {
 		log.Fatal(err)
@@ -103,12 +111,18 @@ func Init() {
 			smtpData.To = []string{value}
 		case "smtp_user":
 			smtpData.User = value
+		case "admin_password":
+			adminPassword = value
 		default:
 			log.Printf("the key '%s' is unknown", key)
 		}
 	}
 
-	config.setData(smtpData, smtp.PlainAuth("", smtpData.User, smtpData.Password, smtpData.Host))
+	if adminPassword == "" {
+		log.Fatal("admin_password not found in config file /etc/valettesoftware/valettesoftware.conf")
+	}
+
+	config.setData(smtpData, smtp.PlainAuth("", smtpData.User, smtpData.Password, smtpData.Host), adminPassword)
 }
 
 func GetConfig() Configurator {

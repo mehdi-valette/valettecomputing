@@ -4,3 +4,4 @@ smtp_user=my@email.com
 smtp_password=supersecret
 smtp_from=my@email.com
 smtp_to=my@email.com
+admin_password=supersecret
