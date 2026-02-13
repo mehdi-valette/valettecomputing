@@ -93,9 +93,9 @@ func ListPosts(lang string) ([]RenderedPost, error) {
 	var results *sql.Rows
 
 	if lang != "" {
-		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post WHERE language = ?", lang)
+		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post WHERE language = ? ORDER BY timestamp DESC", lang)
 	} else {
-		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post")
+		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post ORDER BY timestamp DESC")
 	}
 
 	if err != nil {

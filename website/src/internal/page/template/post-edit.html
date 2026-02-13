@@ -1,4 +1,4 @@
-<form id="blog-edit-post-form" class="form" data-hx-target="#blog-edit-post">
+<form id="blog-edit-post-form" class="form" data-hx-swap="none" hx-swap-oob="true">
   <div class="form-header">
     <select name="language">
       <option value="fr" {{ if eq .Post.Language "fr" }} selected {{ end }}>français</option>
@@ -12,6 +12,7 @@
     <input type="hidden" name="id" value="{{ .Post.ArticleId }}">
 
     {{ if .Post}}
+    <input title="confirm delete" type="checkbox" name="confirm-delete" value="confirm">
     <button data-hx-delete="/posts/{{ .Post.ArticleId }}">Delete</button>
     <button data-hx-put="/posts/{{ .Post.ArticleId }}">Save</button>
     {{ else }}

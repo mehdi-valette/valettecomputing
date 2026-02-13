@@ -88,11 +88,22 @@ func DisplayAdmin(buf io.Writer) error {
 		return err
 	}
 
-	type data struct {
-		Articles []blog.RenderedPost
+	type listItem struct {
+		Status string
+		Post   blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "admin.html", data{articles})
+	ps := make([]listItem, 0, len(articles))
+
+	for _, p := range articles {
+		ps = append(ps, listItem{Status: "update", Post: p})
+	}
+
+	type data struct {
+		Posts []listItem
+	}
+
+	return templates.ExecuteTemplate(buf, "admin.html", data{ps})
 }
 
 func DisplayPostEdition(buf io.Writer, post blog.RenderedPost) error {
@@ -109,4 +120,13 @@ func DisplayPostNew(buf io.Writer) error {
 
 func DisplayLoginForm(buf io.Writer) error {
 	return templates.ExecuteTemplate(buf, "admin-login.html", nil)
+}
+
+func DisplayPostListItem(buf io.Writer, post blog.RenderedPost, status string) error {
+	type data struct {
+		Status string
+		Post   blog.RenderedPost
+	}
+
+	return templates.ExecuteTemplate(buf, "post-edit-list-item.html", data{Status: status, Post: post})
 }

@@ -54,6 +54,9 @@ func login(res http.ResponseWriter, req *http.Request) {
 
 	http.SetCookie(res, &sessionCookie)
 
+	req.Method = "GET"
+	http.Redirect(res, req, "/admin", 303)
+
 	printError(page.DisplayAdmin(res))
 }
 
@@ -112,6 +115,7 @@ func createPost(res http.ResponseWriter, req *http.Request) {
 		log.Print(err)
 	}
 
+	printError(page.DisplayPostListItem(res, renderedPost, "new"))
 	printError(page.DisplayPostEdition(res, renderedPost))
 }
 
@@ -151,10 +155,15 @@ func updatePost(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	printError(page.DisplayPostListItem(res, renderedPost, "update"))
 	printError(page.DisplayPostEdition(res, renderedPost))
 }
 
 func deletePost(res http.ResponseWriter, req *http.Request) {
+	if req.FormValue("confirm-delete") != "confirm" {
+		return
+	}
+
 	id, err := strconv.ParseInt(req.FormValue("id"), 10, 64)
 
 	if err != nil {
@@ -169,5 +178,11 @@ func deletePost(res http.ResponseWriter, req *http.Request) {
 		log.Print(err)
 	}
 
+	type data struct {
+		Status string
+		Post   blog.RenderedPost
+	}
+
+	printError(page.DisplayPostListItem(res, blog.RenderedPost{Post: blog.Post{ArticleId: id}}, "delete"))
 	printError(page.DisplayPostNew(res))
 }

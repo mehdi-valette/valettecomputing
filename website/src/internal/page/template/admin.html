@@ -103,19 +103,9 @@
   <div class="blog">
 
     <div class="side-menu">
-      <button data-hx-get="/new-post" data-hx-target="#blog-edit-post">New Post</button>
+      <button data-hx-get="/new-post" data-hx-swap="none">New Post</button>
 
-      <div class="cards">
-        {{ range $article := .Articles}}
-        <a data-hx-get="/edit-posts/{{ $article.ArticleId }}" data-hx-target="#blog-edit-post">
-          <article class="card">
-            {{ $article.DateHuman }} | {{ $article.Author }}
-            <h1>{{ $article.Title }}</h1>
-            <p>{{ $article.Summary }}</p>
-          </article>
-        </a>
-        {{ end }}
-      </div>
+      {{ template "post-edit-list.html" . }}
     </div>
 
     <div id="blog-edit-post" class="content">

@@ -1,0 +1,5 @@
+<div id="blog-edit-list" class="cards" data-hx-swap-oob="true">
+  {{ range $article := .Posts}}
+  {{ template "post-edit-list-item.html" $article }}
+  {{ end }}
+</div>

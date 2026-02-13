@@ -1,0 +1,26 @@
+{{ $article := .Post }}
+{{ $tagId := (print "blog-edit-list-" $article.ArticleId) }}
+{{ $swapOob := (print "outerHTML:#" $tagId) }}
+
+{{- if eq .Status "new" }}
+<div data-hx-swap-oob="afterbegin:#blog-edit-list">
+  <a id="{{ $tagId }}" data-hx-get="/edit-posts/{{ $article.ArticleId }}" data-hx-swap="none">
+    <article class="card">
+      {{ $article.DateHuman }} | {{ $article.Author }}
+      <h1>{{ $article.Title }}</h1>
+      <p>{{ $article.Summary }}</p>
+    </article>
+  </a>
+</div>
+{{ else if eq .Status "delete" }}
+<div data-hx-swap-oob="delete:#{{ $tagId }}"></div>
+{{ else }}
+<a id="{{ $tagId }}" data-hx-get="/edit-posts/{{ $article.ArticleId }}" data-hx-swap="none"
+  data-hx-swap-oob="outerHTML:#{{ $tagId }}">
+  <article class="card">
+    {{ $article.DateHuman }} | {{ $article.Author }}
+    <h1>{{ $article.Title }}</h1>
+    <p>{{ $article.Summary }}</p>
+  </article>
+</a>
+{{ end }}
