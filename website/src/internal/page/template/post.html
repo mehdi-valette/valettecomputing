@@ -8,7 +8,7 @@
     @import url("/static/css/menu.css");
     @import url("/static/css/variables.css");
 
-    .article {
+    .post {
       border: 1px inset;
       background-color: rgb(255 255 255 / 0.7);
       max-width: 64rem;
@@ -61,7 +61,7 @@
     }
 
     @media (max-width: 1000px) {
-      .article {
+      .post {
         border-radius: 0;
         border: none;
       }
@@ -73,29 +73,26 @@
 </head>
 
 <body>
-
   <vs-binary-grid class="fixed width-full height-full behind"></vs-binary-grid>
 
   <div class="page">
-
     {{ template "main-menu" . }}
 
     <div class="content">
-      <article class="article">
-        {{ if .Article }}
+      <article class="post">
+        {{ if .Post }}
         <header>
-          {{ .Article.Author }} - <time datetime="{{ .Article.DateIso }}">{{ .Article.DateHuman }}</time>
+          {{ .Post.Author }} - <time datetime="{{ .Post.DateIso }}">{{ .Post.DateHuman }}</time>
         </header>
 
-        <h1>{{ .Article.Title }}</h1>
+        <h1>{{ .Post.Title }}</h1>
         <div class="markdown">
-          {{ .Article.Html }}
+          {{ .Post.Html }}
         </div>
         {{ else }}
         Article not found
         {{ end }}
       </article>
-
 
       <script type="module">
         import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";

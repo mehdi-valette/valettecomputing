@@ -2,7 +2,6 @@ package blog
 
 import (
 	"errors"
-	"io"
 	"log"
 	"regexp"
 	"strings"
@@ -72,7 +71,7 @@ func AddPost(newPost NewPost) (RenderedPost, error) {
 
 func UpdatePost(post RenderedPost) (RenderedPost, error) {
 	_, err := db.Exec(
-		"UPDATE post SET title = ?, language = ?, author = ?, timestamp = ?, slug = ?, summary = ?, content = ? WHERE article_id = ?",
+		"UPDATE post SET title = ?, language = ?, author = ?, timestamp = ?, slug = ?, summary = ?, content = ? WHERE post_id = ?",
 		post.Title, post.Language, post.Author, post.Timestamp, post.Slug, post.Summary, post.Content, post.ArticleId,
 	)
 
@@ -93,9 +92,9 @@ func ListPosts(lang string) ([]RenderedPost, error) {
 	var results *sql.Rows
 
 	if lang != "" {
-		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post WHERE language = ? ORDER BY timestamp DESC", lang)
+		results, err = db.Query("SELECT post_id, title, author, language, timestamp, summary, slug FROM post WHERE language = ? ORDER BY timestamp DESC", lang)
 	} else {
-		results, err = db.Query("SELECT article_id, title, author, language, timestamp, summary, slug FROM post ORDER BY timestamp DESC")
+		results, err = db.Query("SELECT post_id, title, author, language, timestamp, summary, slug FROM post ORDER BY timestamp DESC")
 	}
 
 	if err != nil {
@@ -125,7 +124,7 @@ func ListPosts(lang string) ([]RenderedPost, error) {
 	return allPosts, nil
 }
 
-func GetPostBySlug(output io.Writer, slug string) (RenderedPost, error) {
+func GetPostBySlug(slug string) (RenderedPost, error) {
 	post := RenderedPost{}
 
 	result := db.QueryRow("SELECT title, author, timestamp, summary, content FROM post WHERE slug = ?", slug)
@@ -148,7 +147,7 @@ func GetPostBySlug(output io.Writer, slug string) (RenderedPost, error) {
 func GetPostById(id int64) (RenderedPost, error) {
 	post := RenderedPost{}
 
-	result := db.QueryRow("SELECT article_id, language, slug, title, author, timestamp, summary, content FROM post WHERE article_id = ?", id)
+	result := db.QueryRow("SELECT post_id, language, slug, title, author, timestamp, summary, content FROM post WHERE post_id = ?", id)
 
 	err := result.Scan(&post.ArticleId, &post.Language, &post.Slug, &post.Title, &post.Author, &post.Timestamp, &post.Summary, &post.Content)
 
@@ -166,7 +165,7 @@ func GetPostById(id int64) (RenderedPost, error) {
 }
 
 func DeletePostById(id int64) error {
-	_, err := db.Exec("DELETE FROM post WHERE article_id = ?", id)
+	_, err := db.Exec("DELETE FROM post WHERE post_id = ?", id)
 
 	return err
 }

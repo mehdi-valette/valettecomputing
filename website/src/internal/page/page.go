@@ -1,7 +1,6 @@
 package page
 
 import (
-	"bytes"
 	"embed"
 	"errors"
 	"html/template"
@@ -40,8 +39,8 @@ func DisplayIndex(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 	return templates.ExecuteTemplate(buf, "index.html", templateData{Ctx: reqCtx})
 }
 
-func DisplayArticlesSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
-	articles, err := blog.ListPosts(reqCtx.Localizer.Lang())
+func DisplayPostsSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
+	posts, err := blog.ListPosts(reqCtx.Localizer.Lang())
 
 	if err != nil {
 		return err
@@ -49,17 +48,16 @@ func DisplayArticlesSummary(buf io.Writer, reqCtx reqcontext.ReqContext) error {
 
 	type data struct {
 		templateData
-		Articles []blog.RenderedPost
+		Posts []blog.RenderedPost
 	}
 
 	return templates.ExecuteTemplate(buf, "posts.html", data{
-		templateData: templateData{Ctx: reqCtx}, Articles: articles,
+		templateData: templateData{Ctx: reqCtx}, Posts: posts,
 	})
 }
 
-func DisplayArticle(buf io.Writer, reqCtx reqcontext.ReqContext, slug string) error {
-	articleText := bytes.NewBuffer(nil)
-	article, err := blog.GetPostBySlug(articleText, slug)
+func DisplayPost(buf io.Writer, reqCtx reqcontext.ReqContext, slug string) error {
+	post, err := blog.GetPostBySlug(slug)
 
 	if errors.Is(err, blog.ErrNotFound) {
 		return templates.ExecuteTemplate(buf, "post.html", nil)
@@ -67,10 +65,10 @@ func DisplayArticle(buf io.Writer, reqCtx reqcontext.ReqContext, slug string) er
 
 	type data struct {
 		templateData
-		Article blog.RenderedPost
+		Post blog.RenderedPost
 	}
 
-	return templates.ExecuteTemplate(buf, "post.html", data{templateData: templateData{Ctx: reqCtx}, Article: article})
+	return templates.ExecuteTemplate(buf, "post.html", data{templateData: templateData{Ctx: reqCtx}, Post: post})
 }
 
 func DisplayContactFormSuccess(buf io.Writer, reqCtx reqcontext.ReqContext) error {

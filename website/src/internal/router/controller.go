@@ -24,7 +24,7 @@ func indexPage(res http.ResponseWriter, req *http.Request) {
 func getPost(res http.ResponseWriter, req *http.Request) {
 	reqCtx := reqcontext.GetValue(req.Context())
 
-	printError(page.DisplayArticle(res, reqCtx, req.PathValue("name")))
+	printError(page.DisplayPost(res, reqCtx, req.PathValue("name")))
 }
 
 func adminPage(res http.ResponseWriter, req *http.Request) {
@@ -34,7 +34,7 @@ func adminPage(res http.ResponseWriter, req *http.Request) {
 func listPosts(res http.ResponseWriter, req *http.Request) {
 	reqCtx := reqcontext.GetValue(req.Context())
 
-	printError(page.DisplayArticlesSummary(res, reqCtx))
+	printError(page.DisplayPostsSummary(res, reqCtx))
 }
 
 func login(res http.ResponseWriter, req *http.Request) {

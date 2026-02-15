@@ -14,7 +14,7 @@
       text-decoration: none;
     }
 
-    .articles-list {
+    .posts-list {
       max-width: 42rem;
       margin: auto;
       display: flex;
@@ -86,20 +86,20 @@
     {{ template "main-menu" . }}
 
     <div class="content">
-      <div class="articles-list">
-        {{ range $article := .Articles }}
+      <div class="posts-list">
+        {{ range $post := .Posts }}
         {{ $t := $.Ctx.Localizer}}
 
-        <a href='{{ $t.Link (print "/articles/" $article.Slug) }}'>
+        <a href='{{ $t.Link (print "/articles/" $post.Slug) }}'>
           <article class="card">
             <h1>
-              {{ $article.Title }}
+              {{ $post.Title }}
             </h1>
 
-            {{ $article.Summary }}
+            {{ $post.Summary }}
 
             <footer>
-              <time datetime="{{ $article.DateIso }}">{{ $article.DateHuman }}</time>
+              <time datetime="{{ $post.DateIso }}">{{ $post.DateHuman }}</time>
               <span class="spacer">&nbsp;</span>
               <span class="link">Read the article</span>
             </footer>
