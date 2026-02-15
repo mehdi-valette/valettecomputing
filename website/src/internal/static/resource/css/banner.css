@@ -6,6 +6,7 @@
     'subtitle code  .'
     'subtitle .     cli'
     'developer developer developer';
+  padding-top: 2rem;
 
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-rows: auto auto auto auto 1fr;

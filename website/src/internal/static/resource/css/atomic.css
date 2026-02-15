@@ -29,3 +29,7 @@
 .spacer {
   flex-grow: 1;
 }
+
+.padding-bottom-xl {
+  padding-bottom: 5rem;
+}

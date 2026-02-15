@@ -20,6 +20,7 @@
       display: flex;
       flex-direction: column;
       gap: 5rem;
+      padding-block: 5rem;
     }
 
     .link {
@@ -39,7 +40,7 @@
       box-shadow: 3px 3px;
 
       &:hover {
-        background-color: rgb(255 255 255  / 0.4);
+        background-color: rgb(255 255 255 / 0.4);
         box-shadow: 5px 5px;
         margin: -2px 2px 2px -2px;
       }
@@ -79,31 +80,35 @@
 </head>
 
 <body>
-  {{ template "main-menu" . }}
-
   <vs-binary-grid class="fixed width-full height-full behind"></vs-binary-grid>
 
-  <div class="articles-list">
-  {{ range $article := .Articles }}
-    {{ $t := $.Ctx.Localizer}}
+  <div class="page">
+    {{ template "main-menu" . }}
 
-    <a href="{{ $t.Link (print "/articles/" $article.Slug) }}">
-      <article class="card">
-        <h1>
-          {{ $article.Title }}
-        </h1>
+    <div class="content">
+      <div class="articles-list">
+        {{ range $article := .Articles }}
+        {{ $t := $.Ctx.Localizer}}
 
-        {{ $article.Summary }}
+        <a href='{{ $t.Link (print "/articles/" $article.Slug) }}'>
+          <article class="card">
+            <h1>
+              {{ $article.Title }}
+            </h1>
 
-        <footer>
-          <time datetime="{{ $article.DateIso }}">{{ $article.DateHuman }}</time>
-          <span class="spacer">&nbsp;</span>
-          <span class="link">Read the article</span>
-        </footer>
-      </article>
-    </a>
-  {{ end }}
-  </div>
+            {{ $article.Summary }}
+
+            <footer>
+              <time datetime="{{ $article.DateIso }}">{{ $article.DateHuman }}</time>
+              <span class="spacer">&nbsp;</span>
+              <span class="link">Read the article</span>
+            </footer>
+          </article>
+        </a>
+        {{ end }}
+      </div>
+    </div> {{/* end of content */}}
+  </div> {{/* end of page */}}
 </body>
 
 </html>

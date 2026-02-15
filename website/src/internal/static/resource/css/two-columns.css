@@ -1,5 +1,5 @@
 .two-columns {
-  padding: 0 2rem;
+  padding-inline: 2rem;
   display: grid;
   gap: 3rem;
   justify-content: center;
