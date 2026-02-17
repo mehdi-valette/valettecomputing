@@ -55,8 +55,7 @@ class Painter {
   #cntLines = 0;
   #motionReduced = false;
 
-  /** @type {number | null} */
-  #interval = null;
+  #animationRunning = false;
 
   /** @param {CanvasRenderingContext2D} ctx  */
   constructor(ctx) {
@@ -89,14 +88,11 @@ class Painter {
 
     this.#drawAll();
 
-    if (!this.#motionReduced && this.#interval == null) {
-      this.#interval = setInterval(
-        () => requestAnimationFrame(() => this.#animate()),
-        200,
-      );
-    } else if (this.#motionReduced && this.#interval != null) {
-      clearInterval(this.#interval);
-      this.#interval = null;
+    if (!this.#motionReduced && !this.#animationRunning) {
+      this.#animationRunning = true;
+      this.#animate();
+    } else if (this.#motionReduced && this.#animationRunning) {
+      this.#animationRunning = false;
     }
   };
 
@@ -114,7 +110,11 @@ class Painter {
     }
   };
 
-  #animate = () => {
+  #animate = async () => {
+    if (!this.#animationRunning) return;
+
+    const timeStart = performance.now();
+
     for (let i = 0; i < 100; i++) {
       const x =
         Math.floor(Math.random() * this.#cntCharsPerLine) * this.#charWidth;
@@ -123,7 +123,14 @@ class Painter {
       this.#ctx.clearRect(x, y, this.#charWidth, -this.#charHeight);
       this.#ctx.fillText(Math.random() > 0.5 ? "0" : "1", x, y);
     }
+
+    const timeDifference = performance.now() - timeStart;
+    await new Promise((r) => setTimeout(r, 200 - timeDifference));
+
+    requestAnimationFrame(this.#animate);
   };
+
+  #render = () => {};
 }
 
 customElements.define("vs-binary-grid", BinaryGrid);

@@ -1,8 +1,7 @@
 class DigitalRain extends HTMLElement {
   static observedAttributes = ["class"];
 
-  /** @type {number | null} */
-  #interval = null;
+  #animationRunning = false;
 
   /** @type {Array<Snake>} */
   #snakes = [];
@@ -29,11 +28,11 @@ class DigitalRain extends HTMLElement {
 
   /**
    * @param {string} name
-   * @param {string} _oldValue 
-   * @param {string} newValue 
-    */
+   * @param {string} _oldValue
+   * @param {string} newValue
+   */
   attributeChangedCallback(name, _oldValue, newValue) {
-    if(name !== "class") return;
+    if (name !== "class") return;
     this.#canvas.className = newValue ?? "";
   }
 
@@ -50,7 +49,8 @@ class DigitalRain extends HTMLElement {
     this.#ctx.scale(-1, 1);
 
     const charBox = this.#ctx.measureText("0");
-    const charHeight = charBox.fontBoundingBoxAscent + charBox.fontBoundingBoxDescent;
+    const charHeight =
+      charBox.fontBoundingBoxAscent + charBox.fontBoundingBoxDescent;
     const charWidth = charBox.width;
 
     for (let i = 0; i < 20; i++) {
@@ -69,27 +69,37 @@ class DigitalRain extends HTMLElement {
   #handleMotionReduce = () => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    if (!mediaQuery.matches) this.#animate();
+    if (!mediaQuery.matches) {
+      this.#animationRunning = true;
+      this.#render();
+    }
 
     mediaQuery.addEventListener("change", () => {
-      if (mediaQuery.matches && this.#interval != null) {
-        clearInterval(this.#interval);
-        this.#interval = null;
-      } else if (this.#interval == null) this.#animate();
+      if (mediaQuery.matches && this.#animationRunning) {
+        this.#animationRunning = false;
+      } else if (!this.#animationRunning) {
+        this.#animationRunning = true;
+        this.#render();
+      }
     });
 
     this.motionReduced = mediaQuery.matches;
   };
 
-  #animate = () => {
-    this.#interval = setInterval(() => {
-      if (this.#ctx == null) return;
+  #render = async () => {
+    if (this.#ctx == null || !this.#animationRunning) return;
 
-      this.#ctx.clearRect(0, 0, -this.#canvas.width, this.#canvas.height);
-      for (const snake of this.#snakes) {
-        snake.refresh();
-      }
-    }, 20);
+    const timeStart = performance.now();
+
+    this.#ctx.clearRect(0, 0, -this.#canvas.width, this.#canvas.height);
+
+    for (const snake of this.#snakes) {
+      snake.refresh();
+    }
+
+    const timeDifference = performance.now() - timeStart;
+    await new Promise((r) => setTimeout(r, 33 - timeDifference));
+    requestAnimationFrame(this.#render);
   };
 }
 
@@ -137,7 +147,7 @@ class Snake {
       -1;
     this.#posY = 0;
     this.#startDelay = Math.random() * 20;
-    this.#maxUpdateDelay = 5 + Math.floor(Math.random() * 5);
+    this.#maxUpdateDelay = 1 + Math.floor(Math.random() * 2);
     this.#updateDelay = 0;
   };
 
