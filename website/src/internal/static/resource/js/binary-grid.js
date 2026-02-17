@@ -129,8 +129,6 @@ class Painter {
 
     requestAnimationFrame(this.#animate);
   };
-
-  #render = () => {};
 }
 
 customElements.define("vs-binary-grid", BinaryGrid);
