@@ -5,6 +5,7 @@
     @import url("/static/css/atomic.css");
     @import url("/static/css/body.css");
     @import url("/static/css/list.css");
+    @import url("/static/css/markdown.css");
     @import url("/static/css/menu.css");
     @import url("/static/css/variables.css");
 
@@ -25,38 +26,6 @@
         text-align: center;
         margin: 0 0 5rem 0;
         margin-top: 1rem;
-      }
-    }
-
-    .markdown {
-      code:not([class]) {
-        background-color: rgb(200 200 255);
-        border: 1px inset black;
-        border-radius: .3rem;
-        padding: 0 .3rem;
-      }
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-      }
-
-      pre {
-        font-size: 1rem;
-
-        .language-javascript {
-          border: 1px inset lightblue;
-          border-radius: .15rem;
-          background: rgb(230 230 255);
-        }
-
-        &:has(.language-mermaid) {
-          text-align: center;
-          padding: 1rem;
-        }
       }
     }
 
