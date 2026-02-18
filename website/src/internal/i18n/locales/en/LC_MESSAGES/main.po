@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2026-02-06 11:38+0100\n"
-"PO-Revision-Date: 2026-02-07 15:34+0100\n"
+"PO-Revision-Date: 2026-02-18 10:34+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -146,12 +146,6 @@ msgstr "About"
 msgid "Autre"
 msgstr "Other"
 
-msgid "Emploi fixe"
-msgstr "Fix job"
-
-msgid "Emploi temporaire"
-msgstr "Temporary job"
-
 msgid "Mission"
 msgstr "Mission"
 
@@ -211,3 +205,9 @@ msgstr "I'll answer ASAP!"
 
 msgid "Revenir au formulaire"
 msgstr "Back to the form"
+
+#~ msgid "Emploi fixe"
+#~ msgstr "Fix job"
+
+#~ msgid "Emploi temporaire"
+#~ msgstr "Temporary job"

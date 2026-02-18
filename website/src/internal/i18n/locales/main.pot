@@ -147,12 +147,6 @@ msgstr ""
 msgid "Autre"
 msgstr ""
 
-msgid "Emploi fixe"
-msgstr ""
-
-msgid "Emploi temporaire"
-msgstr ""
-
 msgid "Mission"
 msgstr ""
 
